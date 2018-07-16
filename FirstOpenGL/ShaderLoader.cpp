@@ -60,23 +60,23 @@ GLuint ShaderLoader::CreateProgram(char* vertexShaderFilename,
 	std::string ProgramFilename(vertexShaderFilename);
 	ProgramFilename.append(fragmentShaderFilename);
 
-	//Check if program exists
-	if (ProgramsMap.find(ProgramFilename.data) != ProgramsMap.end()) 
-	{
-		//if it does exist
-		// Use it
-		//return
-	}
-	else
-	{
-		//if it doesnt exist
-		//Make one
+	////Check if program exists
+	//if (ProgramsMap.find(ProgramFilename.data) != ProgramsMap.end()) 
+	//{
+	//	//if it does exist
+	//	// Use it
+	//	//return
+	//}
+	//else
+	//{
+	//	//if it doesnt exist
+	//	//Make one
 
-		//Check if Vertex Shader Exists
+	//	//Check if Vertex Shader Exists
 
-		//Check if Fragments Shader Exists
-	}
-		
+	//	//Check if Fragments Shader Exists
+	//}
+	//	
 
 
 
