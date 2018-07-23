@@ -21,6 +21,8 @@ class ShaderLoader
 	public:
 		ShaderLoader(void);
 		~ShaderLoader(void);
+		GLuint CreateProgramOriginal(char* VertexShaderFilename,
+			char* FragmentShaderFilename);
 		GLuint CreateProgram(char* VertexShaderFilename,
 			char* FragmentShaderFilename);
 
