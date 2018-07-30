@@ -125,9 +125,9 @@ void Init()
 
 
 	//-----Culling
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
-	glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CCW);
+	//glEnable(GL_CULL_FACE);
 
 	//-----Textures
 	glGenTextures(1, &tex);

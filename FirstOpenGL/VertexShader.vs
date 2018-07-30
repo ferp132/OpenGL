@@ -9,9 +9,21 @@ uniform float currentTime;
 
 void main(void)
 {
+	float i = sin(currentTime);
 	vec3 movevec = position;
-	movevec.x += -0.5 + sin(currentTime) * sin(currentTime);
-	movevec.y += sin(currentTime) * cos(currentTime);
+	vec3 movevec2 = position;
+	//movevec.x += -0.5 + sin(currentTime) * sin(currentTime);
+	//movevec.y += sin(currentTime) * cos(currentTime);
+
+
+
+	movevec2.x = (movevec2.x * cos(i)) - (movevec2.y * sin(i));
+	movevec2.y = (movevec2.y * cos(i)) + (movevec2.x * sin(i));
+
+	movevec += movevec2;
+
+
+
 
 
 
