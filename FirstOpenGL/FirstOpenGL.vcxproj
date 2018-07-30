@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\freeglut;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\freeglut;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\soil;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\soil;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\freeglut;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\freeglut;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\soil;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\Dependencies\glew;$(ProjectDir)\Dependencies\freeglut;$(ProjectDir)\Dependencies\soil;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,7 +84,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,6 +133,9 @@
   <ItemGroup>
     <None Include="FragmentShader.fs" />
     <None Include="VertexShader.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Rayman.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

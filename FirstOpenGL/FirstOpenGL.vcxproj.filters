@@ -38,4 +38,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Rayman.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
