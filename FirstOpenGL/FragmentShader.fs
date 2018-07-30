@@ -9,8 +9,8 @@ uniform float currentTime;
 void main(void)
 {
 	vec3 colorTemp = fragColor;
-	colorTemp.x += 0.5 + (0.25) *sin(currentTime);
-	colorTemp.y -= 0.5 + (0.25) +sin(currentTime);
-	colorTemp.z += 0.5 + (0.25) -sin(currentTime);
+	colorTemp.x += -0.25 + (0.25) *sin(currentTime);
+	colorTemp.y += -0.25 + (0.25) *sin(currentTime);
+	colorTemp.z += -0.25 + (0.25) *sin(currentTime);
 	color = vec4(colorTemp, 1.0);
 } 
