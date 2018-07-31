@@ -11,31 +11,35 @@ GLuint VAO, VAO2;				//Vertex Array Object
 GLuint EBO, EBO2;
 GLuint tex;
 GLuint indices[] = {
-	0, 2, 1,  // First Triangle
-	0, 3, 2,  // Second Triangle
-	0, 4, 3,  // Third Triangle
-	0, 5, 4,  // Fourth Triangle
-	0, 6, 5,  // Fith Triangle
-	0, 1, 6,  // Sixth Triangle
-
+	0, 2, 1,	// First Triangle
+	0, 3, 2,	// Second Triangle
+	0, 4, 3,	// Third Triangle
+	0, 5, 4,	// Fourth Triangle
+	0, 6, 5,	// Fith Triangle
+	0, 1, 6,	// Sixth Triangle
+};
+GLuint indices2[] = {
+	0, 2, 1,	// Seventh
+	0, 3, 2,	//eighth
 };
 GLfloat vertices[] = {
 	 //Hexagon
 	 //Position			//color
-     0.0f,  0.0f, 0.0f,	1.0f, 1.0f, 1.0f,	//Middle		
-	 -0.2f,  0.0f, 0.0f,	1.0f, 1.0f, 0.0f,	//Left			Yellow
-	 -0.1f,  0.2f, 0.0f,	0.0f, 1.0f, 0.0f,	//Top Left		Green
-	 0.1f,  0.2f, 0.0f,	0.0f, 0.0f, 1.0f,	//Top Right		Blue
-	 0.2f,  0.0f, 0.0f,	0.58f, 0.0f, 0.83f,	//Right			Violet
-	 0.1f,  -0.2f, 0.0f,	1.0f, 0.0f, 0.0f,	//Bottom Right	Red
-	 -0.1f,  -0.2f, 0.0f,	1.0f, 0.65f, 0.0f,	//Bottom Left	
-
-	 ////Quad
-	 ////Position			//color
-	 //-0.75f, -0.5f, 0.0f,	1.0f, 1.0f, 1.0f,	//Bottom Left		
-	 //-0.25f, 0.5f, 0.0f,	1.0f, 1.0f, 0.0f,	//Top Left
-	 //-0.25f, 0.5f, 0.0f,	0.0f, 1.0f, 0.0f,	//Top Right
-	 //-0.75f,  0.5f, 0.0f,	0.0f, 0.0f, 1.0f,	//Bottom Right
+     0.0f,  0.0f, 0.0f,		1.0f, 1.0f, 1.0f,	//Middle		
+	-0.2f,  0.0f, 0.0f,		1.0f, 1.0f, 0.0f,	//Left			Yellow
+	-0.1f,  0.2f, 0.0f,		0.0f, 1.0f, 0.0f,	//Top Left		Green
+	 0.1f,  0.2f, 0.0f,		0.0f, 0.0f, 1.0f,	//Top Right		Blue
+	 0.2f,  0.0f, 0.0f,		0.58f, 0.0f, 0.83f,	//Right			Violet
+	 0.1f, -0.2f, 0.0f,		1.0f, 0.0f, 0.0f,	//Bottom Right	Red
+	-0.1f, -0.2f, 0.0f,		1.0f, 0.65f, 0.0f,	//Bottom Left	
+};
+GLfloat vertices2[] = {
+	//Quad
+	//Position			//color
+	-0.75f, -0.5f, 0.0f,	1.0f, 1.0f, 1.0f,	//Bottom Left		
+	-0.25f, 0.5f, 0.0f,		1.0f, 1.0f, 0.0f,	//Top Left
+	-0.25f, 0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	//Top Right
+	-0.75f,  0.5f, 0.0f,	0.0f, 0.0f, 1.0f,	//Bottom Right
 };
 
 void Init();
@@ -80,6 +84,7 @@ void Init()
 		GL_FALSE,
 		6 * sizeof(GLfloat),
 		(GLvoid*)0);
+	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
 		1,
 		3,
@@ -87,10 +92,9 @@ void Init()
 		GL_FALSE,
 		6 * sizeof(GLfloat),
 		(GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 
-	//-----Hex EBO
+	//Hex EBO
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -100,7 +104,7 @@ void Init()
 	glBindVertexArray(VAO2);
 	glGenBuffers(1, &VBO2);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
 	glVertexAttribPointer(
 		0,
 		3,
@@ -108,6 +112,7 @@ void Init()
 		GL_FALSE,
 		6 * sizeof(GLfloat),
 		(GLvoid*)0);
+	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
 		1,
 		3,
@@ -115,14 +120,12 @@ void Init()
 		GL_FALSE,
 		6 * sizeof(GLfloat),
 		(GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 
-	//-----Quad EBO
+	//Quad EBO
 	glGenBuffers(1, &EBO2);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO2);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices2), indices2, GL_STATIC_DRAW);
 
 	//-----Culling
 	//glCullFace(GL_BACK);
@@ -148,6 +151,9 @@ void render(void)
 	glBindVertexArray(VAO);				//Bind VAO
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);				//Unbind VAO
+	glBindVertexArray(VAO2);			//Bind VAO2
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);				//Unbind VAO2
 
 	glutSwapBuffers();
 }

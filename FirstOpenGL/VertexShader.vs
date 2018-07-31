@@ -11,22 +11,21 @@ void main(void)
 {
 	float i = sin(currentTime);
 	vec3 movevec = position;
-	vec3 movevec2 = position;
-	//movevec.x += -0.5 + sin(currentTime) * sin(currentTime);
-	//movevec.y += sin(currentTime) * cos(currentTime);
 
+	movevec.x += -0.5 + sin(currentTime) * sin(currentTime);
+	movevec.y += sin(currentTime) * cos(currentTime);
 
-
-	movevec2.x = (movevec2.x * cos(i)) - (movevec2.y * sin(i));
-	movevec2.y = (movevec2.y * cos(i)) + (movevec2.x * sin(i));
-
-	movevec += movevec2;
-
-
-
-
-
+	//movevec.x = movevec.x * cos(i) - movevec.y * sin(i);
+	//movevec.y = movevec.x * sin(i) + movevec.y * cos(i);
 
 	gl_Position		= vec4(movevec, 1.0);
-	fragColor		= color;
+
+	fragColor	= color;
+
+	fragColor.r += sin(currentTime) * cos(currentTime);
+	fragColor.g -= sin(currentTime) * cos(currentTime);
+	fragColor.b += sin(currentTime) * sin(currentTime);
+
+
+
 } 
