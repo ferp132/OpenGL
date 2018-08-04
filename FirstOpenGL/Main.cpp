@@ -4,12 +4,18 @@
 #include "Dependencies\soil\SOIL.h"
 #include <iostream>
 #include <map>
+#define M_PI 3.1415926535897932384626433832795
 
 GLuint program;
 GLuint VBO, VBO2;				//Vertex Buffer Object
 GLuint VAO, VAO2;				//Vertex Array Object
 GLuint EBO, EBO2;
-GLuint tex;
+GLuint RaymanTex;
+GLuint AwesomeDTex;
+std::string RayFilepath = "Rayman.jpg";
+std::string AweFilepath = "AwesomeFace.png";
+float RotationValue = 0.0f;
+
 GLuint indices[] = {
 	0, 2, 1,	// First Triangle
 	0, 3, 2,	// Second Triangle
@@ -19,28 +25,29 @@ GLuint indices[] = {
 	0, 1, 6,	// Sixth Triangle
 };
 GLuint indices2[] = {
-	0, 2, 1,	// Seventh
-	0, 3, 2,	//eighth
+	0, 1, 2,	// Seventh
+	0, 2, 3,	//eighth
 };
 GLfloat vertices[] = {
 	 //Hexagon
-	 //Position			//color
+	 //Position				//color
      0.0f,  0.0f, 0.0f,		1.0f, 1.0f, 1.0f,	//Middle		
 	-0.2f,  0.0f, 0.0f,		1.0f, 1.0f, 0.0f,	//Left			Yellow
-	-0.1f,  0.2f, 0.0f,		0.0f, 1.0f, 0.0f,	//Top Left		Green
-	 0.1f,  0.2f, 0.0f,		0.0f, 0.0f, 1.0f,	//Top Right		Blue
+	-0.1f,  0.175f, 0.0f,		0.0f, 1.0f, 0.0f,	//Top Left		Green
+	 0.1f,  0.175f, 0.0f,		0.0f, 0.0f, 1.0f,	//Top Right		Blue
 	 0.2f,  0.0f, 0.0f,		0.58f, 0.0f, 0.83f,	//Right			Violet
-	 0.1f, -0.2f, 0.0f,		1.0f, 0.0f, 0.0f,	//Bottom Right	Red
-	-0.1f, -0.2f, 0.0f,		1.0f, 0.65f, 0.0f,	//Bottom Left	
+	 0.1f, -0.175f, 0.0f,		1.0f, 0.0f, 0.0f,	//Bottom Right	Red
+	-0.1f, -0.175f, 0.0f,		1.0f, 0.65f, 0.0f,	//Bottom Left	
 };
 GLfloat vertices2[] = {
 	//Quad
-	//Position			//color
-	-0.75f, -0.5f, 0.0f,	1.0f, 1.0f, 1.0f,	//Bottom Left		
-	-0.25f, 0.5f, 0.0f,		1.0f, 1.0f, 0.0f,	//Top Left
-	-0.25f, 0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	//Top Right
-	-0.75f,  0.5f, 0.0f,	0.0f, 0.0f, 1.0f,	//Bottom Right
+	//Position					//color				//Tex Coords
+	-0.2f, -0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	0.0f, 1.0f,		//Bottom Left		
+	-0.2f, 0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	0.0f, 0.0f,		//Top Left
+	0.2f, 0.2f, 0.0f,			0.0f, 0.0f, 0.0f,	1.0f, 0.0f,		//Top Right
+	0.2f,  -0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	1.0f, 1.0f,		//Bottom Right
 };
+
 
 void Init();
 void render(void);
@@ -50,8 +57,8 @@ int main(int argc, char **argv) {
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(200, 200);
-	glutInitWindowSize(1000, 1000);
+	glutInitWindowPosition(200, 50);
+	glutInitWindowSize(800, 800);
 	glutCreateWindow("Triangle");
 	glClearColor(1.0, 0.0, 0.0, 1.0); //clear red
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -110,7 +117,7 @@ void Init()
 		3,
 		GL_FLOAT,
 		GL_FALSE,
-		6 * sizeof(GLfloat),
+		8 * sizeof(GLfloat),
 		(GLvoid*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
@@ -118,28 +125,59 @@ void Init()
 		3,
 		GL_FLOAT,
 		GL_FALSE,
-		6 * sizeof(GLfloat),
+		8 * sizeof(GLfloat),
 		(GLvoid*)(3 * sizeof(GLfloat)));
 	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(
+		2,
+		2,
+		GL_FLOAT,
+		GL_FALSE,
+		8 * sizeof(GLfloat),
+		(GLvoid*)(6 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
+
 
 	//Quad EBO
 	glGenBuffers(1, &EBO2);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO2);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices2), indices2, GL_STATIC_DRAW);
 
-	//-----Culling
+	////-----Culling
 	//glCullFace(GL_BACK);
 	//glFrontFace(GL_CCW);
 	//glEnable(GL_CULL_FACE);
 
 	//-----Textures
-	glGenTextures(1, &tex);
-	glBindTexture(GL_TEXTURE_2D, tex);
+	int width, height, channels;
+	//Rayman
+	glGenTextures(1, &RaymanTex);
+	glBindTexture(GL_TEXTURE_2D, RaymanTex);
 
-//	int width, height, channels;
-//	unsigned char* image = SOIL_load_image("h:\GitHub\OpenGL\FirstOpenGL\Rayman.jpg", &width, &height, &channels, SOIL_LOAD_RGBA);
+	unsigned char* RaymanImage = SOIL_load_image(RayFilepath.c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, RaymanImage);
 
+	glGenerateMipmap(GL_TEXTURE_2D);
+	SOIL_free_image_data(RaymanImage);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
+	//AwesomeD
+
+	glGenTextures(1, &AwesomeDTex);
+	glBindTexture(GL_TEXTURE_2D, AwesomeDTex);
+
+	unsigned char* AwesomeDImage = SOIL_load_image(AweFilepath.c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, AwesomeDImage);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+	SOIL_free_image_data(AwesomeDImage);
+	glBindTexture(GL_TEXTURE_2D, 1);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 void render(void)
@@ -152,6 +190,23 @@ void render(void)
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);				//Unbind VAO
 	glBindVertexArray(VAO2);			//Bind VAO2
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, RaymanTex);
+	glUniform1i(glGetUniformLocation(program, "RaymanTex"), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, AwesomeDTex);
+	glUniform1i(glGetUniformLocation(program, "AwesomeDTex"), 1);
+
+	GLint RotationLoc = glGetUniformLocation(program, "Rotation");
+	glUniform1f(RotationLoc, RotationValue);
+	if (RotationValue > 2 * M_PI)
+	{
+		RotationValue = 0.0f;
+	}
+	RotationValue+= M_PI / 100;
+
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);				//Unbind VAO2
 
