@@ -21,10 +21,12 @@ void main(void)
 	{
 		movevec.x += -0.5 + sin(currentTime) * sin(currentTime);
 		movevec.y += sin(currentTime) * cos(currentTime);
+		
+			fragTexCoord = TexCoord;
 	}
 	else
 	{
-		RotVec.x = movevec.x * cos(i) - movevec.y * sin(i);
+		RotVec.x = movevec.x * cos(i) - movevec.y * sin(i + i);
 		RotVec.y = movevec.x * sin(i) + movevec.y * cos(i);
 		RotVec.z = movevec.z;
 		movevec = RotVec;
@@ -32,10 +34,12 @@ void main(void)
 
 		movevec.x -= -0.5 + sin(currentTime) * sin(currentTime);
 		movevec.y -= sin(currentTime) * cos(currentTime);
+
+			fragColor	= color;
 	}
 
 	gl_Position		= vec4(movevec, 1.0);
-	fragColor	= color;
-	fragTexCoord = TexCoord;
+
+
 
 } 

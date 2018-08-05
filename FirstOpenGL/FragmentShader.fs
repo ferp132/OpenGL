@@ -16,22 +16,19 @@ void main(void)
 	if(MixValue > 1.0f) MixValue = 1.0f;
 	else if (MixValue < 0.0f) MixValue = 0.0f;
 
-	colorTemp.r += sin(currentTime) * cos(currentTime);
-	colorTemp.g -= sin(currentTime) * cos(currentTime);
-	colorTemp.b += sin(currentTime) * sin(currentTime);
-	colorTemp += -0.25 + (0.25) * sin(currentTime) * cos(currentTime);
 
-	//colorTemp.x += -0.25 + (0.25) * sin(currentTime) * cos(currentTime);
-	//colorTemp.y += -0.25 + (0.25) * sin(currentTime) * cos(currentTime);
-	//colorTemp.z += -0.25 + (0.25) * sin(currentTime) * cos(currentTime);
 	
 	if(fragColor == 0.0f)
 	{
 		color = mix(texture(RaymanTex, fragTexCoord), texture(AwesomeDTex, fragTexCoord), MixValue);
-		
 	}
 	else
 	{
+		colorTemp.r += sin(currentTime) * cos(currentTime);
+		colorTemp.g -= sin(currentTime) * cos(currentTime);
+		colorTemp.b += sin(currentTime) * sin(currentTime);
+		colorTemp += -0.25 + (0.25) * sin(currentTime) * cos(currentTime);
+
 		color = vec4(colorTemp, 1.0);
 	}
 

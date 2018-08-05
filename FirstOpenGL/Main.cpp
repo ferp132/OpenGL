@@ -43,9 +43,9 @@ GLfloat vertices2[] = {
 	//Quad
 	//Position					//color				//Tex Coords
 	-0.2f, -0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	0.0f, 1.0f,		//Bottom Left		
-	-0.2f, 0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	0.0f, 0.0f,		//Top Left
-	0.2f, 0.2f, 0.0f,			0.0f, 0.0f, 0.0f,	1.0f, 0.0f,		//Top Right
-	0.2f,  -0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	1.0f, 1.0f,		//Bottom Right
+	-0.2f,  0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	0.0f, 0.0f,		//Top Left
+	 0.2f,  0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	1.0f, 0.0f,		//Top Right
+	 0.2f, -0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	1.0f, 1.0f,		//Bottom Right
 };
 
 
