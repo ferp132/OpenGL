@@ -8,9 +8,12 @@ out vec4 color;
 uniform float currentTime;
 uniform sampler2D RaymanTex;
 uniform sampler2D AwesomeDTex;
+uniform float Rotation;
 
 void main(void)
 {
+	float i = Rotation/2;
+
 	vec3 colorTemp = fragColor;
 	float MixValue = 0.25 + sin(currentTime);
 	if(MixValue > 1.0f) MixValue = 1.0f;
@@ -24,10 +27,10 @@ void main(void)
 	}
 	else
 	{
-		colorTemp.r += sin(currentTime) * cos(currentTime);
-		colorTemp.g -= sin(currentTime) * cos(currentTime);
-		colorTemp.b += sin(currentTime) * sin(currentTime);
-		colorTemp += -0.25 + (0.25) * sin(currentTime) * cos(currentTime);
+		colorTemp.r += sin(i) * cos(i);
+		colorTemp.g -= sin(i) * cos(i);
+		colorTemp.b += sin(i) * sin(i);
+		colorTemp += -0.25 + (0.25) * sin(i) * cos(i);
 
 		color = vec4(colorTemp, 1.0);
 	}

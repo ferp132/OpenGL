@@ -26,7 +26,7 @@ void main(void)
 	}
 	else
 	{
-		RotVec.x = movevec.x * cos(i) - movevec.y * sin(i + i);
+		RotVec.x = movevec.x * cos(i) - movevec.y * sin(i);
 		RotVec.y = movevec.x * sin(i) + movevec.y * cos(i);
 		RotVec.z = movevec.z;
 		movevec = RotVec;
