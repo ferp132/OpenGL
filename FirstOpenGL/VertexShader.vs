@@ -9,6 +9,8 @@ out vec2 fragTexCoord;
 
 uniform float currentTime;
 uniform float Rotation;
+uniform mat4 model;
+
 
 void main(void)
 {
@@ -38,7 +40,7 @@ void main(void)
 			fragColor	= color;
 	}
 
-	gl_Position		= vec4(movevec, 1.0);
+	gl_Position		= model * vec4(movevec, 1.0);
 
 
 

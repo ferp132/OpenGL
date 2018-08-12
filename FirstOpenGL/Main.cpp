@@ -1,7 +1,11 @@
+#include "Dependencies\soil\SOIL.h"
 #include "Dependencies\glew\glew.h"
 #include "Dependencies\freeglut\freeglut.h"
 #include "ShaderLoader.h"
-#include "Dependencies\soil\SOIL.h"
+#include "glm.hpp"
+#include "gtc/matrix_transform.hpp"
+#include "gtc/type_ptr.hpp"
+
 #include <iostream>
 #include <map>
 #define M_PI 3.1415926535897932384626433832795
@@ -198,6 +202,24 @@ void render(void)
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, AwesomeDTex);
 	glUniform1i(glGetUniformLocation(program, "AwesomeDTex"), 1);
+
+	//-----Transformation Matrices
+
+	glm::vec3 objPosition = glm::vec3(0.5f, 0.5f, 0.0f);
+	glm::mat4 translationMatrix = glm::translate(glm::mat4(), objPosition);
+
+	glm::vec3 rotationAxisZ = glm::vec3(0.0f, 0.0f, 1.0f);
+	float rotationAngle = 180;
+	glm::mat4 rotationZ = glm::rotate(glm::mat4(), glm::radians(rotationAngle), rotationAxisZ);
+
+	glm::vec3 objScale = glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::mat4 scaleMatrix = glm::scale(glm::mat4(), objScale);
+
+	glm::mat4 model = translationMatrix * rotationZ * scaleMatrix;
+	GLuint modelLoc = glGetUniformLocation(program, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+	//--//
 
 	GLint RotationLoc = glGetUniformLocation(program, "Rotation");
 	glUniform1f(RotationLoc, RotationValue);
