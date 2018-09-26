@@ -55,7 +55,7 @@ void Init()
 	const int VS_CodePointerSize = vs_source.size();
 
 	GLuint vs = glCreateShader(GL_VERTEX_SHADER);						//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateShader.xhtml
-	glShaderSource(vs, 1, &VS_CodePointer, &VS_CodePointerSize);						//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glShaderSource.xhtml
+	glShaderSource(vs, 1, &VS_CodePointer, &VS_CodePointerSize);		//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glShaderSource.xhtml
 	glCompileShader(vs);
 	
 	//-----Create Fragment Shader
