@@ -9,21 +9,20 @@
 class ShaderLoader
 {
 	private:
+
 		std::string ReadShader(char *filename);
 		GLuint CreateShader(GLenum shaderType,
 			std::string source,
 			char* shaderName);
 
-		std::map<char*, GLuint> FragmentShadersMap;
-		std::map<char*, GLuint> VertexShadersMap;
-		std::map<char*, GLuint> ProgramsMap;
-
 	public:
 		ShaderLoader(void);
 		~ShaderLoader(void);
-		GLuint CreateProgramOriginal(char* VertexShaderFilename,
-			char* FragmentShaderFilename);
 		GLuint CreateProgram(char* VertexShaderFilename,
 			char* FragmentShaderFilename);
 
+
+		std::map<int, char*> VShaderMap;
+		std::map<int, char*> FShaderMap;
+		std::map<int, char*> ProgramMap;
 };

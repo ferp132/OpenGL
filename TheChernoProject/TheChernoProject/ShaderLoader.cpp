@@ -6,6 +6,8 @@
 ShaderLoader::ShaderLoader(void){}
 ShaderLoader::~ShaderLoader(void){}
 
+
+
 std::string ShaderLoader::ReadShader(char *filename)
 {
 	std::string shaderCode;
@@ -52,82 +54,9 @@ GLuint ShaderLoader::CreateShader(GLenum shaderType, std::string
 	return shader;
 }
 
-GLuint ShaderLoader::CreateProgramOriginal(char* vertexShaderFilename,
-	char* fragmentShaderFilename)
-{
-	std::string ProgramFilename(vertexShaderFilename);
-	ProgramFilename.append(fragmentShaderFilename);
-
-	////Check if program exists
-	//if (ProgramsMap.find(ProgramFilename.data) != ProgramsMap.end()) 
-	//{
-	//	//if it does exist
-	//	// Use it
-	//	//return
-	//}
-	//else
-	//{
-	//	//if it doesnt exist
-	//	//Make one
-
-	//	//Check if Vertex Shader Exists
-
-	//	//Check if Fragments Shader Exists
-	//}
-	//	
-
-	//read the shader files and save the code
-	std::string vertex_shader_code = ReadShader(vertexShaderFilename);
-	std::string fragment_shader_code = ReadShader(fragmentShaderFilename);
-
-	GLuint vertex_shader = CreateShader(GL_VERTEX_SHADER, vertex_shader_code, "vertex shader");
-	GLuint fragment_shader = CreateShader(GL_FRAGMENT_SHADER, fragment_shader_code, "fragment shader");
-
-	int link_result = 0;
-	//create the program handle, attatch the shaders and link it
-	GLuint program = glCreateProgram();
-	glAttachShader(program, vertex_shader);
-	glAttachShader(program, fragment_shader);
-
-	glLinkProgram(program);
-	glGetProgramiv(program, GL_LINK_STATUS, &link_result);
-	//check for link errors
-	if (link_result == GL_FALSE)
-	{
-
-		int info_log_length = 0;
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &info_log_length);
-		std::vector<char> program_log(info_log_length);
-		glGetProgramInfoLog(program, info_log_length, NULL, &program_log[0]);
-		std::cout << "Shader Loader : LINK ERROR" << std::endl << &program_log[0] << std::endl;
-		return 0;
-	}
-	return program;
-}
-
 GLuint ShaderLoader::CreateProgram(char* vertexShaderFilename,
 	char* fragmentShaderFilename)
 {
-	std::string ProgramFilename(vertexShaderFilename);
-	ProgramFilename.append(fragmentShaderFilename);
-
-	////Check if program exists
-	//if (ProgramsMap.find(ProgramFilename.data) != ProgramsMap.end()) 
-	//{
-	//	//if it does exist
-	//	// Use it
-	//	//return
-	//}
-	//else
-	//{
-	//	//if it doesnt exist
-	//	//Make one
-
-	//	//Check if Vertex Shader Exists
-
-	//	//Check if Fragments Shader Exists
-	//}
-	//	
 
 	//read the shader files and save the code
 	std::string vertex_shader_code = ReadShader(vertexShaderFilename);

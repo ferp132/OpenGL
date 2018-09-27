@@ -2,20 +2,43 @@
 #include "Dependencies\freeglut\freeglut.h"
 #include "ShaderLoader.h"
 #include "Dependencies\soil\SOIL.h"
+#include "Renderer.h"
+#include "IndexBuffer.h"
+#include "vertexbuffer.h"
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include <map>
+
+struct ShaderProgramSource
+{
+	std::string VertexSource;
+	std::string FragmentSource;
+
+};
+
 #define M_PI 3.1415926535897932384626433832795
 
-GLuint program;
-GLuint VBO, VBO2;				//Vertex Buffer Object
-GLuint VAO, VAO2;				//Vertex Array Object
-GLuint EBO, EBO2;
-GLuint RaymanTex;
-GLuint AwesomeDTex;
-std::string RayFilepath = "Rayman.jpg";
-std::string AweFilepath = "AwesomeFace.png";
-float RotationValue = 0.0f;
+using namespace std;
+
+
+int location;
+GLuint shader;
+GLuint VAO;
+
+GLfloat vertices[] = {
+	//Hexagon
+	//Position				//color
+	0.0f,  0.0f, 0.0f,		1.0f, 1.0f, 1.0f,	//Middle		
+	-0.2f,  0.0f, 0.0f,		1.0f, 1.0f, 0.0f,	//Left			Yellow
+	-0.1f,  0.175f, 0.0f,		0.0f, 1.0f, 0.0f,	//Top Left		Green
+	0.1f,  0.175f, 0.0f,		0.0f, 0.0f, 1.0f,	//Top Right		Blue
+	0.2f,  0.0f, 0.0f,		0.58f, 0.0f, 0.83f,	//Right			Violet
+	0.1f, -0.175f, 0.0f,		1.0f, 0.0f, 0.0f,	//Bottom Right	Red
+	-0.1f, -0.175f, 0.0f,		1.0f, 0.65f, 0.0f,	//Bottom Left	
+};
 
 GLuint indices[] = {
 	0, 2, 1,	// First Triangle
@@ -25,21 +48,28 @@ GLuint indices[] = {
 	0, 6, 5,	// Fith Triangle
 	0, 1, 6,	// Sixth Triangle
 };
+
+VertexBuffer vb(vertices, 6 * sizeof(GLfloat));
+IndexBuffer ib(indices, sizeof(indices));
+//-----
+
+//GLuint program;
+//GLuint VBO, VBO2;				//Vertex Buffer Object
+	
+//, VAO2;				//Vertex Array Object
+//GLuint EBO, EBO2;
+//GLuint RaymanTex;
+//GLuint AwesomeDTex;
+//std::string RayFilepath = "Rayman.jpg";
+//std::string AweFilepath = "AwesomeFace.png";
+//float RotationValue = 0.0f;
+
+/*
 GLuint indices2[] = {
 	0, 1, 2,	// Seventh
 	0, 2, 3,	//eighth
 };
-GLfloat vertices[] = {
-	 //Hexagon
-	 //Position				//color
-     0.0f,  0.0f, 0.0f,		1.0f, 1.0f, 1.0f,	//Middle		
-	-0.2f,  0.0f, 0.0f,		1.0f, 1.0f, 0.0f,	//Left			Yellow
-	-0.1f,  0.175f, 0.0f,		0.0f, 1.0f, 0.0f,	//Top Left		Green
-	 0.1f,  0.175f, 0.0f,		0.0f, 0.0f, 1.0f,	//Top Right		Blue
-	 0.2f,  0.0f, 0.0f,		0.58f, 0.0f, 0.83f,	//Right			Violet
-	 0.1f, -0.175f, 0.0f,		1.0f, 0.0f, 0.0f,	//Bottom Right	Red
-	-0.1f, -0.175f, 0.0f,		1.0f, 0.65f, 0.0f,	//Bottom Left	
-};
+
 GLfloat vertices2[] = {
 	//Quad
 	//Position					//color				//Tex Coords
@@ -48,11 +78,16 @@ GLfloat vertices2[] = {
 	 0.2f,  0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	1.0f, 0.0f,		//Top Right
 	 0.2f, -0.2f, 0.0f,		0.0f, 0.0f, 0.0f,	1.0f, 1.0f,		//Bottom Right
 };
+*/
+
 
 
 void Init();
 void render(void);
-void Update();
+//void Update();
+static GLuint CompileShader(GLuint type, const std::string& source);
+static GLuint CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
+static ShaderProgramSource ParseShader(const std::string& filepath);
 
 int main(int argc, char **argv) {
 
@@ -69,44 +104,33 @@ int main(int argc, char **argv) {
 
 	//register callbacks
 	glutDisplayFunc(render);
-	glutIdleFunc(Update);
+	//glutIdleFunc(Update);
 	glutMainLoop();						//Ensure this is the last glut line called
 	return 0;
 }
 
 void Init()
 {
-	ShaderLoader shaderLoader;
-	program = shaderLoader.CreateProgram("VertexShader.vs", "FragmentShader.fs");
+//	ShaderLoader shaderLoader;
+	//program = shaderLoader.CreateProgram("VertexShader.vs", "FragmentShader.fs");
 	
+	ShaderProgramSource source = ParseShader("Resources/Shaders/Basic.shader");
+	shader = CreateShader(source.VertexSource, source.FragmentSource);
+	GLCall(glUseProgram(shader));
+
+
+
 	//-----Hexagon
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(
-		0,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		6 * sizeof(GLfloat),
-		(GLvoid*)0);
+
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(
-		1,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		6 * sizeof(GLfloat),
-		(GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 
-	//Hex EBO
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	GLCall(location = glGetUniformLocation(shader, "u_Color"));
+	ASSERT(location != -1);
 
+	/*
 	//-----Quad
 	glGenVertexArrays(1, &VAO2);
 	glBindVertexArray(VAO2);
@@ -179,19 +203,43 @@ void Init()
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+*/
 }
 
 void render(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0.0, 0.0, 0.0, 1.0);	//clear red
-		
+
+	float r = 0.0f;
+	float increment = 0.05f;
+
+	GLCall(glClear(GL_COLOR_BUFFER_BIT));
+	GLCall(glClearColor(0.0, 0.0, 0.0, 1.0));
+
+	GLCall(glUseProgram(shader));
+	GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
+
+	ib.Bind();
+
+	GLCall(glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr));
+
+	if (r > 1.0f)
+		increment = -0.5f;
+	else if (r < 0.0f)
+		increment = 0.5f;
+
+	r += increment;
+
+	/*
 	glUseProgram(program);
 	glBindVertexArray(VAO);				//Bind VAO
 	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
+	
+	
 	glBindVertexArray(0);				//Unbind VAO
 	glBindVertexArray(VAO2);			//Bind VAO2
 
+	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, RaymanTex);
 	glUniform1i(glGetUniformLocation(program, "RaymanTex"), 0);
@@ -207,21 +255,97 @@ void render(void)
 		RotationValue = 0.0f;
 	}
 	RotationValue += M_PI / 100;
+	
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);				//Unbind VAO2
-
+	*/
 	glutSwapBuffers();
 }
-
+/*
 void Update()
 {
 	//Update game information.
-	GLfloat currentTime = glutGet(GLUT_ELAPSED_TIME);	//Get Current time
+	GLfloat currentTime = (GLfloat)glutGet(GLUT_ELAPSED_TIME);	//Get Current time
 	currentTime = currentTime / 1000;					// Convert millisecond to seconds
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
 
 	glutPostRedisplay();		//Render function is called
+}
+*/
+static GLuint CompileShader(GLuint type, const std::string& source)
+{
+	GLuint id = glCreateShader(type);
+	const char* src = source.c_str();
+	glShaderSource(id, 1, &src, nullptr);
+	glCompileShader(id);
+
+	int result;
+	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+	if (result == GL_FALSE)
+	{
+		int length;
+		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+		char* message = (char*)alloca(length * sizeof(char));
+		glGetShaderInfoLog(id, length, &length, message);
+		cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex" : "fragment") << " shader!" << endl;
+		cout << message << endl;
+		return 0;
+
+	}
+	return id;
+}
+
+static GLuint CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+{
+	GLuint Program = glCreateProgram();
+	GLuint vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+	GLuint fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+	glAttachShader(Program, vs);
+	glAttachShader(Program, fs);
+	glLinkProgram(Program);
+	glValidateProgram(Program);
+
+	glDeleteShader(vs);
+	glDeleteShader(fs);
+
+	return Program;
+}
+
+static ShaderProgramSource ParseShader(const std::string& filepath)
+{
+	std::ifstream stream(filepath); 
+
+	enum class ShaderType
+	{
+		NONE = -1, VERTEX = 0, FRAGMENT = 1
+	};
+
+	std::string line;
+	std::stringstream ss[2];
+	ShaderType type = ShaderType::NONE;
+
+	while (getline(stream, line))
+	{
+		if (line.find("#shader") != std::string::npos)
+		{
+			if (line.find("vertex") != std::string::npos)
+			{
+				type = ShaderType::VERTEX;
+			}
+			else if (line.find("fragment") != std::string::npos)
+			{
+				type = ShaderType::FRAGMENT;
+			}	
+		}
+		else
+		{
+			ss[(int)type] << line << '\n';
+		}
+	}
+
+	return { ss[0].str(), ss[1].str() };
 }
