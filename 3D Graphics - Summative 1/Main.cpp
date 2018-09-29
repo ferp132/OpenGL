@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "IndexBuffer.h"
 #include "vertexbuffer.h"
+#include "VertexArray.h"
 
 #include <iostream>
 #include <fstream>
@@ -30,27 +31,24 @@ GLuint VAO;
 
 GLfloat vertices[] = {
 	//Hexagon
-	//Position				//color
-	0.0f,  0.0f, 0.0f,		1.0f, 1.0f, 1.0f,	//Middle		
-	-0.2f,  0.0f, 0.0f,		1.0f, 1.0f, 0.0f,	//Left			Yellow
-	-0.1f,  0.175f, 0.0f,		0.0f, 1.0f, 0.0f,	//Top Left		Green
-	0.1f,  0.175f, 0.0f,		0.0f, 0.0f, 1.0f,	//Top Right		Blue
-	0.2f,  0.0f, 0.0f,		0.58f, 0.0f, 0.83f,	//Right			Violet
-	0.1f, -0.175f, 0.0f,		1.0f, 0.0f, 0.0f,	//Bottom Right	Red
-	-0.1f, -0.175f, 0.0f,		1.0f, 0.65f, 0.0f,	//Bottom Left	
+	//Position
+	-0.5f, -0.5f,
+	0.5f, -0.5f,
+	0.5f, 0.5f,
+	-0.5f, 0.5f
+
 };
 
 GLuint indices[] = {
-	0, 2, 1,	// First Triangle
-	0, 3, 2,	// Second Triangle
-	0, 4, 3,	// Third Triangle
-	0, 5, 4,	// Fourth Triangle
-	0, 6, 5,	// Fith Triangle
-	0, 1, 6,	// Sixth Triangle
+	0, 1, 2,	// First Triangle
+	2, 3, 0
 };
 
-VertexBuffer vb(vertices, 6 * sizeof(GLfloat));
-IndexBuffer ib(indices, sizeof(indices));
+VertexArray* vap;
+VertexBuffer* vbp;
+VertexBufferLayout* lp;
+IndexBuffer* ibp;
+
 //-----
 
 //GLuint program;
@@ -102,6 +100,11 @@ int main(int argc, char **argv) {
 	glewInit();
 	Init();
 
+
+
+
+
+	vap->Bind();
 	//register callbacks
 	glutDisplayFunc(render);
 	//glutIdleFunc(Update);
@@ -111,6 +114,21 @@ int main(int argc, char **argv) {
 
 void Init()
 {
+	GLCall(glGenVertexArrays(1, &VAO));
+	GLCall(glBindVertexArray(VAO));
+
+	VertexArray va;
+	vap = &va;
+	VertexBuffer vb(vertices, 6 * sizeof(GLfloat));
+	vbp = &vb;
+	VertexBufferLayout layout;
+	lp = &layout;
+	IndexBuffer ib(indices, sizeof(indices));
+	ibp = &ib;
+
+	layout.Push<float>(2);
+	va.AddBuffer(vb, layout);
+
 //	ShaderLoader shaderLoader;
 	//program = shaderLoader.CreateProgram("VertexShader.vs", "FragmentShader.fs");
 	
@@ -121,11 +139,6 @@ void Init()
 
 
 	//-----Hexagon
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 
 	GLCall(location = glGetUniformLocation(shader, "u_Color"));
 	ASSERT(location != -1);
@@ -218,10 +231,9 @@ void render(void)
 
 	GLCall(glUseProgram(shader));
 	GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
-
-	ib.Bind();
-
-	GLCall(glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, nullptr));
+	vap->Bind();
+	ibp->Bind();
+	GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
 	if (r > 1.0f)
 		increment = -0.5f;

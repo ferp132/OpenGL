@@ -6,7 +6,7 @@ using namespace std;
 
 void GLClearError()
 {
-	while (!glGetError());
+	while (glGetError() != GL_NO_ERROR);
 }
 
 bool GLLogCall(const char* function, const char* file, int line)

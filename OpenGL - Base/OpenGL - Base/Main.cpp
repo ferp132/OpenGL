@@ -18,7 +18,6 @@ void Init();
 //------GLuints
 GLuint Program;
 GLuint VBO;
-GLuint VertexShader;
 
 float vertices[] = {
 	-0.5f, -0.5f, 0.0f,
@@ -76,6 +75,5 @@ void Init()
 	ShaderLoader shaderLoader;
 	Program = shaderLoader.CreateProgram(filename, filename2);
 
-	VertexShader = glCreateShader(GL_VERTEX_SHADER);
 
 }
