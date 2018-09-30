@@ -13,22 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{77bd5fc0-c0d1-4fcd-b44c-a8eeba794d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{2fe4d3bb-3f2a-4a97-a9c2-22f2d965cf6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FragmentShader.fs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="VertexShader.vs">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Resources\Shaders\Basic.shader">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ShaderLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VertexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,12 +36,27 @@
     <ClInclude Include="VertexBufferLayout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ft2build.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextLabel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
@@ -64,16 +71,39 @@
     <ClCompile Include="VertexArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextLabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="AwesomeFace.png">
-      <Filter>Resource Files</Filter>
+    <None Include="Resources\Shaders\Basic.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\TextShader.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\AwesomeFace.png">
+      <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="Capguy_Walk.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="Resources\Textures\Capguy_Walk.png">
+      <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="Rayman.jpg">
-      <Filter>Resource Files</Filter>
+    <Image Include="Resources\Textures\Rayman.jpg">
+      <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
 </Project>

@@ -1,4 +1,7 @@
 #pragma once
+#ifndef __VERTEXBUFFERLAYOUT_H__
+#define __VERTEXBUFFERLAYOUT_H__
+
 #include <vector>
 #include "Dependencies\glew\glew.h"
 #include "Dependencies\freeglut\freeglut.h"
@@ -31,6 +34,7 @@ public:
 	VertexBufferLayout()
 		: Stride(0) {}
 
+
 	template<typename T>
 	void Push(unsigned int count)
 	{
@@ -61,3 +65,4 @@ public:
 	inline const std::vector<VertexBufferElement> GetElements() const& { return Elements; }
 	inline unsigned int GetStride() const { return Stride; }
 };
+#endif
