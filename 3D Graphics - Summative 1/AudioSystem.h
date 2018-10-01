@@ -6,7 +6,6 @@
 #include <fmod.hpp>
 #include <iostream>
 
-
 class AudioSystem
 {
 public:

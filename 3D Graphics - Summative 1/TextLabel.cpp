@@ -1,3 +1,4 @@
+
 #include "TextLabel.h"
 
 GLuint TextLabel::GenerateTexture(FT_Face face)
@@ -31,9 +32,9 @@ void TextLabel::Init(std::string InitText, std::string InitFont, glm::vec2 InitP
 	Scale = InitScale;
 	Position = InitPos;
 
-	GLfloat HalfWidth = 400.0f;
-	GLfloat HalfHeight = 400.0f;
-	proj = glm::ortho(-HalfWidth, HalfWidth, -HalfHeight, HalfHeight);
+	GLfloat Width = 800.0f;
+	GLfloat Height = 800.0f;
+	proj = glm::ortho(0.0f, Width, 0.0f, Height);
 	TextShader.Init("Resources/Shaders/TextShader.shader");
 
 	FT_Library ft;
@@ -113,6 +114,7 @@ void TextLabel::Render()
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		textPos.x += (ch.Advance >> 6) * Scale;
+	}
 
 		TextShader.Unbind();
 		TextVBO.UnBind();
@@ -122,5 +124,5 @@ void TextLabel::Render()
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_BLEND);
 
-	}
+
 }

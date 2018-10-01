@@ -15,10 +15,13 @@ void Shader::Init(const std::string& InitFilepath)
 	Filepath = InitFilepath;
 	ShaderProgramSource source = ParseShader(Filepath);
 	RendererID = CreateShader(source.VertexSource, source.FragmentSource);
+	Bind();
+
 }
 
 void Shader::Bind() const
 {
+
 	GLCall(glUseProgram(RendererID));
 }
 

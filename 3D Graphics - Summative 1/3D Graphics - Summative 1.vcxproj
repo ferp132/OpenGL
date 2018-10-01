@@ -141,7 +141,10 @@
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ft2build.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TextLabel.h" />
@@ -153,8 +156,11 @@
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="TextLabel.cpp" />
