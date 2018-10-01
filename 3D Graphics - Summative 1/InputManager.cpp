@@ -57,20 +57,5 @@ void InputManager::MouseMove(int x, int y)
 
 void InputManager::ProcessInput()
 {
-	if (Getinstance()->MouseState[MOUSE_LEFT] == DOWN)
-	{
-	}
 
-	if (Getinstance()->KeyState['w'] == DOWN)
-	{
-	}
-	if (Getinstance()->KeyState['s'] == DOWN)
-	{
-	}
-	if (Getinstance()->KeyState['d'] == DOWN)
-	{
-	}
-	if (Getinstance()->KeyState['a'] == DOWN)
-	{
-	}
 }

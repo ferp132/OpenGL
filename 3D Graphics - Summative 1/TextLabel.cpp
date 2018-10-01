@@ -9,10 +9,11 @@ GLuint TextLabel::GenerateTexture(FT_Face face)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 
-	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+
 
 	return texture;
 }
@@ -73,8 +74,8 @@ void TextLabel::Init(std::string InitText, std::string InitFont, glm::vec2 InitP
 
 	TextVAO.Init();
 	TextVBO.Init(NULL, sizeof(GLfloat) * 6 * 4, GL_DYNAMIC_DRAW);
-	TextLayout.Push<float>(2);
-	TextLayout.Push<float>(2);
+	TextLayout.Push<float>(4);
+
 	TextVAO.AddBuffer(TextVBO, TextLayout);
 
 	TextVBO.Bind();
@@ -84,7 +85,8 @@ void TextLabel::Init(std::string InitText, std::string InitFont, glm::vec2 InitP
 void TextLabel::Render()
 {
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_COLOR);
+
 	TextShader.Bind();
 	TextShader.setUniform3f("textColor", Color.x, Color.y, Color.z);
 	TextShader.setUniformMat4f("proj", proj);
@@ -101,14 +103,16 @@ void TextLabel::Render()
 
 		GLfloat vertices[6][4] = {
 			{xpos, ypos + h, 0.0, 0.0 }, {xpos, ypos, 0.0, 1.0 }, {xpos + w, ypos, 1.0, 1.0 },
-			{xpos, ypos + h, 0.0, 0.0 }, { xpos + w, ypos, 1.0, 1.0 }, { xpos + w, ypos + h, 1.0, 1.0 }
+			{xpos, ypos + h, 0.0, 0.0 }, { xpos + w, ypos, 1.0, 1.0 }, { xpos + w, ypos + h, 1.0, 0.0 }
 		};
 
+		TextVAO.Bind();
 		TextVBO.Bind();
 		TextVBO.BufferSubData(vertices, sizeof(vertices));
 		TextShader.Bind();
 
-		glActiveTexture(GL_TEXTURE1);
+		
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 		TextShader.setUniform1i("u_tex", 0);
 		glDrawArrays(GL_TRIANGLES, 0, 6);

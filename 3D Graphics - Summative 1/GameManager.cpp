@@ -24,6 +24,8 @@ GameManager * GameManager::GetInstance()
 
 void GameManager::Init()
 {
+
+
 	//-----Init Audio
 	GetInstance()->AS.Init();
 	GetInstance()->fxThump = GetInstance()->AS.CreateSound("Resources/Sounds/Thump.wav", GetInstance()->fxThump);
@@ -33,10 +35,8 @@ void GameManager::Init()
 	//-----Init Camera
 	GetInstance()->Cam.Init(800, 800);
 
-
-
-	//----Init Texture
-	GetInstance()->Tex.Init("Resources/Textures/AwesomeFace.png");
+	//----Init Textures
+	
 
 
 	//----- Shader Init
@@ -46,15 +46,14 @@ void GameManager::Init()
 	GetInstance()->Shad.Unbind();											//Stop using Shader
 
 	//----- Init Text Label
-	GetInstance()->label.Init("Yeet", "Resources/Fonts/arial.ttf", glm::vec2(100.0f, 700.0f), glm::vec3(1.0, 1.0, 1.0), 1.0f);
+	GetInstance()->label.Init("Score: 0", "Resources/Fonts/arial.ttf", glm::vec2(50.0f, 30.0f), glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
 
 
 	//-----Object Init
-	GetInstance()->ob.Init(0, 0, 300, 300, "Resources/Textures/Rayman.jpg");
+	GetInstance()->Player.Init(0, 0, 100, 100, "Resources/Textures/spaceship.png");
+	GetInstance()->Background.Init(0, 0, 800, 800, "Resources/Textures/SpaceBackground.png");
 
-	GetInstance()->ob2.Init(0, 0, 200, 200, "Resources/Textures/Rayman.jpg");
 
-	GetInstance()->ob3.Init(0, 0, 300, 300, "Resources/Textures/Rayman.jpg");
 
 }
 
@@ -63,13 +62,13 @@ void GameManager::Render(void)
 	GetInstance()->Ren.Clear();
 
 
-
 	//Render Objects
-	GetInstance()->ob3.Render();
-	GetInstance()->ob.Render();
-	GetInstance()->ob2.Render();
+	GetInstance()->Background.Render();
+
 	
-	//REnder TExt
+	GetInstance()->Player.Render();
+	
+	//Render Text
 	GetInstance()->label.Render();
 
 	glutSwapBuffers();
@@ -79,6 +78,8 @@ void GameManager::Update()
 {
 	//Uodate Audio System
 	GetInstance()->AS.GetID()->update();
+	GetInstance()->Player.ProcessInput();
+
 
 	glutPostRedisplay();
 

@@ -63,6 +63,9 @@
     <ClInclude Include="GameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ControlledObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -104,6 +107,9 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ControlledObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.shader">
@@ -117,10 +123,7 @@
     <Image Include="Resources\Textures\AwesomeFace.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
-    <Image Include="Resources\Textures\Capguy_Walk.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
-    <Image Include="Resources\Textures\Rayman.jpg">
+    <Image Include="Resources\Textures\SpaceBackground.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>

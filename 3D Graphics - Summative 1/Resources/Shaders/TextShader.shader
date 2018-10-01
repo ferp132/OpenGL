@@ -3,9 +3,11 @@
 
 layout(location = 0) in vec4 vertex;
 
+
 out vec2 fragTexCoord;
 
 uniform mat4 proj;
+
 
 void main()
 {
@@ -15,8 +17,8 @@ void main()
 
 #shader fragment
 #version 450 core
-in vec2 fragTexCoord;
 
+in vec2 fragTexCoord;
 out vec4 color;
 
 uniform vec3 textColor;
@@ -26,4 +28,5 @@ void main()
 {
 	vec4 sampled = vec4(1.0, 1.0, 1.0, texture(u_tex, fragTexCoord).r);
 	color = vec4(textColor, 1.0) * sampled;
+	//color = vec4(1.0f, 1.0f, 1.0f, 1.0f) * texture(u_tex, fragTexCoord);
 };

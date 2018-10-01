@@ -35,12 +35,13 @@ public:
 	static void MouseMove(int x, int y);
 	static void ProcessInput();
 
+	InputState KeyState[255];
+	InputState MouseState[3];
 private:
 	InputManager();
 	~InputManager();
 
 	static InputManager* Instance;
 
-	InputState KeyState[255];
-	InputState MouseState[3];
+
 };

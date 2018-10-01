@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Object.h"
+#include "ControlledObject.h"
 #include "TextLabel.h"
 #include "Texture.h"
 #include "Shader.h"
@@ -26,21 +27,23 @@ private:
 
 	std::vector<Object*> ObjectVector;
 
-
+	const std::string BackgroundTex = "Resources/Textures/SpaceBackground.png";
+	const std::string AwesomeDTex =   "Resources/Textures/AwesomeFace.png";
 
 	//Temp
 	TextLabel label;
 	Shader Shad;
 	Texture Tex;
 
-	Object ob;
-	Object ob2;
-	Object ob3;
+	Object Background;
+	ControlledObject Player;
 
 	FMOD::Sound* fxThump;
 	FMOD::Sound* trackBackground;
 
 public:
+
+	Camera* GetCam() { return &Cam; }
 
 	static GameManager* GetInstance();
 

@@ -32,17 +32,6 @@ private:
 	Shader Shad;
 	Texture Tex;
 
-	//Transform
-	GLfloat Scale;
-	glm::mat4 Model;
-
-	float xPos;
-	float yPos;
-
-	float Height;
-	float Width;
-
-
 public:
 
 	Object();
@@ -70,4 +59,15 @@ public:
 	IndexBuffer* GetIBO() { return &IBO; }
 	Shader* GetShader() { return &Shad; }
 
+protected:
+	//Transform
+	GLfloat Scale;
+	glm::mat4 Model;
+
+	float xPos;
+	float yPos;
+	float Dir;
+
+	float Height;
+	float Width;
 };

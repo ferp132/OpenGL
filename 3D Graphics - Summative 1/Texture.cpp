@@ -21,31 +21,30 @@ void Texture::Init(const std::string& InitFilePath)
 
 	Bind();
 
-	unsigned char* Image = SOIL_load_image(FilePath.c_str(), &TexWidth, &TexHeight, &TexChannels, SOIL_LOAD_AUTO);
-	
+	unsigned char* Image = SOIL_load_image(InitFilePath.c_str(), &TexWidth, &TexHeight, &TexChannels, SOIL_LOAD_RGBA);
+	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, TexWidth, TexHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, Image));
+
+
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
 	GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-	
-	GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, TexWidth, TexHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, Image));
 
 	GLCall(glGenerateMipmap(GL_TEXTURE_2D));
 	SOIL_free_image_data(Image);
-
 	Unbind();
 
 }
 
 void Texture::Bind()
 {
-	GLCall(glActiveTexture(GL_TEXTURE0 + TexSlot));
+	GLCall(glActiveTexture(GL_TEXTURE0));
 	GLCall(glBindTexture(GL_TEXTURE_2D, TextureID));
 }
 
 void Texture::Unbind()
 {
-	GLCall(glBindTexture(GL_TEXTURE_2D, TextureID));
+	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
 int Texture::GetWidth()

@@ -27,5 +27,5 @@ glm::mat4 Camera::GetViewMatrix()
 
 glm::mat4 Camera::GetProjMatrix()
 {
-	return glm::ortho(-400.0f, 400.0f, -400.0f,  400.0f, 0.1f, 1.0f);
+	return glm::ortho(-400.0f, 400.0f, -400.0f,  400.0f, 0.1f, 100.0f);
 }

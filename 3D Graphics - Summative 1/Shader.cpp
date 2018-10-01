@@ -127,6 +127,8 @@ GLuint Shader::CreateShader(const std::string& vertexShader, const std::string& 
 
 int Shader::GetUniformLocation(const std::string & name)
 {
+
+	glUseProgram(RendererID);
 	if (UniformLocationCache.find(name) != UniformLocationCache.end())
 		return UniformLocationCache[name];
 
@@ -134,6 +136,6 @@ int Shader::GetUniformLocation(const std::string & name)
 	if (location == -1)
 		cout << "Warning: uniform: " << name << " doesnt exist" << endl;
 
-		UniformLocationCache[name] = location;
+	UniformLocationCache[name] = location;
 	return location;
 }

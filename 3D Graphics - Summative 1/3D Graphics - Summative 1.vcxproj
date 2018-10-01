@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ControlledObject.h" />
     <ClInclude Include="ft2build.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="IndexBuffer.h" />
@@ -156,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ControlledObject.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -170,8 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\AwesomeFace.png" />
-    <Image Include="Resources\Textures\Capguy_Walk.png" />
-    <Image Include="Resources\Textures\Rayman.jpg" />
+    <Image Include="Resources\Textures\SpaceBackground.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

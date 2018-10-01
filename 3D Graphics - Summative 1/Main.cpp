@@ -14,8 +14,6 @@
 //glm::vec3 ScaleVec = glm::vec3(1.0, 1.0, 1.0);
 //glm::mat4 ScaleMatrix = glm::scale(glm::mat4(), ScaleVec);
 
-//glm::vec3 RotationAxisZ = glm::vec3(0.0f, 0.0f, 1.0f);
-//glm::mat4 Rotation = glm::rotate(glm::mat4(), glm::radians(0), RotationAxisZ);
 
 
 int main(int argc, char **argv) {
@@ -24,7 +22,7 @@ int main(int argc, char **argv) {
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(200, 50);
 	glutInitWindowSize(800, 800);
-	glutCreateWindow("Triangle");
+	glutCreateWindow("Graphics Assignment 2");
 	glClearColor(1.0, 0.0, 0.0, 1.0); //clear red
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
