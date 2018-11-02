@@ -52,7 +52,7 @@ void CubeMap::Init(Camera camera)
 
 	VAO.Init();
 	VBO.Init(Vertices, sizeof(Vertices), GL_DYNAMIC_DRAW);
-	IBO.Init(Indices, sizeof(Indices));
+	IBO.Init(Indices, 36);
 	VBLay.Push<float>(3);
 	VAO.AddBuffer(VBO, VBLay);
 

@@ -7,6 +7,7 @@
 #include "Dependencies\glm\gtc\matrix_transform.hpp"
 #include "Dependencies\glm\gtc\type_ptr.hpp"
 #include "InputManager.h"
+#include "Cube.h"
 
 class Camera
 {
@@ -14,7 +15,7 @@ public:
 	Camera();
 	~Camera();
 
-	void Init(float InitWinWidth, float InitWinHeight);
+	void Init(float InitWinWidth, float InitWinHeight, Cube* Player);
 	void Update(float deltaTime);
 	void ProcessInput();
 
@@ -27,9 +28,9 @@ private:
 	glm::vec3 CamLookDir = glm::vec3(0.0f,  0.0f, -1.0f);
 	glm::vec3 CamUpDir	 = glm::vec3(0.0f,  1.0f,  0.0f);
 
-	float Movx;
-	float Movy;
-	float Movz;
+	Cube* Following;
+
+	float Rotation = 0;
 
 	float WinWidth;
 	float WinHeight;

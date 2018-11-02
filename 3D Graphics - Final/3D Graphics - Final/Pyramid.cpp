@@ -70,19 +70,8 @@ void Pyramid::Render()
 	GLfloat HalfHeight = (GLfloat)(Height * 0.5);
 	GLfloat HalfLength = (GLfloat)(Height * 0.5);
 
-	GLfloat Vertices[25] = {
-		//Position							//Texture
-		 HalfWidth, 0.0f,  HalfLength,		1.0f, 1.0f, // 0
-		 HalfWidth, 0.0f, -HalfLength,		1.0f, 0.0f, // 1
-		-HalfWidth, 0.0f, -HalfLength,		0.0f, 0.0f, // 2
-		-HalfWidth, 0.0f,  HalfLength,		0.0f, 1.0f, // 3
-
-		0.0f, HalfHeight-5, 0.0f,				0.5f, 0.5f, // 4, Top Point
-	};
-
 	VAO.Bind();
 	VBO.Bind();
-	VBO.BufferSubData(Vertices,sizeof(Vertices));
 	IBO.Bind();
 	Shad.Bind();
 	Tex.Bind(GL_TEXTURE_2D);

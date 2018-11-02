@@ -11,6 +11,7 @@
 #include "Pyramid.h"
 #include "Cube.h"
 #include "CubeMap.h"
+#include "Sphere.h"
 
 #include <map>
 #include <vector>
@@ -36,16 +37,16 @@ private:
 
 	//Temp
 	TextLabel label;
-	//Shader ShadB;
-	//Shader ShadL;
 	Texture Tex;
 
 	//CubeMap
 	CubeMap CMap;
 
-	//Object Background;
+	//Objects;
 	Pyramid Pyr;
-	Cube Cube;
+	Cube cube;
+	Cube Platform;
+	Sphere Sphr;
 
 
 

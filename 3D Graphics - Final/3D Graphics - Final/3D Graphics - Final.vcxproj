@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeMap.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeMap.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="Camera.h" />

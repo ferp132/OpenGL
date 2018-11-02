@@ -67,7 +67,7 @@ void Cube::Init(float InitxPos, float InityPos, float InitzPos, float InitHeight
 
 	VAO.Init();
 	VBO.Init(Vertices, sizeof(Vertices), GL_DYNAMIC_DRAW);
-	IBO.Init(Indices, sizeof(Indices));
+	IBO.Init(Indices, 36);
 	Lay.Push<float>(3);		//Vertices
 	Lay.Push<float>(3);		//Normals
 	Lay.Push<float>(2);		//Texture
@@ -103,48 +103,8 @@ void Cube::Render()
 	GLfloat HalfHeight = (GLfloat)(Height * 0.5);
 	GLfloat HalfLength = (GLfloat)(Length * 0.5);
 
-	GLfloat Vertices[192] = {
-		//Position											//Normals				//Texture
-		// Front
-		/* 0 */ -HalfWidth,  HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 0.0f, /* 00 */
-		/* 1 */ -HalfWidth, -HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 1.0f, /* 01 */
-		/* 2 */  HalfWidth, -HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, /* 02 */
-		/* 3 */  HalfWidth,  HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, /* 03 */
-
-		// Back
-		/* 4 */ -HalfWidth,  HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, /* 04 */
-		/* 5 */ -HalfWidth, -HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, /* 05 */
-		/* 6 */  HalfWidth, -HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 1.0f, /* 06 */
-		/* 7 */  HalfWidth,  HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 0.0f, /* 07 */
-
-		// Left
-		/* 4 */ -HalfWidth,  HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 0.0f, /* 08 */
-		/* 5 */ -HalfWidth, -HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 1.0f, /* 09 */
-		/* 1 */ -HalfWidth, -HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, /* 10 */
-		/* 0 */ -HalfWidth,  HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, /* 11 */
-
-		// Right
-		/* 3 */  HalfWidth,  HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, /* 12 */
-		/* 2 */  HalfWidth, -HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, /* 13 */
-		/* 6 */  HalfWidth, -HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 1.0f, /* 14 */
-		/* 7 */  HalfWidth,  HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 0.0f, /* 15 */
-
-		// Top
-		/* 4 */ -HalfWidth,  HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 0.0f, /* 16 */
-		/* 0 */ -HalfWidth,  HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 1.0f, /* 17 */
-		/* 3 */  HalfWidth,  HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, /* 18 */
-		/* 7 */  HalfWidth,  HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, /* 19 */
-
-		// Bottom
-		/* 4 */  -HalfWidth, -HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 0.0f, /* 20 */
-		/* 5 */  -HalfWidth, -HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		1.0f, 1.0f, /* 21 */
-		/* 6 */   HalfWidth, -HalfHeight, -HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 1.0f, /* 22 */
-		/* 7 */   HalfWidth, -HalfHeight,  HalfLength,		0.0f, 0.0f, 1.0f,		0.0f, 0.0f, /* 23 */
-	};
-
 	VAO.Bind();
 	VBO.Bind();
-	VBO.BufferSubData(Vertices, sizeof(Vertices));
 	IBO.Bind();
 	Shad.Bind();
 	Tex.Bind(GL_TEXTURE_2D);
@@ -160,11 +120,45 @@ void Cube::Render()
 
 void Cube::UpdateModel()
 {
+	glm::mat4 Scale = glm::scale(glm::mat4(), glm::vec3(Width, Height, Length));
+	glm::mat4 Trans = glm::translate(glm::mat4(1.0f), glm::vec3(xPos + Width * 0.5, yPos + Height * 0.5, zPos + Length * 0.5));
 
-	glm::vec3 RotationAxisZ = glm::vec3(0.0f, 0.0f, 1.0f);
-	glm::mat4 Rotation = glm::rotate(glm::mat4(), glm::radians(Dir), RotationAxisZ);
+	Model = Trans * Scale;
 
+}
 
-	Model = (glm::translate(glm::mat4(1.0f), glm::vec3(xPos + Width * 0.5, yPos + Height * 0.5, zPos))) * Rotation;
+void Cube::ProcessInput(float deltaTime)
+{
 
+	if (InputManager::Getinstance()->MouseState[MOUSE_LEFT] == DOWN)
+	{
+
+	}
+
+	if (InputManager::Getinstance()->KeyState['w'] == DOWN)
+	{
+		xPos += 2.0f;
+	}
+	if (InputManager::Getinstance()->KeyState['s'] == DOWN)
+	{
+		xPos -= 2.0f;
+	}
+	if (InputManager::Getinstance()->KeyState['d'] == DOWN)
+	{
+		zPos += 2.0f;
+	}
+	if (InputManager::Getinstance()->KeyState['a'] == DOWN)
+	{
+		zPos -= 2.0f;
+	}
+	if (InputManager::Getinstance()->KeyState['x'] == DOWN)
+	{
+		yPos += 2.0f;
+	}
+	if (InputManager::Getinstance()->KeyState['z'] == DOWN)
+	{
+		yPos -= 2.0f;
+	}
+
+	UpdateModel();
 }

@@ -81,8 +81,11 @@
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
     <ClCompile Include="CubeMap.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="CubeMap.h">
       <Filter>Header Files\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

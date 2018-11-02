@@ -15,32 +15,13 @@
 
 
 #include <string>
+#define _USE_MATH_DEFINES
+#include <cmath>
+#include <math.h>
 
-class Cube
+class Sphere
 {
 private:
-
-
-	GLuint Indices[36] = {
-		0, 1, 2,	//Front
-		0, 2, 3,	//Front
-		
-		7, 6, 5,	//Back
-		7, 5, 4,	//Back
-
-		8, 9,  10,	//Left
-		8, 10, 11,	//Left
-
-		12, 13, 14,	//Right
-		12, 14, 15,	//Right
-
-		16, 17, 18,	//Top
-		16, 18, 19,	//Top
-
-		20, 21, 22,	//Bottom
-		20, 22, 23,	//Bottom
-	};
-
 	IndexBuffer IBO;
 	VertexArray VAO;
 	VertexBuffer VBO;
@@ -50,15 +31,14 @@ private:
 
 public:
 
-	Cube();
-	~Cube();
+	Sphere();
+	~Sphere();
 
 	void Init(float InitxPos, float InityPos, float initzPos, float InitHeight, float InitWidth, float InitLength, const std::string& InitTexFP);
 	void Render();
 
 	//-----Update
 	void UpdateModel();
-	void ProcessInput(float deltaTime);
 
 	//-----Setters
 	void SetxPos(float Newx) { xPos = Newx; }
