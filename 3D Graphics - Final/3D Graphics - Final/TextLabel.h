@@ -2,6 +2,11 @@
 #ifndef __TEXTLABEL_H_
 #define __TEXTLABEL_H__
 
+#include "VertexArray.h"
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
+#include "Shader.h"
+
 #include <glew.h>
 #include <freeglut.h>
 #include <SOIL.h>
@@ -14,11 +19,6 @@
 #include <map>
 #include <string>
 #include <iostream>
-
-#include "Shader.h"
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "VertexBufferLayout.h"
 
 struct FontChar
 {
@@ -54,6 +54,7 @@ public:
 	void Init(std::string InitText, std::string InitFont, glm::vec2 InitPos, glm::vec3 InitColor = glm::vec3(1.0f, 1.0f, 1.0f), float InitScale = 1.0f);
 
 	void Render();
+	void Update();
 	void SetText(std::string NewText) { Text = NewText; }
 	void SetColor(glm::vec3 NewColor) { Color = NewColor; }
 	void SetScale(GLfloat NewScale) { Scale = NewScale; }

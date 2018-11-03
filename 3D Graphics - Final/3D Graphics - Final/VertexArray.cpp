@@ -1,6 +1,4 @@
 #include "VertexArray.h"
-#include "VertexBufferLayout.h"
-
 #include <iostream>
 
 VertexArray::VertexArray()

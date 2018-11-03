@@ -1,10 +1,8 @@
 #pragma once
 #ifndef __VERTEXARRAY_H__
 #define __VERTEXARRAY_H__
-
-
-#include "vertexbuffer.h"
-#include "Renderer.h"
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 
 class VertexBufferLayout;
 

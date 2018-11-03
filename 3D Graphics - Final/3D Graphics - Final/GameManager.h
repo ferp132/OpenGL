@@ -1,20 +1,23 @@
 #pragma once
-#include "InputManager.h"
-#include "Camera.h"
-#include "Renderer.h"
-#include "AudioSystem.h"
-#include "Object.h"
-#include "ControlledObject.h"
-#include "TextLabel.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "Pyramid.h"
-#include "Cube.h"
-#include "CubeMap.h"
-#include "Sphere.h"
+/*
+//-----glm for OpenGL Maths
+#include "Dependencies\glm\glm.hpp"
+#include "Dependencies\glm\gtc\matrix_transform.hpp"
+#include "Dependencies\glm\gtc\type_ptr.hpp"
 
-#include <map>
-#include <vector>
+
+#include "Dependencies\glew\glew.h"
+#include "Dependencies\freeglut\freeglut.h"
+*/
+
+#include "AudioSystem.h"
+#include "TextLabel.h"
+
+#include "Camera.h"
+#include "CubeMap.h"
+#include "Object.h"
+#include "Player.h"
+#include "Enemy.h"
 
 
 
@@ -30,29 +33,29 @@ private:
 	Renderer Ren;
 	AudioSystem AS;
 
-	std::vector<Object*> ObjectVector;
-
-	const std::string BackgroundTex = "Resources/Textures/SpaceBackground.png";
-	const std::string AwesomeDTex =   "Resources/Textures/AwesomeFace.png";
-
 	//Temp
-	TextLabel label;
+
 	Texture Tex;
 
 	//CubeMap
 	CubeMap CMap;
 
 	//Objects;
-	Pyramid Pyr;
-	Cube cube;
-	Cube Platform;
-	Sphere Sphr;
+	vector<Object> ObVector;
+	vector<Enemy> EnemyVector;
+	Player player;
+	Enemy enemy;
+
+	//-----Text
+	TextLabel ScoreText;
+	TextLabel LivesText;
+
+	//-----Scoring
+	int Lives;
+	int Score;
 
 
 
-	//Sounds
-	FMOD::Sound* fxThump;
-	FMOD::Sound* trackBackground;
 
 	//time
 	float previousTimeStamp;
@@ -60,9 +63,15 @@ private:
 	float timeElapsed;
 
 public:
+	//-----Setters
+	void SetScore(int newScore);
+	void SetLives(int newLives);
 
+	//-----Getters
+	int GetScore() { return Score; }
+	int GetLives() { return Lives; }
 	Camera* GetCam() { return &Cam; }
-
+	AudioSystem* GetAS() { return &AS; }
 	static GameManager* GetInstance();
 
 	static void Init();

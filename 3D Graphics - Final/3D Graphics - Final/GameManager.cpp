@@ -1,4 +1,6 @@
 #include "GameManager.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 GameManager* GameManager::Instance = NULL;
 
@@ -10,6 +12,18 @@ GameManager::GameManager()
 GameManager::~GameManager()
 {
 
+}
+
+void GameManager::SetScore(int newScore)
+{
+	Score = newScore;
+	ScoreText.SetText("Score: " + to_string(Score));
+}
+
+void GameManager::SetLives(int newLives)
+{
+	Lives = newLives;
+	LivesText.SetText("Lives: " + to_string(Lives));
 }
 
 GameManager * GameManager::GetInstance()
@@ -27,17 +41,15 @@ void GameManager::Init()
 	//-----Time Init
 	GetInstance()->previousTimeStamp = (float)glutGet(GLUT_ELAPSED_TIME);
 	GetInstance()->timeElapsed = 0;
+	//-----Seed Random
+	srand(time(NULL));
 
 
 	//-----Init Audio
 	GetInstance()->AS.Init();
-	GetInstance()->fxThump = GetInstance()->AS.CreateSound("Resources/Sounds/Thump.wav", GetInstance()->fxThump);
-	GetInstance()->trackBackground = GetInstance()->AS.CreateSound("Resources/Sounds/Background.mp3", GetInstance()->trackBackground);
-	GetInstance()->AS.PlaySound(GetInstance()->trackBackground);															//Play Background Track
-
 
 	//-----Init Camera
-	GetInstance()->Cam.Init(800, 800, (&GetInstance()->cube));
+	GetInstance()->Cam.Init(800, 800, (&GetInstance()->player));
 
 
 	//----Init Textures
@@ -45,32 +57,68 @@ void GameManager::Init()
 
 
 	//----- Init Text Label
-	GetInstance()->label.Init("Score: 0", "Resources/Fonts/arial.ttf", glm::vec2(50.0f, 30.0f), glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
-
+	
+	GetInstance()->ScoreText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(50.0f, 30.0f), glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
+	GetInstance()->LivesText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(550.0f, 30.0f), glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
+	GetInstance()->SetScore(0);
+	GetInstance()->SetLives(3);
 
 	//-----Object Init
+	Object* NewObject;
+	for (int i = 0; i < 3; i++)
+	{
+		NewObject = new Object;
+		GetInstance()->ObVector.push_back(*NewObject);
+	}
 
-	GetInstance()->Pyr.Init(0, -25, 0, 5, 5, 5, "Resources/Textures/AwesomeFace.png");
-	GetInstance()->cube.Init(0, 25, 0, 2, 2, 2, "Resources/Textures/AwesomeFace.png");
-	GetInstance()->Sphr.Init(0, 0, 0, 5, 5, 5, "Resources/Textures/AwesomeFace.png");
-	GetInstance()->Platform.Init(0, -10, -500, 10, 1000, 1000, "Resources/Textures/AwesomeFace.png");
+	for (unsigned int i = 0; i < GetInstance()->ObVector.size(); i++)
+	{
+		GetInstance()->ObVector.at(i).Init(i, "Resources/Textures/AwesomeFace.png",
+			"Resources/Shaders/BlinnPhong.shader",
+			glm::vec3(5.0f * i, 0.0f, 0.0f),
+			glm::vec3(1.0f, 1.0f, 1.0f));
+	}
+
+	//-----Enemy Init
+	Enemy* newEn;
+	for (int i = 0; i < 10; i++)
+	{
+		newEn = new Enemy;
+		GetInstance()->EnemyVector.push_back(*newEn);
+	}
+	for (unsigned int i = 0; i < GetInstance()->EnemyVector.size(); i++)
+	{
+		GetInstance()->EnemyVector.at(i).Init(1, "Resources/Textures/AwesomeFace.png",
+			"Resources/Shaders/BlinnPhong.shader",
+			glm::vec3(100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100)),
+			glm::vec3(1.0f, 1.0f, 1.0f));
+	}
+
+
+	GetInstance()->player.Init(1, "Resources/Textures/AwesomeFace.png",
+		"Resources/Shaders/BlinnPhong.shader",
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(1.0f, 1.0f, 1.0f));
 }
 
 void GameManager::Render(void)
 {
 	GetInstance()->Ren.Clear();
-
-
 	//Render Objects
 	GetInstance()->CMap.Render();
-	GetInstance()->Pyr.Render();
-	GetInstance()->cube.Render();
-	GetInstance()->Sphr.Render();
-	GetInstance()->Platform.Render();
-	
-	
+	for (int i = 0; i < GetInstance()->ObVector.size(); i++)
+	{
+		GetInstance()->ObVector.at(i).Render();
+	}
+	for (int i = 0; i < GetInstance()->EnemyVector.size(); i++)
+	{
+		GetInstance()->EnemyVector.at(i).Render();
+	}
+	GetInstance()->player.Render();
+
 	//Render Text
-	GetInstance()->label.Render();
+	GetInstance()->ScoreText.Render();
+	GetInstance()->LivesText.Render();
 
 	glutSwapBuffers();
 }
@@ -90,11 +138,25 @@ void GameManager::Update()
 	GetInstance()->CMap.Update();
 
 	//ProcessInput
-	GetInstance()->cube.ProcessInput(GetInstance()->deltaTime);
 	GetInstance()->Cam.ProcessInput();
+	GetInstance()->player.ProcessInput();
 
 	//-----Update Camera
 	GetInstance()->Cam.Update(GetInstance()->timeElapsed);
+
+	//-----Update Objects
+	for (int i = 0; i < GetInstance()->ObVector.size(); i++)
+	{
+		GetInstance()->ObVector.at(i).Update(GetInstance()->deltaTime);
+	}
+	for (int i = 0; i < GetInstance()->EnemyVector.size(); i++)
+	{
+		GetInstance()->EnemyVector.at(i).Update(GetInstance()->deltaTime);
+		GetInstance()->EnemyVector.at(i).MoveTo(GetInstance()->player.GetPosition());
+	}
+	GetInstance()->player.Update(GetInstance()->deltaTime);
+	
+	
 
 	glutPostRedisplay();
 

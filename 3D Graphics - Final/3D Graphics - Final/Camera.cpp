@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "InputManager.h"
 
 Camera::Camera()
 {
@@ -8,7 +9,7 @@ Camera::~Camera()
 {
 }
 
-void Camera::Init(float InitWinWidth, float InitWinHeight, Cube* Player)
+void Camera::Init(float InitWinWidth, float InitWinHeight, Object* Player)
 {
 	WinWidth = InitWinWidth;
 	WinHeight = InitWinHeight;
@@ -18,10 +19,18 @@ void Camera::Init(float InitWinWidth, float InitWinHeight, Cube* Player)
 
 void Camera::Update(float deltaTime)
 {
-	float radius = 10.0f;
-	CamPos.y = (Following->GetHeight() / 2) + Following->GetyPos() + 5.0f;
-	CamPos.x = Following->GetxPos() - Following->GetWidth()/2 - 10  ;
-	CamPos.z = Following->GetzPos() + Following->GetLength()/2		;
+	if (PosType)	//true = birdsEye
+	{
+		CamPos = Following->GetPosition() + Following->GetScale() * glm::vec3(0.5, 0.5, 0.5);
+		CamPos.y += 25.0f;
+	}
+	else
+	{
+		CamPos = Following->GetPosition() - glm::normalize(Following->Velocity) * glm::vec3(10.0f);
+		//CamPos = Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5);
+		//CamPos.y += 5.0f;
+		//1CamPos.x -= 10.0f;
+	}
 }
 
 void Camera::ProcessInput()
@@ -43,9 +52,7 @@ glm::mat4 Camera::GetPxV()
 
 glm::mat4 Camera::GetViewMatrix()
 {
-	return glm::lookAt(CamPos, glm::vec3(Following->GetxPos() + Following->GetWidth()/2, Following->GetyPos() + Following->GetHeight()/2, Following->GetzPos() + Following->GetLength()/2), CamUpDir);
-	//return glm::lookAt(CamPos, CamLookDir, CamUpDir);
-	//return  glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -1));
+	return glm::lookAt(CamPos, Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5), CamUpDir);
 }
 
 glm::mat4 Camera::GetProjMatrix()

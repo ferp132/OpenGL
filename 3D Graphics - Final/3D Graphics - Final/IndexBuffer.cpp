@@ -1,5 +1,6 @@
 #include "IndexBuffer.h"
 #include "Renderer.h"
+#include "Dependencies\glew\glew.h"
 
 IndexBuffer::IndexBuffer()
 {

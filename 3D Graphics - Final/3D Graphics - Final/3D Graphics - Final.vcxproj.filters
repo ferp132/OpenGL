@@ -13,17 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Graphic">
-      <UniqueIdentifier>{17ce5cd1-fb3d-496c-bfb3-d1619a7ef5b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Game Managment">
       <UniqueIdentifier>{739ef495-ecc6-48c5-b46c-1faae2f5e074}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{03f0ca77-dfa2-4674-849f-e460a64c54e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphic">
-      <UniqueIdentifier>{53455e4a-aae2-4a53-b94c-7352ff69edbe}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Game Managment">
       <UniqueIdentifier>{68f58e45-8d1c-4b85-8463-3e07437827d1}</UniqueIdentifier>
@@ -31,34 +25,40 @@
     <Filter Include="Header Files\Objects">
       <UniqueIdentifier>{abc07f13-c109-4cd6-87a2-bf37d497a31b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Mesh">
+      <UniqueIdentifier>{6ce7404c-55a0-411d-9fe6-7bff36be0c99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OpenGL Components">
+      <UniqueIdentifier>{53455e4a-aae2-4a53-b94c-7352ff69edbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL Components">
+      <UniqueIdentifier>{17ce5cd1-fb3d-496c-bfb3-d1619a7ef5b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mesh">
+      <UniqueIdentifier>{89990135-8f95-4d22-aeba-b149cff20653}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Source Files\Graphic</Filter>
+      <Filter>Source Files\OpenGL Components</Filter>
     </ClCompile>
     <ClCompile Include="VertexArray.cpp">
-      <Filter>Source Files\Graphic</Filter>
+      <Filter>Source Files\OpenGL Components</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Graphic</Filter>
+      <Filter>Source Files\OpenGL Components</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Graphic</Filter>
+      <Filter>Source Files\OpenGL Components</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files\Graphic</Filter>
-    </ClCompile>
-    <ClCompile Include="TextLabel.cpp">
-      <Filter>Source Files\Graphic</Filter>
+      <Filter>Source Files\OpenGL Components</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files\Game Managment</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="AudioSystem.cpp">
       <Filter>Source Files\Game Managment</Filter>
@@ -66,26 +66,38 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Game Managment</Filter>
     </ClCompile>
-    <ClCompile Include="ControlledObject.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="IndexBuffer.cpp">
-      <Filter>Source Files\Graphic</Filter>
+      <Filter>Source Files\OpenGL Components</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files\Game Managment</Filter>
     </ClCompile>
-    <ClCompile Include="Pyramid.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="CubeMap.cpp">
-      <Filter>Source Files\Graphic</Filter>
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="TextLabel.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh_Cube.cpp">
+      <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh_Pyramid.cpp">
+      <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh_Sphere.cpp">
+      <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,52 +107,58 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Game Managment</Filter>
     </ClInclude>
-    <ClInclude Include="ControlledObject.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="GameManager.h">
       <Filter>Header Files\Game Managment</Filter>
     </ClInclude>
     <ClInclude Include="IndexBuffer.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\OpenGL Components</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\OpenGL Components</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Header Files\Graphic</Filter>
-    </ClInclude>
-    <ClInclude Include="TextLabel.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\OpenGL Components</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\OpenGL Components</Filter>
     </ClInclude>
     <ClInclude Include="VertexArray.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\OpenGL Components</Filter>
     </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\OpenGL Components</Filter>
     </ClInclude>
     <ClInclude Include="VertexBufferLayout.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\OpenGL Components</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Header Files\Game Managment</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Pyramid.h">
+    <ClInclude Include="Enemy.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files\Objects</Filter>
+    <ClInclude Include="Mesh_Sphere.h">
+      <Filter>Header Files\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh_Cube.h">
+      <Filter>Header Files\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh_Pyramid.h">
+      <Filter>Header Files\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="CubeMap.h">
-      <Filter>Header Files\Graphic</Filter>
+      <Filter>Header Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
+    <ClInclude Include="TextLabel.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
   </ItemGroup>

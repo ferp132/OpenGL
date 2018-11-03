@@ -2,10 +2,12 @@
 #ifndef __TEXTURE_H__
 #define __TEXTURE_H__
 
-#include "Renderer.h"
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "Dependencies\glew\glew.h"
+
 class Texture
 {
 private:

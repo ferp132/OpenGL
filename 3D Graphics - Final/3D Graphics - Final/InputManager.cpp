@@ -1,4 +1,7 @@
 #include "InputManager.h"
+#include "Dependencies\freeglut\freeglut.h"
+#include <iostream>
+using namespace std;
 
 InputManager* InputManager::Instance = NULL;
 

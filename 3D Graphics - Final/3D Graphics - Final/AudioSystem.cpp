@@ -20,13 +20,17 @@ bool AudioSystem::Init()
 	if (result != FMOD_OK)
 		return false;
 
+	fxThump = CreateSound("Resources/Sounds/Thump.wav", fxThump, FMOD_2D);
+	trackBackground = CreateSound("Resources/Sounds/Background.wav", trackBackground, FMOD_LOOP_NORMAL);
+	PlaySound(trackBackground);
+
 	return true;
 }
 
-FMOD::Sound* AudioSystem::CreateSound(const std::string& FilePath, FMOD::Sound* Sound)
+FMOD::Sound* AudioSystem::CreateSound(const std::string& FilePath, FMOD::Sound* Sound, unsigned int Mode)
 {
 	FMOD_RESULT result;
-	result = SystemID->createSound(FilePath.c_str(), FMOD_2D, 0, &Sound);
+	result = SystemID->createSound(FilePath.c_str(), Mode, 0, &Sound);
 	if (result != FMOD_OK)
 		std::cout << "Faild To Create Sound" << std::endl;
 	return Sound;
@@ -38,6 +42,11 @@ void AudioSystem::PlaySound(FMOD::Sound* Sound)
 	result = SystemID->playSound(Sound, 0, false, 0);
 	if (result != FMOD_OK)
 		std::cout << "Faild To Play Sound" << std::endl;
+}
+
+void AudioSystem::PlaySFX()
+{
+	PlaySound(fxThump);
 }
 
 FMOD::System * AudioSystem::GetID()

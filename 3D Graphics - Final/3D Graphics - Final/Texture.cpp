@@ -1,5 +1,7 @@
 #include "Texture.h"
 #include "Dependencies\soil\SOIL.h"
+#include "Renderer.h"
+
 
 Texture::Texture()
 {
@@ -38,7 +40,7 @@ void Texture::Init(const std::string& InitFilePath)
 
 void Texture::InitCubeMap()
 {
-	const std::string InitTextureFPs[6] = { "right.jpg", "left.jpg", "top.jpg", "bottom.jpg", "back.jpg",  "front.jpg" };
+	const std::string InitTextureFPs[6] = { "right.png", "left.png", "top.png", "bottom.png", "back.png",  "front.png" };
 
 
 	GLCall(glGenTextures(1, &TextureID));

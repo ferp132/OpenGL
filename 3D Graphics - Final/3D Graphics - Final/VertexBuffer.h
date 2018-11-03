@@ -3,7 +3,6 @@
 #define __VERTEXBUFFER_H__
 
 #include "Dependencies\glew\glew.h"
-#include "Dependencies\freeglut\freeglut.h"
 
 class VertexBuffer
 {

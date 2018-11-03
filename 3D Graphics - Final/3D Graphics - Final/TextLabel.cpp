@@ -85,7 +85,7 @@ void TextLabel::Init(std::string InitText, std::string InitFont, glm::vec2 InitP
 void TextLabel::Render()
 {
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_COLOR);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	TextShader.Bind();
 	TextShader.setUniform3f("textColor", Color.x, Color.y, Color.z);

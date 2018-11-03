@@ -2,7 +2,6 @@
 #ifndef __INDEXBUFFER_H__
 #define __INDEXBUFFER_H__
 #include "Dependencies\glew\glew.h"
-#include "Dependencies\freeglut\freeglut.h"
 
 class IndexBuffer
 {

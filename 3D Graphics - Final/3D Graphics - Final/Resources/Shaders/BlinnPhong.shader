@@ -36,11 +36,11 @@ out vec4 color;
 uniform vec4		u_Color;
 uniform sampler2D	u_Texture;
 //-----Ambient
-uniform float		ambientStr = 0.5f;
-uniform vec3		ambientColor = vec3(1.0f, 1.0f, 1.0f);
+uniform float		ambientStr = 0.1f;
+uniform vec3		ambientColor = vec3(0.1f, 0.2f, 1.0f);
 //-----Diffuse
-uniform vec3		lightColor = vec3(1.0f, 1.0f, 2.0f);
-uniform vec3		lightPos = vec3(-100.0f, -500.0f, 100.0f);
+uniform vec3		lightColor = vec3(1.0f, 1.0f, 5.0f);
+uniform vec3		lightPos = vec3(-2000.0f, 500.0f, 2000.0f);
 //-----Specular
 uniform vec3		camPos;		// = vec3(0.0f, 0.0f, 2.0f);
 uniform float		lightSpecStr = 10.0f;

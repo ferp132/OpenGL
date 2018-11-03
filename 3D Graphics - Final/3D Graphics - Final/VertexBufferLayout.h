@@ -2,10 +2,9 @@
 #ifndef __VERTEXBUFFERLAYOUT_H__
 #define __VERTEXBUFFERLAYOUT_H__
 
-#include <vector>
 #include "Dependencies\glew\glew.h"
-#include "Dependencies\freeglut\freeglut.h"
 #include "Renderer.h"
+#include <vector>
 struct VertexBufferElement
 {
 	GLuint type;

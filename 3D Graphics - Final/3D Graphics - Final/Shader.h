@@ -2,19 +2,19 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
-#include "Renderer.h"
-//glm for OpenGL Maths
-#include "Dependencies\glm\glm.hpp"
-#include "Dependencies\glm\gtc\matrix_transform.hpp"
-#include "Dependencies\glm\gtc\type_ptr.hpp"
-
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <string>
 #include <unordered_map>
+
+//-----glm for OpenGL Maths
+#include "Dependencies\glm\glm.hpp"
+#include "Dependencies\glm\gtc\matrix_transform.hpp"
+#include "Dependencies\glm\gtc\type_ptr.hpp"
+
+#include "Dependencies\glew\glew.h"
 
 using namespace std;
 

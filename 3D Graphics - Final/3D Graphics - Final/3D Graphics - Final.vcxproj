@@ -138,18 +138,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeMap.cpp" />
-    <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Mesh_Cube.cpp" />
+    <ClCompile Include="Mesh_Pyramid.cpp" />
+    <ClCompile Include="Mesh_Sphere.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ControlledObject.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="TextLabel.cpp" />
@@ -158,17 +160,19 @@
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeMap.h" />
-    <ClInclude Include="Sphere.h" />
-    <ClInclude Include="Pyramid.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Mesh_Cube.h" />
+    <ClInclude Include="Mesh_Pyramid.h" />
+    <ClInclude Include="Mesh_Sphere.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="ControlledObject.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TextLabel.h" />

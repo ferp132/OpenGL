@@ -14,10 +14,15 @@ public:
 
 	bool Init();
 
-	FMOD::Sound* CreateSound(const std::string& FilePath, FMOD::Sound* Sound);
+	FMOD::Sound* CreateSound(const std::string& FilePath, FMOD::Sound* Sound, unsigned int Mode);
 	void PlaySound(FMOD::Sound* Sound);
+	void PlaySFX();
 	FMOD::System* GetID();
 private:
+
 	FMOD::System* SystemID;
+	//Sounds
+	FMOD::Sound* fxThump;
+	FMOD::Sound* trackBackground;
 };
 #endif // !__AUDIOSYSTEM_H__
