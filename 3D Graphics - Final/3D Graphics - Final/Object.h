@@ -22,12 +22,29 @@ protected:
 	glm::vec3 Scale;
 	
 	glm::mat4 Model;
+	glm::mat4 Rot;
 
+	//------Movement
 	float MaxSpd = 0.02f;
 	float AccSpd = 0.0005f;
 	float Friction = 0.001f;
+
+	//-----Rotation
+	float Rotx;
+	float Roty;
+	float Rotz;
+
+
+
 public:
 	glm::vec3 Velocity;
+	glm::vec3 upDir;
+
+	glm::vec3 Foward;
+
+	glm::quat QuatRotx;
+	glm::quat QuatRoty;
+	glm::quat QuatRotz;
 	//-----Con/Destructor
 	Object();
 	~Object();

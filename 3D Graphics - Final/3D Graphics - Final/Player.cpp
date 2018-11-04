@@ -4,39 +4,43 @@
 
 void Player::ProcessInput()
 {
+	float RotationSpeeed = 0.1f;
 	MaxSpd = 0.2f;
-	AccSpd = 0.005f;
+	AccSpd = 0.001f;
 	Friction = 0.00025f;
 	glm::vec3 Acc = glm::vec3(0.0f);
+	Foward =  (QuatRotx * QuatRoty * QuatRotz) * glm::vec3(0.0f, -1.0f, 0.0f);
+	upDir = (QuatRotx * QuatRoty * QuatRotz) * glm::vec3(1.0f, 0.0f, 0.0f);
 
 	if (InputManager::Getinstance()->MouseState[MOUSE_LEFT] == DOWN)
 	{
-
+		
 	}
 
 	if (InputManager::Getinstance()->KeyState['w'] == DOWN)
 	{
-		Acc.x += 1.0f;
+		Rotx += RotationSpeeed;
 	}
 	if (InputManager::Getinstance()->KeyState['s'] == DOWN)
 	{
-		Acc.x -= 1.0f;
+		Rotx -= RotationSpeeed;
+		
 	}
 	if (InputManager::Getinstance()->KeyState['d'] == DOWN)
 	{
-		Acc.z += 1.0f;
+		Rotz += RotationSpeeed;
 	}
 	if (InputManager::Getinstance()->KeyState['a'] == DOWN)
 	{
-		Acc.z -= 1.0f;
+		Rotz -= RotationSpeeed;
 	}
 	if (InputManager::Getinstance()->KeyState['x'] == DOWN)
 	{
-		Acc.y += 1.0f;
+		Roty += RotationSpeeed;
 	}
 	if (InputManager::Getinstance()->KeyState['z'] == DOWN)
 	{
-		Acc.y -= 1.0f;
+		Roty -= RotationSpeeed;
 	}
 	if (InputManager::Getinstance()->KeyState['r'] == DOWN && PlayingFX == false)
 	{
@@ -48,14 +52,17 @@ void Player::ProcessInput()
 	{
 		PlayingFX = false;
 	}
-
-	if (Acc.x != 0 || Acc.y != 0 || Acc.z != 0)
+	if (InputManager::Getinstance()->KeyState[' '] == DOWN)
 	{
-		Dir = glm::normalize(Acc);
-		Velocity += Dir * glm::vec3(AccSpd);
-		Velocity -= Dir * glm::vec3(Friction);
-		Velocity = glm::clamp(Velocity, glm::vec3(-MaxSpd), glm::vec3(MaxSpd));
+		Velocity -= glm::vec3(AccSpd) * Foward;
+		
 	}
 
+	if (Velocity.x > 0) Velocity.x -= Friction;
+	if (Velocity.x < 0) Velocity.x += Friction;
+	if (Velocity.y > 0) Velocity.y -= Friction;
+	if (Velocity.y < 0) Velocity.y += Friction;
+	if (Velocity.z > 0) Velocity.z -= Friction;
+	if (Velocity.z < 0) Velocity.z += Friction;
 	Position += Velocity;
 }

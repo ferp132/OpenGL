@@ -95,7 +95,7 @@ void GameManager::Init()
 	}
 
 
-	GetInstance()->player.Init(1, "Resources/Textures/AwesomeFace.png",
+	GetInstance()->player.Init(2, "Resources/Textures/AwesomeFace.png",
 		"Resources/Shaders/BlinnPhong.shader",
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
