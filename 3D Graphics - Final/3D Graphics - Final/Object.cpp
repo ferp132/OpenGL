@@ -50,6 +50,7 @@ void Object::Update(float deltaTime)
 {
 	glm::mat4 ScaleMat = glm::scale(glm::mat4(), Scale);
 	glm::mat4 Trans = glm::translate(glm::mat4(1.0f), Position + Scale * glm::vec3(0.5, 0.5, 0.5));
+	
 	//-----Rotation
 	//x rotation
 	glm::vec3 Axisx(1.0f, 0.0f, 0.0f);
@@ -81,9 +82,10 @@ void Object::Update(float deltaTime)
 	QuatRotz = glm::quat(w, x, y, z);
 	
 	//Add Rotation quats together
-	Rot = glm::toMat4(QuatRotx * QuatRoty * QuatRotz);
+	QuatRot = QuatRotx * QuatRoty * QuatRotz;
+	RotMatrix = glm::toMat4(QuatRotx * QuatRoty * QuatRotz);
 
-	Model = Trans * Rot * ScaleMat;
+	Model = Trans * RotMatrix * ScaleMat;
 }
 
 void Object::Render()

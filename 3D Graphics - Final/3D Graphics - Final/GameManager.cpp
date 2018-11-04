@@ -75,7 +75,7 @@ void GameManager::Init()
 	{
 		GetInstance()->ObVector.at(i).Init(i, "Resources/Textures/AwesomeFace.png",
 			"Resources/Shaders/BlinnPhong.shader",
-			glm::vec3(5.0f * i, 0.0f, 0.0f),
+			glm::vec3(20.0f + 10.0f * i, 0.0f, 0.0f),
 			glm::vec3(1.0f, 1.0f, 1.0f));
 	}
 
@@ -94,11 +94,20 @@ void GameManager::Init()
 			glm::vec3(1.0f, 1.0f, 1.0f));
 	}
 
-
+	//-----Player Init
 	GetInstance()->player.Init(2, "Resources/Textures/AwesomeFace.png",
 		"Resources/Shaders/BlinnPhong.shader",
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 1.0f, 1.0f));
+
+	GetInstance()->player.SetBaseFoward(glm::vec3(0.0f, 1.0f, 0.0f));
+	GetInstance()->player.SetBaseLeft(glm::vec3(1.0f, 0.0f, 0.0f));
+	GetInstance()->player.SetBaseRight(glm::vec3(-1.0f, 0.0f, 0.0f));
+	GetInstance()->player.SetBaseUp(glm::vec3(0.0f, 0.0f, 1.0f));
+	GetInstance()->player.SetMaxSpd(0.2f);
+	GetInstance()->player.SetAccSpd(0.01f);
+	GetInstance()->player.SetFriction(0.0025f);
+	GetInstance()->player.SetRotSpd(0.1f);
 }
 
 void GameManager::Render(void)

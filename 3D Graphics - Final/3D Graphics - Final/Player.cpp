@@ -4,44 +4,62 @@
 
 void Player::ProcessInput()
 {
-	float RotationSpeeed = 0.1f;
-	MaxSpd = 0.2f;
-	AccSpd = 0.001f;
-	Friction = 0.00025f;
-	glm::vec3 Acc = glm::vec3(0.0f);
-	Foward =  (QuatRotx * QuatRoty * QuatRotz) * glm::vec3(0.0f, -1.0f, 0.0f);
-	upDir = (QuatRotx * QuatRoty * QuatRotz) * glm::vec3(1.0f, 0.0f, 0.0f);
+	//Set Applied Vector Based on orientation
+	AppFoward	= QuatRot * BaseFoward;
+	AppLeft		= QuatRot * BaseLeft;
+	AppRight	= QuatRot * BaseRight;
+
+	AppUpDir = QuatRot * BaseUpDir;
 
 	if (InputManager::Getinstance()->MouseState[MOUSE_LEFT] == DOWN)
-	{
-		
+	{	
 	}
 
+	//-----X axis Rotation
 	if (InputManager::Getinstance()->KeyState['w'] == DOWN)
 	{
-		Rotx += RotationSpeeed;
+		Rotx += RotSpd;
 	}
 	if (InputManager::Getinstance()->KeyState['s'] == DOWN)
 	{
-		Rotx -= RotationSpeeed;
-		
+		Rotx -= RotSpd;	
 	}
+	//-----Z axis Rotation
 	if (InputManager::Getinstance()->KeyState['d'] == DOWN)
 	{
-		Rotz += RotationSpeeed;
+		Rotz -= RotSpd;
 	}
 	if (InputManager::Getinstance()->KeyState['a'] == DOWN)
 	{
-		Rotz -= RotationSpeeed;
+		Rotz += RotSpd;
 	}
+	//-----Y axis Rotation
 	if (InputManager::Getinstance()->KeyState['x'] == DOWN)
 	{
-		Roty += RotationSpeeed;
+		Roty += RotSpd;
 	}
 	if (InputManager::Getinstance()->KeyState['z'] == DOWN)
 	{
-		Roty -= RotationSpeeed;
+		Roty -= RotSpd;
 	}
+	//-----Foward Thrust
+	if (InputManager::Getinstance()->KeyState[' '] == DOWN)
+	{
+		Velocity -= glm::vec3(AccSpd) * AppFoward;
+
+	}
+	//-----Strafe Thrust
+	if (InputManager::Getinstance()->KeyState['q'] == DOWN)
+	{
+		Velocity -= glm::vec3(AccSpd) * AppLeft;
+
+	}
+	if (InputManager::Getinstance()->KeyState['e'] == DOWN)
+	{
+		Velocity -= glm::vec3(AccSpd) * AppRight;
+
+	}
+	//-----Change Camera (and Play Sound
 	if (InputManager::Getinstance()->KeyState['r'] == DOWN && PlayingFX == false)
 	{
 		PlayingFX = true;
@@ -52,11 +70,7 @@ void Player::ProcessInput()
 	{
 		PlayingFX = false;
 	}
-	if (InputManager::Getinstance()->KeyState[' '] == DOWN)
-	{
-		Velocity -= glm::vec3(AccSpd) * Foward;
-		
-	}
+
 
 	if (Velocity.x > 0) Velocity.x -= Friction;
 	if (Velocity.x < 0) Velocity.x += Friction;

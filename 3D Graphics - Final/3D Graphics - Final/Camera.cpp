@@ -26,20 +26,12 @@ void Camera::Update(float deltaTime)
 	}
 	else
 	{
-		CamPos = Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5) + Following->Foward * glm::vec3(10.0f);
+		CamPos = Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5) + Following->GetAppFoward() * glm::vec3(25.0f);
 	}
 }
 
 void Camera::ProcessInput()
 {
-	if (InputManager::Getinstance()->KeyState['q'] == DOWN)
-	{
-		Rotation += 0.1f;
-	}
-	if (InputManager::Getinstance()->KeyState['e'] == DOWN)
-	{
-		Rotation -= 0.1f;
-	}
 }
 
 glm::mat4 Camera::GetPxV()
@@ -49,7 +41,8 @@ glm::mat4 Camera::GetPxV()
 
 glm::mat4 Camera::GetViewMatrix()
 {
-	return glm::lookAt(CamPos, Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5), Following->upDir);
+	if (PosType)	return glm::lookAt(CamPos, Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5), CamUpDir);
+	else			return glm::lookAt(CamPos, Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5), Following->GetUpDir());
 }
 
 glm::mat4 Camera::GetProjMatrix()
