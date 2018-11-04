@@ -51,6 +51,10 @@ void InputManager::MouseClick(int button, int state, int x, int y)
 void InputManager::MousePassiveMove(int x, int y)
 {
 	cout << "Passive x: " << x << " | y: " << y << endl;
+
+	Getinstance()->MouseX = x;
+	Getinstance()->MouseY = y;
+
 }
 
 void InputManager::MouseMove(int x, int y)

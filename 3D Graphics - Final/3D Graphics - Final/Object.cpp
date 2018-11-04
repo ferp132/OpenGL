@@ -9,6 +9,7 @@
 
 Object::Object()
 {
+	Active = 0;
 }
 
 Object::~Object()
@@ -17,6 +18,7 @@ Object::~Object()
 
 void Object::Init(int MeshType, const std::string & TextureFP, const std::string & ShaderFP, glm::vec3 initPos, glm::vec3 initScale)
 {
+	
 	switch (MeshType)
 	{
 	case CUBE:
@@ -44,6 +46,8 @@ void Object::Init(int MeshType, const std::string & TextureFP, const std::string
 	Rotx = 0.0f;
 	Roty = 0.0f;
 	Rotz = 0.0f;
+
+	Active = false;
 }
 
 void Object::Update(float deltaTime)

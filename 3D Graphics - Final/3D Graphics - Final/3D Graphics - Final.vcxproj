@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CubeMap.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Mesh_Cube.h" />

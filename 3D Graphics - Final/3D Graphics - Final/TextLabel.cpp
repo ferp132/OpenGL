@@ -1,4 +1,3 @@
-
 #include "TextLabel.h"
 
 GLuint TextLabel::GenerateTexture(FT_Face face)
@@ -100,6 +99,7 @@ void TextLabel::Render()
 		GLfloat ypos = textPos.y - (ch.Size.y - ch.Bearing.y) * Scale;
 		GLfloat w = ch.Size.x * Scale;
 		GLfloat h = ch.Size.y * Scale;
+		TextSize = glm::vec2(w * (Text.size()), h);
 
 		GLfloat vertices[6][4] = {
 			{xpos, ypos + h, 0.0, 0.0 }, {xpos, ypos, 0.0, 1.0 }, {xpos + w, ypos, 1.0, 1.0 },

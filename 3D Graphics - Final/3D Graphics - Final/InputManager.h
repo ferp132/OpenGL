@@ -32,6 +32,9 @@ public:
 	static void MouseMove(int x, int y);
 	static void ProcessInput();
 
+	int GetMouseX() { return MouseX; }
+	int GetMouseY() { return MouseY; }
+
 	InputState KeyState[255];
 	InputState MouseState[3];
 private:
@@ -39,6 +42,9 @@ private:
 	~InputManager();
 
 	static InputManager* Instance;
+
+	int MouseX;
+	int MouseY;
 
 
 };

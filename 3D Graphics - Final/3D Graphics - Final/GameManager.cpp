@@ -63,6 +63,8 @@ void GameManager::Init()
 	GetInstance()->SetScore(0);
 	GetInstance()->SetLives(3);
 
+	GetInstance()->but1.Init(glm::vec2(400.0f, 400.0f), glm::vec2(1.0f, 1.0f), "Hello Button", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+
 	//-----Object Init
 	Object* NewObject;
 	for (int i = 0; i < 3; i++)
@@ -101,8 +103,8 @@ void GameManager::Init()
 		glm::vec3(1.0f, 1.0f, 1.0f));
 
 	GetInstance()->player.SetBaseFoward(glm::vec3(0.0f, 1.0f, 0.0f));
-	GetInstance()->player.SetBaseLeft(glm::vec3(1.0f, 0.0f, 0.0f));
-	GetInstance()->player.SetBaseRight(glm::vec3(-1.0f, 0.0f, 0.0f));
+	GetInstance()->player.SetBaseLeft(glm::vec3(-1.0f, 0.0f, 0.0f));
+	GetInstance()->player.SetBaseRight(glm::vec3(1.0f, 0.0f, 0.0f));
 	GetInstance()->player.SetBaseUp(glm::vec3(0.0f, 0.0f, 1.0f));
 	GetInstance()->player.SetMaxSpd(0.2f);
 	GetInstance()->player.SetAccSpd(0.01f);
@@ -128,12 +130,15 @@ void GameManager::Render(void)
 	//Render Text
 	GetInstance()->ScoreText.Render();
 	GetInstance()->LivesText.Render();
+	GetInstance()->but1.Render();
 
 	glutSwapBuffers();
 }
 
 void GameManager::Update()
 {
+	if (GetInstance()->but1.GetClicked()) GetInstance()->player.SetActive(true);
+
 	//-----Update Time
 	float currentTime = (float)glutGet(GLUT_ELAPSED_TIME);
 	GetInstance()->deltaTime = (currentTime - GetInstance()->previousTimeStamp) * 0.001f;
@@ -156,14 +161,18 @@ void GameManager::Update()
 	//-----Update Objects
 	for (int i = 0; i < GetInstance()->ObVector.size(); i++)
 	{
-		GetInstance()->ObVector.at(i).Update(GetInstance()->deltaTime);
+		if (GetInstance()->ObVector.at(i).GetActive()) GetInstance()->ObVector.at(i).Update(GetInstance()->deltaTime);
 	}
 	for (int i = 0; i < GetInstance()->EnemyVector.size(); i++)
 	{
-		GetInstance()->EnemyVector.at(i).Update(GetInstance()->deltaTime);
-		GetInstance()->EnemyVector.at(i).MoveTo(GetInstance()->player.GetPosition());
+		if (GetInstance()->EnemyVector.at(i).GetActive()) GetInstance()->EnemyVector.at(i).Update(GetInstance()->deltaTime);
+		if (GetInstance()->EnemyVector.at(i).GetActive()) GetInstance()->EnemyVector.at(i).MoveTo(GetInstance()->player.GetPosition());
 	}
-	GetInstance()->player.Update(GetInstance()->deltaTime);
+
+	if (GetInstance()->player.GetActive()) GetInstance()->player.Update(GetInstance()->deltaTime);
+
+	//-----Text Update
+	GetInstance()->but1.Update();
 	
 	
 

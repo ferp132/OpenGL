@@ -13,6 +13,9 @@ enum MeshType { CUBE, SPHERE, PYRAMID };
 class Object
 {
 protected:
+	//Active
+	bool Active;
+
 	//-----Mesh
 	Mesh * mesh;
 
@@ -73,6 +76,8 @@ public:
 	void Render();
 
 	//-----Setters
+	void SetActive(bool newActive) { Active = newActive; }
+
 	void SetPosition(glm::vec3 newPos) { Position = newPos; }
 	void SetScale(glm::vec3 newScale) { Scale = newScale; }
 
@@ -91,6 +96,8 @@ public:
 	void SetRotSpd(float newRotSpd) { RotSpd = newRotSpd; }
 
 	//-----Getters
+	bool GetActive() { return Active; }
+
 	glm::vec3 GetPosition() { return Position; }
 	glm::vec3 GetScale() { return Scale; }
 

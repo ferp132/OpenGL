@@ -18,6 +18,7 @@
 #include "Object.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Button.h"
 
 
 
@@ -34,8 +35,9 @@ private:
 	AudioSystem AS;
 
 	//Temp
-
 	Texture Tex;
+	Button but1;
+	Button but2;
 
 	//CubeMap
 	CubeMap CMap;

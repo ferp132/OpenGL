@@ -38,6 +38,7 @@ private:
 	glm::vec3 Color;
 	GLfloat Scale;
 	glm::vec2 Position;
+	glm::vec2 TextSize;
 
 	VertexArray TextVAO;
 	VertexBuffer TextVBO;
@@ -59,5 +60,6 @@ public:
 	void SetColor(glm::vec3 NewColor) { Color = NewColor; }
 	void SetScale(GLfloat NewScale) { Scale = NewScale; }
 	void SetPosition(glm::vec2 NewPos) { Position = NewPos; }
+	glm::vec2 GetTextSize() { return TextSize; }
 };
 #endif // !__TEXTLABEL_H_
