@@ -32,4 +32,5 @@ public:
 	//-----Setters
 	void SetActive(bool newActive);
 	void SetClicked(bool newClicked) { Clicked = newClicked; }
+	void SetColor(glm::vec3 newColor) { textlab.SetColor(newColor); }
 };

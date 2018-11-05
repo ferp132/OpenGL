@@ -23,16 +23,16 @@ void Camera::Update(float deltaTime)
 {
 	if (PosType)	//true = birdsEye
 	{
-		CamPos = Following->GetPosition() + Following->GetScale() * glm::vec3(0.5, 0.5, 0.5);
+		CamPos = Following->GetCenter();
 		CamPos.y += 25.0f;
 	}
 	else
 	{
-		if(RotbyFollowing)	CamPos = Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5) + Following->GetAppFoward() * glm::vec3(25.0f);
+		if(RotbyFollowing)	CamPos = Following->GetCenter() + Following->GetAppFoward() * glm::vec3(25.0f);
 		else
 		{
 			float radius = 10.0f;
-			CamPos = Following->GetPosition() + Following->GetScale() * glm::vec3(0.5, 0.5, 0.5) - Following->GetBaseFoward() * glm::vec3(25.0f);
+			CamPos = Following->GetCenter() - Following->GetBaseFoward() * glm::vec3(25.0f) + Following->GetVelocity();
 		}
 	}
 }
@@ -48,8 +48,8 @@ glm::mat4 Camera::GetPxV()
 
 glm::mat4 Camera::GetViewMatrix()
 {
-	if (PosType)	return glm::lookAt(CamPos, Following->GetPosition() - Following->GetScale() * glm::vec3(0.5, 0.5, 0.5), CamUpDir);
-	else			return glm::lookAt(CamPos, Following->GetPosition() + Following->GetScale() * glm::vec3(0.5, 0.5, 0.5), Following->GetUpDir());
+	if (PosType)	return glm::lookAt(CamPos, Following->GetCenter(), CamUpDir);
+	else			return glm::lookAt(CamPos, Following->GetCenter(), Following->GetUpDir());
 }
 
 glm::mat4 Camera::GetProjMatrix()

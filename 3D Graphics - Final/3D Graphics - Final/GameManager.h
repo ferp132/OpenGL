@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Button.h"
+#include "Path.h"
 
 enum Scene {MENU, PLAY, PLAYAI, LOSS};
 
@@ -47,6 +48,20 @@ private:
 	Button PlayAI;
 	Button Exit;
 	Button Return;
+
+	//Buttons for AI
+	Button Seek;
+	Button Arrive;
+	Button Wander;
+	Button Follow;
+	Button Queue;
+
+	Button Contain;
+	Button Seperate;
+	Button Avoid;
+
+	Button Done;
+
 	
 
 	//-----Objects;
@@ -72,6 +87,14 @@ private:
 	float deltaTime;
 	float timeElapsed;
 
+	//-----AI
+	int EnMoveType;
+	Path path;
+
+	bool Con;
+	bool Sep;
+	bool avoid;
+
 public:
 	static void Init();
 	static void Render(void);
@@ -89,8 +112,9 @@ public:
 	void UpdAI();
 	void UpdLoss();
 
-	//-----Instantiting
+	//-----Instantiating
 	void InstPlay();
+	void InstAI();
 
 	//-----Setters
 	void SetScore(int newScore);
@@ -100,8 +124,24 @@ public:
 	//-----Getters
 	int GetScore() { return Score; }
 	int GetLives() { return Lives; }
+	std::vector<Enemy>* GetEnVec() { return &EnVec; }
+	std::vector<Object>* GetObVec() { return &ObVec; }
+
 	CubeMap* GetSkyBox() { return &CMap; }
 	Camera* GetCam() { return &Cam; }
 	AudioSystem* GetAS() { return &AS; }
+
+
 	static GameManager* GetInstance();
+
+	//AI
+
+
+	bool GetAvoid() { return avoid; }
+	bool GetSep() { return Sep; }
+	bool GetCon() { return Con; }
+
+	void SetContain(bool newBool) { Con = newBool; }
+	void SetSep(bool newBool) { Sep = newBool; }
+	void Setavoid(bool newBool) { avoid = newBool; }
 };

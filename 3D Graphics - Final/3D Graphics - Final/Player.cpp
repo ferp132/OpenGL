@@ -38,18 +38,18 @@ void Player::ProcessInput(float deltaTime)
 	//-----Foward Thrust
 	if (InputManager::Getinstance()->KeyState[' '] == DOWN)
 	{
-		Velocity -= glm::vec3(AccSpd) * AppFoward;
+		Acceleration -= glm::vec3(AccSpd) * AppFoward;
 
 	}
 	//-----Strafe Thrust
 	if (InputManager::Getinstance()->KeyState['q'] == DOWN)
 	{
-		Velocity -= glm::vec3(AccSpd) * AppLeft;
+		Acceleration -= glm::vec3(AccSpd) * AppLeft;
 
 	}
 	if (InputManager::Getinstance()->KeyState['e'] == DOWN)
 	{
-		Velocity -= glm::vec3(AccSpd) * AppRight;
+		Acceleration -= glm::vec3(AccSpd) * AppRight;
 
 	}
 	//-----Change Camera (and Play Sound

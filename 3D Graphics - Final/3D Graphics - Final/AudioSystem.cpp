@@ -22,7 +22,7 @@ bool AudioSystem::Init()
 
 	fxThump = CreateSound("Resources/Sounds/Thump.wav", fxThump, FMOD_2D);
 	trackBackground = CreateSound("Resources/Sounds/Background.wav", trackBackground, FMOD_LOOP_NORMAL);
-	PlaySound(trackBackground);
+//	PlaySound(trackBackground);
 
 	return true;
 }

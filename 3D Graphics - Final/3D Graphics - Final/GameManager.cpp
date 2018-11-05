@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "Enemy.h"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 
@@ -64,6 +65,19 @@ void GameManager::Init()
 	GetInstance()->Return.Init	(glm::vec2(200.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Return To Menu", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
 	GetInstance()->Return.SetActive(true);
 
+	//AI Buttons
+	GetInstance()->Seek.	Init(glm::vec2(50.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Seek", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Arrive.	Init(glm::vec2(50.0f, 100.0f), glm::vec2(0.5f, 0.5f), "Arrive", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Wander.	Init(glm::vec2(50.0f, 150.0f), glm::vec2(0.5f, 0.5f), "Wander", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Follow.	Init(glm::vec2(50.0f, 200.0f), glm::vec2(0.5f, 0.5f), "Follow", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Queue.	Init(glm::vec2(50.0f, 250.0f), glm::vec2(0.5f, 0.5f), "Queue", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+
+	GetInstance()->Contain.	Init(glm::vec2(50.0f, 350.0f), glm::vec2(0.5f, 0.5f), "Contain", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Seperate.Init(glm::vec2(50.0f, 400.0f), glm::vec2(0.5f, 0.5f), "Seperate", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Avoid.	Init(glm::vec2(50.0f, 450.0f), glm::vec2(0.5f, 0.5f), "Avoid", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+
+	GetInstance()->Done.	Init(glm::vec2(700.0f, 100.0f), glm::vec2(0.5f, 0.5f), "Done", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+
 	//Menu Object
 	GetInstance()->MenuOb.Init(0, "Resources/Textures/AwesomeFace.png", "Resources/Shaders/Reflection.shader", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(3.0f, 20.0f, 10.0f));
 	GetInstance()->MenuOb.SetActive(true);
@@ -85,6 +99,9 @@ void GameManager::Init()
 	GetInstance()->player.SetFriction(0.25f);
 	GetInstance()->player.SetRotSpd(1.0f);
 
+	//-----Init Path
+	GetInstance()->path.AddPoint(glm::vec3(0.0f, 0.0f, 0.0f));
+	GetInstance()->path.AddPoint(glm::vec3(0.0f, -10000.0f, 0.0f));
 
 
 
@@ -184,12 +201,12 @@ void GameManager::RenMenu()
 void GameManager::RenPlay()
 {
 	//-----Render Objects
-	for (int i = 0; i < GetInstance()->ObVec.size(); i++)
+	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
 	{
 		GetInstance()->ObVec.at(i).Render();
 	}
 	//Enemies
-	for (int i = 0; i < GetInstance()->EnVec.size(); i++)
+	for (unsigned int i = 0; i < GetInstance()->EnVec.size(); i++)
 	{
 		GetInstance()->EnVec.at(i).Render();
 	}
@@ -200,22 +217,48 @@ void GameManager::RenPlay()
 	GetInstance()->ScoreText.Render();
 	GetInstance()->LivesText.Render();
 	GetInstance()->VelocityText.Render();
+
+
 }
 
 void GameManager::RenAI()
 {
-	//TODO AI Scene
+	//-----Render Objects
+	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
+	{
+		GetInstance()->ObVec.at(i).Render();
+	}
+	//Enemies
+	for (unsigned int i = 0; i < GetInstance()->EnVec.size(); i++)
+	{
+		GetInstance()->EnVec.at(i).Render();
+	}
+	//Player
+	GetInstance()->player.Render();
+
+	//-----Menu Buttons Render
+	GetInstance()->Seek		.Render();
+	GetInstance()->Arrive	.Render();
+	GetInstance()->Wander	.Render();
+	GetInstance()->Follow	.Render();
+	GetInstance()->Queue	.Render();
+
+	GetInstance()->Contain	.Render();
+	GetInstance()->Seperate	.Render();
+	GetInstance()->Avoid	.Render();
+
+	GetInstance()->Done		.Render();
 }
 
 void GameManager::RenLoss()
 {
 	//-----Render Objects
-	for (int i = 0; i < GetInstance()->ObVec.size(); i++)
+	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
 	{
 		GetInstance()->ObVec.at(i).Render();
 	}
 	//Enemies
-	for (int i = 0; i < GetInstance()->EnVec.size(); i++)
+	for (unsigned int i = 0; i < GetInstance()->EnVec.size(); i++)
 	{
 		GetInstance()->EnVec.at(i).Render();
 	}
@@ -239,8 +282,18 @@ void GameManager::UpdMenu()
 		Cam.SetRotFollow(true);
 		GetInstance()->SetLives(3);
 		GetInstance()->Play.SetClicked(false);
+		EnMoveType = 5; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
 	}
-	if (GetInstance()->PlayAI.GetClicked()) CurrSc = PLAYAI;
+	if (GetInstance()->PlayAI.GetClicked())
+	{
+		CurrSc = PLAYAI;
+		InstAI();
+		Cam.SetFollowing(&player);
+		Cam.SetRotFollow(true);
+		GetInstance()->PlayAI.SetClicked(false);
+		GetInstance()->SetLives(3);
+		EnMoveType = 2; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
+	}
 
 	GetInstance()->MenuOb.RotateOnAxis(glm::vec3(0.0f, 1.0f, 0.0f));
 	GetInstance()->MenuOb.Update(deltaTime);
@@ -252,18 +305,20 @@ void GameManager::UpdPlay()
 	GetInstance()->player.ProcessInput(deltaTime);
 
 	//-----Update Objects
-	for (int i = 0; i < GetInstance()->ObVec.size(); i++)
+	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
 	{
 		GetInstance()->ObVec.at(i).Update(GetInstance()->deltaTime);
 	}
 	//Enemies
-	for (int i = 0; i < GetInstance()->EnVec.size(); i++)
+	for (unsigned int i = 0; i < GetInstance()->EnVec.size(); i++)
 	{
+		//GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetPosition(), EnMoveType);
+		GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetCenter(), EnMoveType, path);
 		GetInstance()->EnVec.at(i).Update(GetInstance()->deltaTime);
-		GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetPosition());
 	}
 	//Player
 	GetInstance()->player.Update(GetInstance()->deltaTime);
+
 	//-----Update Text
 	SetVel();
 
@@ -277,6 +332,126 @@ void GameManager::UpdAI()
 {
 	//-----Process Input
 	GetInstance()->player.ProcessInput(deltaTime);
+
+	//-----Update Objects
+	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
+	{
+		GetInstance()->ObVec.at(i).Update(GetInstance()->deltaTime);
+	}
+	//Enemies
+	for (unsigned int i = 0; i < GetInstance()->EnVec.size(); i++)
+	{
+		//GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetPosition(), EnMoveType);
+		GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetCenter(), EnMoveType, path);
+		GetInstance()->EnVec.at(i).Update(GetInstance()->deltaTime);
+	}
+	//Player
+	GetInstance()->player.Update(GetInstance()->deltaTime);
+
+
+
+
+	if (GetInstance()->Seek.GetClicked())	EnMoveType = 0;
+	if (GetInstance()->Arrive.GetClicked())	EnMoveType = 1;
+	if (GetInstance()->Wander.GetClicked())	EnMoveType = 2;
+	if (GetInstance()->Follow.GetClicked())	EnMoveType = 4;
+	if (GetInstance()->Queue.GetClicked())	EnMoveType = 5;
+
+	if (GetInstance()->EnMoveType == 0)
+	{	
+		GetInstance()->Seek.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		GetInstance()->Arrive.SetClicked(false);
+		GetInstance()->Wander.SetClicked(false);
+		GetInstance()->Follow.SetClicked(false);
+		GetInstance()->Queue.SetClicked(false);
+	}
+	else GetInstance()->Seek.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	if (GetInstance()->EnMoveType == 1)
+	{	
+		GetInstance()->Arrive.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		GetInstance()->Seek.SetClicked(false);
+		GetInstance()->Wander.SetClicked(false);
+		GetInstance()->Follow.SetClicked(false);
+		GetInstance()->Queue.SetClicked(false);
+	}
+	else GetInstance()->Arrive.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	if (GetInstance()->EnMoveType == 2)
+	{	
+		GetInstance()->Wander.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		GetInstance()->Seek.SetClicked(false);
+		GetInstance()->Arrive.SetClicked(false);
+		GetInstance()->Follow.SetClicked(false);
+		GetInstance()->Queue.SetClicked(false);
+	}
+	else GetInstance()->Wander.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	if (GetInstance()->EnMoveType == 4)
+	{
+		GetInstance()->Follow.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		GetInstance()->Seek.SetClicked(false);
+		GetInstance()->Arrive.SetClicked(false);
+		GetInstance()->Wander.SetClicked(false);
+		GetInstance()->Queue.SetClicked(false);
+	}
+	else GetInstance()->Follow.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	if (GetInstance()->EnMoveType == 5)
+	{	
+		GetInstance()->Queue.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		GetInstance()->Seek.SetClicked(false);
+		GetInstance()->Arrive.SetClicked(false);
+		GetInstance()->Wander.SetClicked(false);
+		GetInstance()->Follow.SetClicked(false);
+	}
+	else GetInstance()->Queue.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	if (GetInstance()->Contain.GetClicked())
+	{
+		GetInstance()->Con = !GetInstance()->Con;
+		if (GetInstance()->Con)	GetInstance()->Contain.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		else					GetInstance()->Contain.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		GetInstance()->Contain.SetClicked(false);
+	}
+	if (GetInstance()->Seperate.GetClicked())
+	{
+		GetInstance()->Sep = !GetInstance()->Sep;
+		if(GetInstance()->Sep)		GetInstance()->Seperate.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		else						GetInstance()->Seperate.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		GetInstance()->Seperate.SetClicked(false);
+	}
+
+	if (GetInstance()->Avoid.GetClicked())
+	{
+		GetInstance()->avoid = !GetInstance()->avoid;
+		if(GetInstance()->avoid)	GetInstance()->Avoid.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		else						GetInstance()->Avoid.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		GetInstance()->Avoid.SetClicked(false);
+	}
+
+	if (GetInstance()->Done.GetClicked())
+	{
+		CurrSc = MENU;
+		GetInstance()->Cam.SetFollowing(&MenuOb);
+		GetInstance()->Cam.SetRotFollow(false);
+		GetInstance()->Done.SetClicked(false);
+
+		GetInstance()->ObVec.clear();
+		GetInstance()->EnVec.clear();
+		GetInstance()->player.SetPosition(glm::vec3(0.0f));
+	}
+
+
+	GetInstance()->Seek.ProcessInput();
+	GetInstance()->Arrive.ProcessInput();
+	GetInstance()->Wander.ProcessInput();
+	GetInstance()->Follow.ProcessInput();
+	GetInstance()->Queue.ProcessInput();
+
+	GetInstance()->Contain.ProcessInput();
+	GetInstance()->Seperate.ProcessInput();
+	GetInstance()->Avoid.ProcessInput();
+
+	GetInstance()->Done.ProcessInput();
+
+
 }
 
 void GameManager::UpdLoss()
@@ -306,15 +481,15 @@ void GameManager::InstPlay()
 
 	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
 	{
-		GetInstance()->ObVec.at(i).Init((rand() % 3), "Resources/Textures/AwesomeFace.png",
+		GetInstance()->ObVec.at(i).Init(0, "Resources/Textures/AwesomeFace.png",
 			"Resources/Shaders/BlinnPhong.shader",
-			glm::vec3(1000 - (rand() % 1000 + 1000), 1000 - (rand() % 1000 + 1000), 1000 - (rand() % 1000 + 1000)),
-			glm::vec3((rand() % 250), (rand() % 250), (rand() % 250)));
+			glm::vec3(250 - (rand() % 500)),
+			glm::vec3((rand() % 15)));
 	}
 
 	//Enemies
 	Enemy* newEn;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 50; i++)	//Must be Odd
 	{
 		newEn = new Enemy;
 		GetInstance()->EnVec.push_back(*newEn);
@@ -324,9 +499,55 @@ void GameManager::InstPlay()
 		GetInstance()->EnVec.at(i).Init(1, "Resources/Textures/AwesomeFace.png",
 			"Resources/Shaders/BlinnPhong.shader",
 			glm::vec3(100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100)),
-			glm::vec3(3.0f, 3.0f, 3.0f));
+			glm::vec3(5.0f));
+		GetInstance()->EnVec.at(i).SetMaxSpd(50.0f);
+		GetInstance()->EnVec.at(i).SetAccSpd(2.0f);
+		GetInstance()->EnVec.at(i).SetFriction(0.4f);
+		GetInstance()->EnVec.at(i).SetWanRad(5.0f);
+		GetInstance()->EnVec.at(i).SetConRad(200.0f);
+		GetInstance()->EnVec.at(i).SetID(i);
 	}
 
+}
+
+void GameManager::InstAI()
+{
+	//Basic Objects
+	Object* NewObject;
+	for (int i = 0; i < 10; i++)
+	{
+		NewObject = new Object;
+		GetInstance()->ObVec.push_back(*NewObject);
+	}
+
+	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
+	{
+		GetInstance()->ObVec.at(i).Init(0, "Resources/Textures/AwesomeFace.png",
+			"Resources/Shaders/BlinnPhong.shader",
+			glm::vec3(250 - (rand() % 500)),
+			glm::vec3((rand() % 15)));
+	}
+
+	//Enemies
+	Enemy* newEn;
+	for (int i = 0; i < 50; i++)	//Must be Odd
+	{
+		newEn = new Enemy;
+		GetInstance()->EnVec.push_back(*newEn);
+	}
+	for (unsigned int i = 0; i < GetInstance()->EnVec.size(); i++)
+	{
+		GetInstance()->EnVec.at(i).Init(1, "Resources/Textures/AwesomeFace.png",
+			"Resources/Shaders/BlinnPhong.shader",
+			glm::vec3(100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100)),
+			glm::vec3(5.0f));
+		GetInstance()->EnVec.at(i).SetMaxSpd(50.0f);
+		GetInstance()->EnVec.at(i).SetAccSpd(2.0f);
+		GetInstance()->EnVec.at(i).SetFriction(0.4f);
+		GetInstance()->EnVec.at(i).SetWanRad(5.0f);
+		GetInstance()->EnVec.at(i).SetConRad(200.0f);
+		GetInstance()->EnVec.at(i).SetID(i);
+	}
 }
 
 void GameManager::SetScore(int newScore)

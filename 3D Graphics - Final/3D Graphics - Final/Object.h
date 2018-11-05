@@ -22,9 +22,10 @@ protected:
 	//-----Transform Variables
 
 	glm::vec3 Position;
+	glm::vec3 Center;
 	glm::vec3 Scale;
-	
 	glm::mat4 Model;
+	
 	
 
 	//------Movement
@@ -33,6 +34,7 @@ protected:
 	float RotSpd;
 	float Friction;
 	glm::vec3 Velocity;
+	glm::vec3 Acceleration;
 
 	//-----Thrust Directions
 	//Base
@@ -99,6 +101,7 @@ public:
 	bool GetActive() { return Active; }
 
 	glm::vec3 GetPosition() { return Position; }
+	glm::vec3 GetCenter() { return Center; }
 	glm::vec3 GetScale() { return Scale; }
 	glm::vec3 GetVelocity() { return Velocity; }
 
@@ -122,4 +125,8 @@ public:
 
 	//Movement Func
 	void RotateOnAxis(glm::vec3 Axis);
+
+	//Functional
+	float map(float Value, float in_min, float in_max, float out_min, float out_max);
+
 };

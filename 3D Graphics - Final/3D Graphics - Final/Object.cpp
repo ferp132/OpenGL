@@ -52,11 +52,14 @@ void Object::Init(int MeshType, const std::string & TextureFP, const std::string
 
 void Object::Update(float deltaTime)
 {
-	glm::mat4 ScaleMat = glm::scale(glm::mat4(), Scale);
-	glm::mat4 Trans = glm::translate(glm::mat4(1.0f), Position + Scale * glm::vec3(0.5, 0.5, 0.5));
 	
+
 	//Movement
+	Velocity += Acceleration;
+	Velocity = glm::clamp(Velocity, -MaxSpd, MaxSpd);
 	Position += Velocity * deltaTime;
+	Acceleration *= 0;
+	Center = Position + Scale * glm::vec3(0.5);
 
 	//-----Rotation
 	//x rotation
@@ -99,6 +102,8 @@ void Object::Update(float deltaTime)
 
 	AppUpDir = QuatRot * BaseUpDir;
 
+	glm::mat4 ScaleMat = glm::scale(glm::mat4(), Scale);
+	glm::mat4 Trans = glm::translate(glm::mat4(1.0f), Center);
 
 	//Set Model Vector
 	Model = Trans * RotMatrix * ScaleMat;
@@ -117,4 +122,11 @@ void Object::RotateOnAxis(glm::vec3 Axis)
 	Rotx += RotSpd * Axis.x;
 	Roty += RotSpd * Axis.y;
 	Rotz += RotSpd * Axis.z;
+}
+
+float Object::map(float Value, float in_min, float in_max, float out_min, float out_max)
+{
+	
+		return (Value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+	
 }
