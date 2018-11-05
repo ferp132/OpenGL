@@ -16,6 +16,7 @@ void Enemy::MoveTo(glm::vec3 toPosition, int newmovetype, Path initPath)
 	case SEEK:
 	{
 		GameManager::GetInstance()->GetEnVec()->at(0).SetScale(glm::vec3(5.0f));
+		GameManager::GetInstance()->GetEnVec()->at(0).SetWanRad(10.0f);
 		Seek();
 		break;
 	}
@@ -26,30 +27,35 @@ void Enemy::MoveTo(glm::vec3 toPosition, int newmovetype, Path initPath)
 		DesPos.z = 0.0f;
 
 		GameManager::GetInstance()->GetEnVec()->at(0).SetScale(glm::vec3(5.0f));
+		GameManager::GetInstance()->GetEnVec()->at(0).SetWanRad(10.0f);
 		Arrive();
 		break;
 	}
 	case WANDER:
 	{
 		GameManager::GetInstance()->GetEnVec()->at(0).SetScale(glm::vec3(5.0f));
+		GameManager::GetInstance()->GetEnVec()->at(0).SetWanRad(10.0f);
 		Wander();
 		break;
 	}
 	case PATH:
 	{
 		GameManager::GetInstance()->GetEnVec()->at(0).SetScale(glm::vec3(5.0f));
+		GameManager::GetInstance()->GetEnVec()->at(0).SetWanRad(10.0f);
 		//PathFollow();
 		break;
 	}
 	case FOLLOW:
 	{
 		GameManager::GetInstance()->GetEnVec()->at(0).SetScale(glm::vec3(10.0f));
+		GameManager::GetInstance()->GetEnVec()->at(0).SetWanRad(5.0f);
 		Follow(GameManager::GetInstance()->GetEnVec()->at(0).GetCenter());
 		break;
 	}
 	case QUEUE:
 	{
 		GameManager::GetInstance()->GetEnVec()->at(0).SetScale(glm::vec3(10.0f));
+		GameManager::GetInstance()->GetEnVec()->at(0).SetWanRad(5.0f);
 		Queue();
 		break;
 	}
@@ -68,14 +74,12 @@ void Enemy::Seek()
 		Steer = glm::clamp(Steer, glm::vec3(-AccSpd), glm::vec3(AccSpd));
 
 
-	Acceleration += Steer;
+		Acceleration += Steer;
 }
 
 void Enemy::Arrive()
 {
-
-
-	glm::vec3 Desired = DesPos - Position;
+	glm::vec3 Desired = DesPos - Center;
 	float Dis = glm::length(Desired);
 
 	Desired = glm::normalize(Desired);
@@ -95,9 +99,9 @@ void Enemy::Arrive()
 
 void Enemy::Wander()
 {
-	glm::vec3 WanderDir = glm::normalize(glm::vec3(500 - rand() % 1000, 500 - rand() % 1000, 500 - rand() % 1000));
+	glm::vec3 WanderDir = glm::normalize(glm::vec3(500 - rand() % 1000, 500 - rand() % 1000, 500 - rand() % 1000) - Center);
 	glm::vec3 WanderSA = WanderDir * WanRad;
-	glm::vec3 WanderPoint = Position + Velocity * 10.0f + WanderSA;
+	glm::vec3 WanderPoint = Center + Velocity * 10.0f + WanderSA;
 
 	DesPos = WanderPoint;
 	Seek();
@@ -122,11 +126,11 @@ void Enemy::Separate()
 {
 	std::vector<Enemy>* EnVec = GameManager::GetInstance()->GetEnVec();
 
-	float DesSep = Scale.x * 1.25;
+	float DesSep = (float)Scale.x * 1.25;
 	glm::vec3 Sum;
 	int count = 0;
 
-	for (int i = 0; i < EnVec->size(); i++)
+	for (unsigned int i = 0; i < EnVec->size(); i++)
 	{
 		float Dis = glm::distance(Center, EnVec->at(i).GetCenter());
 		if (Dis > 0 && Dis < DesSep)
@@ -157,7 +161,7 @@ void Enemy::Avoid()
 	glm::vec3 Sum;
 	int count = 0;
 
-	for (int i = 0; i < ObVec->size(); i++)
+	for (unsigned int i = 0; i < ObVec->size(); i++)
 	{
 		float DesSep = ObVec->at(i).GetScale().x * 2;
 
@@ -253,7 +257,7 @@ void Enemy::Queue()
 	else
 	{
 		DesPos = GameManager::GetInstance()->GetEnVec()->at(ID-1).GetCenter();
-		//Seek();	//Arrive works much better for this code
+		//Seek();	//Arrive looks much better but tends to make the AI push eachother around if Seperate is active
 		Arrive();
 	}
 }

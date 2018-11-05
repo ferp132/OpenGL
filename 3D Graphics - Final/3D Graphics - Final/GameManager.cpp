@@ -66,17 +66,17 @@ void GameManager::Init()
 	GetInstance()->Return.SetActive(true);
 
 	//AI Buttons
-	GetInstance()->Seek.	Init(glm::vec2(50.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Seek", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Arrive.	Init(glm::vec2(50.0f, 100.0f), glm::vec2(0.5f, 0.5f), "Arrive", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Wander.	Init(glm::vec2(50.0f, 150.0f), glm::vec2(0.5f, 0.5f), "Wander", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Follow.	Init(glm::vec2(50.0f, 200.0f), glm::vec2(0.5f, 0.5f), "Follow", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Queue.	Init(glm::vec2(50.0f, 250.0f), glm::vec2(0.5f, 0.5f), "Queue", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Seek.	Init(glm::vec2(50.0f, 50.0f), glm::vec2(1.0f, 1.0f), "Seek", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Arrive.	Init(glm::vec2(50.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Arrive", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Wander.	Init(glm::vec2(50.0f, 150.0f), glm::vec2(1.0f, 1.0f), "Wander", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Follow.	Init(glm::vec2(50.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Follow", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Queue.	Init(glm::vec2(50.0f, 250.0f), glm::vec2(1.0f, 1.0f), "Queue", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
 
-	GetInstance()->Contain.	Init(glm::vec2(50.0f, 350.0f), glm::vec2(0.5f, 0.5f), "Contain", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Seperate.Init(glm::vec2(50.0f, 400.0f), glm::vec2(0.5f, 0.5f), "Seperate", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Avoid.	Init(glm::vec2(50.0f, 450.0f), glm::vec2(0.5f, 0.5f), "Avoid", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Contain.	Init(glm::vec2(50.0f, 350.0f), glm::vec2(1.0f, 1.0f), "Contain", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Seperate.Init(glm::vec2(50.0f, 400.0f), glm::vec2(1.0f, 1.0f), "Seperate", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Avoid.	Init(glm::vec2(50.0f, 450.0f), glm::vec2(1.0f, 1.0f), "Avoid", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
 
-	GetInstance()->Done.	Init(glm::vec2(700.0f, 100.0f), glm::vec2(0.5f, 0.5f), "Done", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Done.	Init(glm::vec2(700.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Done", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	//Menu Object
 	GetInstance()->MenuOb.Init(0, "Resources/Textures/AwesomeFace.png", "Resources/Shaders/Reflection.shader", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(3.0f, 20.0f, 10.0f));
@@ -292,7 +292,7 @@ void GameManager::UpdMenu()
 		Cam.SetRotFollow(true);
 		GetInstance()->PlayAI.SetClicked(false);
 		GetInstance()->SetLives(3);
-		EnMoveType = 2; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
+		EnMoveType = 0; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
 	}
 
 	GetInstance()->MenuOb.RotateOnAxis(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -503,7 +503,7 @@ void GameManager::InstPlay()
 		GetInstance()->EnVec.at(i).SetMaxSpd(50.0f);
 		GetInstance()->EnVec.at(i).SetAccSpd(2.0f);
 		GetInstance()->EnVec.at(i).SetFriction(0.4f);
-		GetInstance()->EnVec.at(i).SetWanRad(5.0f);
+		GetInstance()->EnVec.at(i).SetWanRad(10.0f);
 		GetInstance()->EnVec.at(i).SetConRad(200.0f);
 		GetInstance()->EnVec.at(i).SetID(i);
 	}
@@ -542,8 +542,8 @@ void GameManager::InstAI()
 			glm::vec3(100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100)),
 			glm::vec3(5.0f));
 		GetInstance()->EnVec.at(i).SetMaxSpd(50.0f);
-		GetInstance()->EnVec.at(i).SetAccSpd(2.0f);
-		GetInstance()->EnVec.at(i).SetFriction(0.4f);
+		GetInstance()->EnVec.at(i).SetAccSpd(0.5f);
+		GetInstance()->EnVec.at(i).SetFriction(0.1f);
 		GetInstance()->EnVec.at(i).SetWanRad(5.0f);
 		GetInstance()->EnVec.at(i).SetConRad(200.0f);
 		GetInstance()->EnVec.at(i).SetID(i);

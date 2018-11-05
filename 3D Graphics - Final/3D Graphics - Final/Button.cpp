@@ -39,6 +39,7 @@ void Button::ProcessInput()
 			Clicked = true;
 		}
 	}
+	else Clicked = false;
 }
 
 void Button::Render()
