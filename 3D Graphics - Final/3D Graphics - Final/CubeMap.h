@@ -21,6 +21,8 @@ public:
 	void Init(Camera camera);
 	void Update();
 	void Render();
+
+	GLuint GetTextureID() { return texture.GetID(); }
 	
 private:
 

@@ -2,9 +2,9 @@
 
 void Enemy::MoveTo(glm::vec3 toPosition)
 {
-	MaxSpd = 0.25f;
-	AccSpd = 0.015f;
-	Friction = 0.003f;
+	MaxSpd = 1.0f;
+	AccSpd = 0.06f;
+	Friction = 0.012f;
 
 	glm::vec3 Dir = glm::normalize(toPosition - Position);
 	Velocity += Dir * glm::vec3(AccSpd, AccSpd, AccSpd);

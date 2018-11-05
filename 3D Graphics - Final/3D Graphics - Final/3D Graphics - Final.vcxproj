@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{81D3C115-86EB-40B8-9D4B-63000A0267AB}</ProjectGuid>
     <RootNamespace>My3DGraphicsFinal</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -188,6 +188,7 @@
     <None Include="Resources\Shaders\BlinnPhong.shader" />
     <None Include="Resources\Shaders\CubeMap.shader" />
     <None Include="Resources\Shaders\Phong.shader" />
+    <None Include="Resources\Shaders\Reflection.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

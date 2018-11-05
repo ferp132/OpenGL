@@ -30,6 +30,6 @@ public:
 	bool GetActive() { return Active; }
 
 	//-----Setters
-	void SetActive(bool newActive) { Active = newActive; }
+	void SetActive(bool newActive);
 	void SetClicked(bool newClicked) { Clicked = newClicked; }
 };

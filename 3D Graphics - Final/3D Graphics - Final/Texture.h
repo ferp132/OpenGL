@@ -35,6 +35,7 @@ public:
 	int GetHeight();
 	int GetSlot();
 	int GetChannels();
+	GLuint GetID() { return TextureID; }
 
 	void SetWidth(int NewWidth);
 	void SetHeight(int NewHeight);

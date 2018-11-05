@@ -100,6 +100,7 @@ public:
 
 	glm::vec3 GetPosition() { return Position; }
 	glm::vec3 GetScale() { return Scale; }
+	glm::vec3 GetVelocity() { return Velocity; }
 
 	//Movement Getters
 	float GetMaxSpd() { return MaxSpd; }
@@ -118,4 +119,7 @@ public:
 	glm::vec3 GetAppFoward()	{ return AppFoward; }
 	glm::vec3 GetAppRight()		{ return AppRight; }
 	glm::vec3 GetAppLeft()		{ return AppLeft; }
+
+	//Movement Func
+	void RotateOnAxis(glm::vec3 Axis);
 };

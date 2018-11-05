@@ -17,6 +17,7 @@ void Button::Init(glm::vec2 initPosition, glm::vec2 initScale, std::string initT
 	Position = initPosition;
 	Scale = initScale;
 	Clicked = false;
+	Active = false;
 }
 
 void Button::Update()
@@ -32,12 +33,9 @@ void Button::ProcessInput()
 
 	if (InputManager::Getinstance()->MouseState[MOUSE_LEFT] == DOWN)
 	{
-		textlab.SetText("Clicking");
-
 		if (Mousex > Position.x && Mousex < Position.x + TextSize.x
-			&& Mousey < Position.y && Mousey > 800 - Position.y - TextSize.y)
+			&& Mousey < 800 - Position.y && Mousey > 800 - Position.y - TextSize.y)
 		{
-			textlab.SetText("Pressed");
 			Clicked = true;
 		}
 	}
@@ -47,4 +45,11 @@ void Button::ProcessInput()
 void Button::Render()
 {
 	textlab.Render();
+}
+
+void Button::SetActive(bool newActive)
+{
+	Active = newActive;
+	textlab.SetActive(newActive);
+	Clicked = false;
 }

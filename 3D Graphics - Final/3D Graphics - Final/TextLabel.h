@@ -48,6 +48,8 @@ private:
 	glm::mat4 proj;
 	std::map<GLchar, FontChar> Characters;
 
+	bool Active;
+
 public:
 	TextLabel();
 	~TextLabel();
@@ -60,6 +62,8 @@ public:
 	void SetColor(glm::vec3 NewColor) { Color = NewColor; }
 	void SetScale(GLfloat NewScale) { Scale = NewScale; }
 	void SetPosition(glm::vec2 NewPos) { Position = NewPos; }
+	void SetActive(bool newActive) { Active = newActive; }
 	glm::vec2 GetTextSize() { return TextSize; }
+	bool GetActive() { return Active; }
 };
 #endif // !__TEXTLABEL_H_

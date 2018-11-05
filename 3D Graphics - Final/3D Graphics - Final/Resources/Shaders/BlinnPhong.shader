@@ -40,7 +40,7 @@ uniform float		ambientStr = 0.1f;
 uniform vec3		ambientColor = vec3(0.1f, 0.2f, 1.0f);
 //-----Diffuse
 uniform vec3		lightColor = vec3(1.0f, 1.0f, 5.0f);
-uniform vec3		lightPos = vec3(-2000.0f, 500.0f, 2000.0f);
+uniform vec3		lightPos = vec3(-500.0f, 500.0f, 500.0f);
 //-----Specular
 uniform vec3		camPos;		// = vec3(0.0f, 0.0f, 2.0f);
 uniform float		lightSpecStr = 10.0f;
@@ -61,8 +61,8 @@ void main()
 
 	//-----Specular Highlight
 	vec3 negViewDir = normalize(camPos - fragPos);
-	vec3 reflectDir = reflect(lightDir, norm);
-	float spec = pow(max(dot(negViewDir, reflectDir), 0.0f), shininess);
+	vec3 halfwayvec = normalize(-lightDir + negViewDir);
+	float spec = pow(max(dot(norm, halfwayvec), 0.0f), shininess);
 	vec3 specular = lightSpecStr * spec * lightColor;
 
 	vec4 texColor = texture(u_Texture, v_TexCoord);

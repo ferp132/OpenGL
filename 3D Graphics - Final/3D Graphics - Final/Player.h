@@ -8,5 +8,5 @@ private:
 	bool PlayingFX = 0;
 
 public:
-	void ProcessInput();
+	void ProcessInput(float deltaTime);
 };

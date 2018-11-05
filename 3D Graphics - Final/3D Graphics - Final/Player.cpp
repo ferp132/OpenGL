@@ -2,15 +2,8 @@
 #include "InputManager.h"
 #include "GameManager.h"
 
-void Player::ProcessInput()
+void Player::ProcessInput(float deltaTime)
 {
-	//Set Applied Vector Based on orientation
-	AppFoward	= QuatRot * BaseFoward;
-	AppLeft		= QuatRot * BaseLeft;
-	AppRight	= QuatRot * BaseRight;
-
-	AppUpDir = QuatRot * BaseUpDir;
-
 	if (InputManager::Getinstance()->MouseState[MOUSE_LEFT] == DOWN)
 	{	
 	}
@@ -18,29 +11,29 @@ void Player::ProcessInput()
 	//-----X axis Rotation
 	if (InputManager::Getinstance()->KeyState['w'] == DOWN)
 	{
-		Rotx += RotSpd;
+		Rotx += RotSpd * deltaTime;
 	}
 	if (InputManager::Getinstance()->KeyState['s'] == DOWN)
 	{
-		Rotx -= RotSpd;	
+		Rotx -= RotSpd * deltaTime;
 	}
 	//-----Z axis Rotation
 	if (InputManager::Getinstance()->KeyState['d'] == DOWN)
 	{
-		Rotz -= RotSpd;
+		Rotz -= RotSpd * deltaTime;
 	}
 	if (InputManager::Getinstance()->KeyState['a'] == DOWN)
 	{
-		Rotz += RotSpd;
+		Rotz += RotSpd * deltaTime;
 	}
 	//-----Y axis Rotation
 	if (InputManager::Getinstance()->KeyState['x'] == DOWN)
 	{
-		Roty += RotSpd;
+		Roty += RotSpd * deltaTime;
 	}
 	if (InputManager::Getinstance()->KeyState['z'] == DOWN)
 	{
-		Roty -= RotSpd;
+		Roty -= RotSpd * deltaTime;
 	}
 	//-----Foward Thrust
 	if (InputManager::Getinstance()->KeyState[' '] == DOWN)
@@ -70,6 +63,10 @@ void Player::ProcessInput()
 	{
 		PlayingFX = false;
 	}
+	if (InputManager::Getinstance()->KeyState['t'] == DOWN)
+	{
+		GameManager::GetInstance()->SetLives(0);
+	}
 
 
 	if (Velocity.x > 0) Velocity.x -= Friction;
@@ -78,5 +75,4 @@ void Player::ProcessInput()
 	if (Velocity.y < 0) Velocity.y += Friction;
 	if (Velocity.z > 0) Velocity.z -= Friction;
 	if (Velocity.z < 0) Velocity.z += Friction;
-	Position += Velocity;
 }

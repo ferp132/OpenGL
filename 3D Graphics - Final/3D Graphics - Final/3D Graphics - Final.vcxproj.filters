@@ -181,5 +181,8 @@
     <None Include="Resources\Shaders\BlinnPhong.shader">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Resources\Shaders\Reflection.shader">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -68,7 +68,7 @@ void CubeMap::Init(Camera camera)
 
 void CubeMap::Update()
 {
-	glm::mat4 model = glm::scale(glm::mat4(), glm::vec3(2000.0f, 2000.0f, 2000.0f));
+	glm::mat4 model = glm::scale(glm::mat4(), glm::vec3(20000.0f, 20000.0f, 20000.0f));
 	MVP = GameManager::GetInstance()->GetCam()->GetPxV() * model;
 }
 

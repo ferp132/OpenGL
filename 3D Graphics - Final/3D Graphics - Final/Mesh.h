@@ -21,6 +21,8 @@ protected:
 	//-----Shader/Texture
 	Shader Shad;
 	Texture Tex;
+
+	bool Reflect;
 public:
 	//-----Con/Destructor
 	Mesh(const std::string & TextureFP, const std::string & ShaderFP);

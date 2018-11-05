@@ -78,6 +78,9 @@ CubeMesh::CubeMesh(const std::string & TextureFP, const std::string & ShaderFP)
 	Shad.Bind();
 	Shad.setUniform1i("u_Texture", 0);						//Set Texture Uniform
 	Shad.Unbind();
+
+	if (TextureFP == "Resources/Shaders/Reflection.shader") Reflect = true;
+	else Reflect = false;
 }
 
 CubeMesh::~CubeMesh()

@@ -55,6 +55,9 @@ void Object::Update(float deltaTime)
 	glm::mat4 ScaleMat = glm::scale(glm::mat4(), Scale);
 	glm::mat4 Trans = glm::translate(glm::mat4(1.0f), Position + Scale * glm::vec3(0.5, 0.5, 0.5));
 	
+	//Movement
+	Position += Velocity * deltaTime;
+
 	//-----Rotation
 	//x rotation
 	glm::vec3 Axisx(1.0f, 0.0f, 0.0f);
@@ -89,6 +92,15 @@ void Object::Update(float deltaTime)
 	QuatRot = QuatRotx * QuatRoty * QuatRotz;
 	RotMatrix = glm::toMat4(QuatRotx * QuatRoty * QuatRotz);
 
+	//Set Applied Vector Based on orientation
+	AppFoward = QuatRot * BaseFoward;
+	AppLeft = QuatRot * BaseLeft;
+	AppRight = QuatRot * BaseRight;
+
+	AppUpDir = QuatRot * BaseUpDir;
+
+
+	//Set Model Vector
 	Model = Trans * RotMatrix * ScaleMat;
 }
 
@@ -98,4 +110,11 @@ void Object::Render()
 	glm::vec3 CamPos = GameManager::GetInstance()->GetCam()->getPosition();
 
 	mesh->Render(MVP, Model, CamPos);
+}
+
+void Object::RotateOnAxis(glm::vec3 Axis)
+{
+	Rotx += RotSpd * Axis.x;
+	Roty += RotSpd * Axis.y;
+	Rotz += RotSpd * Axis.z;
 }

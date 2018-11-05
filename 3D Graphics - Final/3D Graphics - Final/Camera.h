@@ -20,6 +20,8 @@ public:
 	glm::mat4 GetPxV();
 	bool getPosType() { return PosType; }
 	void setPosType(bool newPosType) { PosType = newPosType; }
+	void SetFollowing(Object* newFollowing) { Following = newFollowing; }
+	void SetRotFollow(bool newFollowing) { RotbyFollowing = true; }
 private:
 	glm::vec3 CamPos	 = glm::vec3(0.0f,  0.0f,  3.0f);
 	glm::vec3 CamLookDir = glm::vec3(0.0f,  0.0f, -1.0f);
@@ -33,6 +35,7 @@ private:
 	float WinHeight;
 
 	bool PosType;
+	bool RotbyFollowing;
 };
 
 #endif // ! __CAMERA_H__

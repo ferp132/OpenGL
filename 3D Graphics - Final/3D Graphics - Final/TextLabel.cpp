@@ -27,6 +27,7 @@ TextLabel::~TextLabel()
 
 void TextLabel::Init(std::string InitText, std::string InitFont, glm::vec2 InitPos, glm::vec3 InitColor, float InitScale)
 {
+	Active = false;
 	Text = InitText;
 	Color = InitColor;
 	Scale = InitScale;
