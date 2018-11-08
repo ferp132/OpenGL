@@ -13,6 +13,7 @@ private:
 	glm::vec2 Position;
 	glm::vec2 Scale;
 
+	bool Hover;
 	bool Clicked;
 	bool Active;
 
@@ -28,9 +29,11 @@ public:
 	//-----Getters
 	bool GetClicked() { return Clicked; }
 	bool GetActive() { return Active; }
+	bool FetHover() { return Hover; }
 
 	//-----Setters
 	void SetActive(bool newActive);
 	void SetClicked(bool newClicked) { Clicked = newClicked; }
+	void SetHover(bool NewHover) { Hover = NewHover; }
 	void SetColor(glm::vec3 newColor) { textlab.SetColor(newColor); }
 };
