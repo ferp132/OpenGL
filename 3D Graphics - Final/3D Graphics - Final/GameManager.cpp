@@ -25,6 +25,131 @@ GameManager * GameManager::GetInstance()
 	return Instance;
 }
 
+void GameManager::InitNetwork()
+{
+	char* _pcPacketData = 0;
+	_pcPacketData = new char[MAX_MESSAGE_LENGTH];
+	strcpy_s(_pcPacketData, strlen("") + 1, "");
+
+	//Get the instance of the network
+	CNetwork& _rNetwork = CNetwork::GetInstance();
+	_rNetwork.StartUp();
+
+	_pClient = nullptr;
+	_pServer = nullptr;
+
+	_InputBuffer = new CInputLineBuffer(MAX_MESSAGE_LENGTH);
+
+	//Run receive on a separate thread so that it does not block the main client thread.
+	if (_eNetworkEntityType == CLIENT) //if network entity is a client
+	{
+
+		_pClient = static_cast<CClient*>(_rNetwork.GetInstance().GetNetworkEntity());
+		_ClientReceiveThread = std::thread(&CClient::ReceiveData, _pClient, std::ref(_pcPacketData));
+
+	}
+
+	//Run receive of server also on a separate thread 
+	else if (_eNetworkEntityType == SERVER) //if network entity is a server
+	{
+
+		_pServer = static_cast<CServer*>(_rNetwork.GetInstance().GetNetworkEntity());
+		_ServerReceiveThread = std::thread(&CServer::ReceiveData, _pServer, std::ref(_pcPacketData));
+
+	}
+}
+
+void GameManager::UpdateNetWork()
+{
+	while (_rNetwork.IsOnline())
+	{
+		if (_eNetworkEntityType == CLIENT) //if network entity is a client
+		{
+			_pClient = static_cast<CClient*>(_rNetwork.GetInstance().GetNetworkEntity());
+
+			if (_pClient->GetExit()) break;
+
+			//Prepare for reading input from the user
+			
+
+
+
+
+
+
+
+
+
+			//------------------------------------------------------------------------
+
+			//Get input from the user
+			if (_InputBuffer->Update())
+			{
+				// we completed a message, lets send it:
+				int _iMessageSize = static_cast<int>(strlen(_InputBuffer->GetString()));
+
+				//check if command
+				if (_InputBuffer->GetString()[0] == '!')
+				{
+					TPacket CommandPacket;
+					CommandPacket.Serialize(COMMAND, const_cast<char*>(_InputBuffer->GetString()));
+					_rNetwork.GetInstance().GetNetworkEntity()->SendData(CommandPacket.PacketData);
+				}
+				else
+				{
+					//send message
+					//Put the message into a packet structure
+					TPacket _packet;
+					_packet.Serialize(DATA, const_cast<char*>(_InputBuffer->GetString()));
+					_rNetwork.GetInstance().GetNetworkEntity()->SendData(_packet.PacketData);
+					//Clear the Input Buffer
+					_InputBuffer->ClearString();
+					//Print To Screen Top
+					_InputBuffer->PrintToScreenTop();
+				}
+
+
+			}
+			if (_pClient != nullptr)
+			{
+				//If the message queue is empty 
+				if (_pClient->GetWorkQueue()->empty())
+				{
+					//Don't do anything
+				}
+				else
+				{
+					//Retrieve off a message from the queue and process it
+					std::string temp;
+					_pClient->GetWorkQueue()->pop(temp);
+					_pClient->ProcessData(const_cast<char*>(temp.c_str()));
+				}
+			}
+
+		}
+		else //if you are running a server instance
+		{
+
+			if (_pServer != nullptr)
+			{
+				if (!_pServer->GetWorkQueue()->empty())
+				{
+					_rNetwork.GetInstance().GetNetworkEntity()->GetRemoteIPAddress(_cIPAddress);
+					//std::cout << _cIPAddress
+					//<< ":" << _rNetwork.GetInstance().GetNetworkEntity()->GetRemotePort() << "> " << _pcPacketData << std::endl;
+
+					//Retrieve off a message from the queue and process it
+					std::pair<sockaddr_in, std::string> dataItem;
+					_pServer->GetWorkQueue()->pop(dataItem);
+					_pServer->ProcessData(dataItem);
+				}
+			}
+		}
+
+
+	} //End of while network is Online
+}
+
 void GameManager::Init()
 {
 	//-----Set Current Scene to main menu
@@ -35,7 +160,7 @@ void GameManager::Init()
 	GetInstance()->timeElapsed = 0;
 
 	//-----Seed Random
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	//-----Init Audio
 	GetInstance()->AS.Init();
@@ -56,6 +181,15 @@ void GameManager::Init()
 	GetInstance()->CMap.Init(GetInstance()->Cam);
 
 	//Buttons
+
+	//Networking Buttons
+	GetInstance()->Client.Init(glm::vec2(50.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Client", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
+	GetInstance()->Client.SetActive(true);
+	GetInstance()->Server.Init(glm::vec2(700.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Server", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
+	GetInstance()->Server.SetActive(true);
+
+	//Menu Buttons
+
 	GetInstance()->Play.Init	(glm::vec2(100.0f, 500.0f), glm::vec2(2.0f, 2.0f), "Play", "Resources/Fonts/arial.ttf",	glm::vec3(0.1f, 1.0f, 0.2f));
 	GetInstance()->Play.SetActive(true);
 	GetInstance()->PlayAI.Init	(glm::vec2(100.0f, 350.0f), glm::vec2(2.0f, 2.0f), "Play AI Scene", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
@@ -104,7 +238,8 @@ void GameManager::Init()
 	GetInstance()->path.AddPoint(glm::vec3(0.0f, -10000.0f, 0.0f));
 
 
-
+	//-----Init Network
+	GetInstance()->InitNetwork();
 }
 
 void GameManager::Render(void)
@@ -196,6 +331,10 @@ void GameManager::RenMenu()
 	GetInstance()->Play.Render();
 	GetInstance()->PlayAI.Render();
 	GetInstance()->Exit.Render();	
+
+	//Networking Buttons
+	GetInstance()->Client.Render();
+	GetInstance()->Server.Render();
 }
 
 void GameManager::RenPlay()
@@ -273,6 +412,8 @@ void GameManager::UpdMenu()
 	GetInstance()->Play.Update();
 	GetInstance()->PlayAI.Update();
 	GetInstance()->Exit.Update();
+	GetInstance()->Client.Update();
+	GetInstance()->Server.Update();
 
 	if (GetInstance()->Play.GetClicked())
 	{
@@ -294,6 +435,15 @@ void GameManager::UpdMenu()
 		GetInstance()->SetLives(3);
 		EnMoveType = 0; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
 	}
+	if (Client.GetClicked()) 
+	{
+		
+	}
+	if (Server.GetClicked())
+	{
+		
+	}
+
 
 	GetInstance()->MenuOb.RotateOnAxis(glm::vec3(0.0f, 1.0f, 0.0f));
 	GetInstance()->MenuOb.Update(deltaTime);

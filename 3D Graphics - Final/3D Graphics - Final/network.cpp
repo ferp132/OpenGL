@@ -19,7 +19,6 @@
 
 //Local Includes
 #include "utils.h"
-#include "consoletools.h"
 #include "server.h"
 #include "client.h"
 

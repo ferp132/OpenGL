@@ -63,7 +63,10 @@ public:
 	void SetScale(GLfloat NewScale) { Scale = NewScale; }
 	void SetPosition(glm::vec2 NewPos) { Position = NewPos; }
 	void SetActive(bool newActive) { Active = newActive; }
+
+	//-----Getters
 	glm::vec2 GetTextSize() { return TextSize; }
 	bool GetActive() { return Active; }
+	glm::vec2 GetPosition() { return Position; }
 };
 #endif // !__TEXTLABEL_H_

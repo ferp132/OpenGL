@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;SOIL.lib;fmod_vc.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -139,12 +139,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="client.cpp" />
     <ClCompile Include="CubeMap.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="inputlinebuffer.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Mesh_Cube.cpp" />
     <ClCompile Include="Mesh_Pyramid.cpp" />
     <ClCompile Include="Mesh_Sphere.cpp" />
+    <ClCompile Include="network.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -155,7 +158,9 @@
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="server.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="socket.cpp" />
     <ClCompile Include="TextLabel.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexArray.cpp" />
@@ -163,11 +168,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="client.h" />
     <ClInclude Include="CubeMap.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="InputLineBuffer.h" />
     <ClInclude Include="Mesh_Cube.h" />
     <ClInclude Include="Mesh_Pyramid.h" />
     <ClInclude Include="Mesh_Sphere.h" />
+    <ClInclude Include="network.h" />
+    <ClInclude Include="networkentity.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Path.h" />
@@ -178,12 +187,16 @@
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="server.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="socket.h" />
     <ClInclude Include="TextLabel.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="VertexArray.h" />
     <ClInclude Include="VertexBuffer.h" />
     <ClInclude Include="VertexBufferLayout.h" />
+    <ClInclude Include="WorkQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.shader" />

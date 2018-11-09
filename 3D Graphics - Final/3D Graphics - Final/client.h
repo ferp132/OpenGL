@@ -21,6 +21,7 @@
 // Local Includes
 #include "networkentity.h"
 #include "WorkQueue.h"
+#include <winsock.h>
 
 // Types
 

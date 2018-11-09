@@ -31,15 +31,21 @@ void Button::ProcessInput()
 	int Mousey = InputManager::Getinstance()->GetMouseY();
 	glm::vec2 TextSize = textlab.GetTextSize();
 
-	if (InputManager::Getinstance()->MouseState[MOUSE_LEFT] == DOWN)
+
+	if (Mousex > Position.x && Mousex < Position.x + TextSize.x
+		&& Mousey < 800 - Position.y && Mousey > 800 - Position.y - TextSize.y)
 	{
-		if (Mousex > Position.x && Mousex < Position.x + TextSize.x
-			&& Mousey < 800 - Position.y && Mousey > 800 - Position.y - TextSize.y)
+		textlab.SetScale(Scale.x * 1.25f);
+
+		if (InputManager::Getinstance()->MouseState[MOUSE_LEFT] == DOWN)
 		{
-			Clicked = true;
+				Clicked = true;
 		}
+		else	Clicked = false;
+
+
 	}
-	else Clicked = false;
+	else textlab.SetScale(Scale.x);
 }
 
 void Button::Render()

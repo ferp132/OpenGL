@@ -10,6 +10,20 @@
 #include "Dependencies\freeglut\freeglut.h"
 */
 
+//-----Networking
+#include <Windows.h>
+#include <cassert>
+#include <thread>
+
+#include "network.h"
+#include "client.h"
+#include "server.h"
+#include "InputLineBuffer.h"
+
+#include <functional>
+
+//
+
 #include "AudioSystem.h"
 #include "TextLabel.h"
 
@@ -44,6 +58,11 @@ private:
 	//-----Objects for Main Menu
 	Object MenuOb;
 	//Buttons
+	
+	//Networking
+	Button Client;
+	Button Server;
+
 	Button Play;
 	Button PlayAI;
 	Button Exit;
@@ -95,6 +114,26 @@ private:
 	bool Sep;
 	bool avoid;
 
+	//-----Networking
+
+	char* _pcPacketData; //A local buffer to receive packet data info
+
+
+	unsigned char _ucChoice;
+	EEntityType _eNetworkEntityType;
+	CInputLineBuffer* _InputBuffer;
+	std::thread _ClientReceiveThread, _ServerReceiveThread;
+
+	char _cIPAddress[MAX_ADDRESS_LENGTH]; // An array to hold the IP Address as a string
+										  //ZeroMemory(&_cIPAddress, strlen(_cIPAddress));
+
+	//A pointer to hold a client instance
+	CClient* _pClient;
+	//A pointer to hold a server instance
+	CServer* _pServer;
+
+	CNetwork& _rNetwork;
+
 public:
 	static void Init();
 	static void Render(void);
@@ -144,4 +183,8 @@ public:
 	void SetContain(bool newBool) { Con = newBool; }
 	void SetSep(bool newBool) { Sep = newBool; }
 	void Setavoid(bool newBool) { avoid = newBool; }
+
+	//-----Init Networking
+	void InitNetwork();
+	void UpdateNetWork();
 };

@@ -18,7 +18,6 @@
 //Local Includes
 #include "utils.h"
 #include "network.h"
-#include "consoletools.h"
 #include "socket.h"
 
 
@@ -58,7 +57,26 @@ bool CServer::Initialise()
 	m_pServerSocket = new CSocket();
 
 	//Get the port number to bind the socket to
-	unsigned short _usServerPort = QueryPortNumber(DEFAULT_SERVER_PORT);
+	unsigned short _usServerPort;
+
+	int iPort = 0;
+	while (true)
+	{
+		char Port[128];
+
+		iPort = atoi(Port);
+		if (iPort != 0)
+		{
+			_usServerPort = (unsigned short)iPort;
+			break;
+		}
+		if (DEFAULT_SERVER_PORT != 0)
+		{
+			_usServerPort = DEFAULT_SERVER_PORT;
+			break;
+		}
+
+	}
 
 	//Initialise the socket to the local loop back address and port number
 	if (!m_pServerSocket->Initialise(_usServerPort))
