@@ -18,10 +18,9 @@ private:
 	bool Active;
 
 public:
-	Button();
+	Button(glm::vec2 initPosition, glm::vec2 initScale, std::string initText, std::string initFont, glm::vec3 initTextColour);
 	~Button();
 
-	void Init(glm::vec2 initPosition, glm::vec2 initScale, std::string initText, std::string initFont, glm::vec3 initTextColour);
 	void Update();
 	void ProcessInput();
 	void Render();

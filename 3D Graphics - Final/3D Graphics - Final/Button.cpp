@@ -2,16 +2,7 @@
 #include "InputManager.h"
 #include "GameManager.h"
 
-Button::Button()
-{
-	
-}
-
-Button::~Button()
-{
-}
-
-void Button::Init(glm::vec2 initPosition, glm::vec2 initScale, std::string initText, std::string initFont, glm::vec3 initTextColour)
+Button::Button(glm::vec2 initPosition, glm::vec2 initScale, std::string initText, std::string initFont, glm::vec3 initTextColour)
 {
 	textlab.Init(initText, initFont, initPosition, initTextColour, initScale.x);
 	Position = initPosition;
@@ -19,6 +10,12 @@ void Button::Init(glm::vec2 initPosition, glm::vec2 initScale, std::string initT
 	Clicked = false;
 	Active = false;
 }
+
+Button::~Button()
+{
+}
+
+
 
 void Button::Update()
 {

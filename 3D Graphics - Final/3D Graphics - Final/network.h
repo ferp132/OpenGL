@@ -18,6 +18,7 @@
 //Types
 enum EEntityType
 {
+	NONE = 0,
 	CLIENT = 1,
 	SERVER
 };

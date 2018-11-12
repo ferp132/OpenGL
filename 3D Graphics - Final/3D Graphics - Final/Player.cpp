@@ -1,6 +1,24 @@
 #include "Player.h"
 #include "InputManager.h"
 #include "GameManager.h"
+#include "Mesh_Pyramid.h"
+
+Player::Player()
+{
+	mesh		= new PyramidMesh("Resources/Textures/AwesomeFace.png", "Resources/Shaders/BlinnPhong.shader");
+	Position	= glm::vec3(0.0f, 0.0f, 0.0f);
+	Scale = glm::vec3(1.0f, 7.5f, 1.0f);
+	Velocity	= glm::vec3(0.0f, 0.0f, 0.0f);
+
+	//-----Rotation
+	Rotx = 0.0f;
+	Roty = 0.0f;
+	Rotz = 0.0f;
+}
+
+Player::~Player()
+{
+}
 
 void Player::ProcessInput(float deltaTime)
 {

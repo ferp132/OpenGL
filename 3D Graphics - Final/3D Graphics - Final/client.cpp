@@ -66,7 +66,7 @@ bool CClient::Initialise()
 	ZeroMemory(&_cServerIPAddress, 128);
 	char _cServerPort[10];
 	ZeroMemory(&_cServerPort, 10);
-	unsigned short _usServerPort;
+//	unsigned short _usServerPort;
 
 	//Local variable to hold the index of the server chosen to connect to
 	char _cServerChosen[5];
@@ -87,7 +87,7 @@ bool CClient::Initialise()
 	m_pClientSocket = new CSocket();
 	
 	//Get the port number to bind the socket to
-	_usServerPort;
+	unsigned short _usClientPort = DEFAULT_CLIENT_PORT;
 
 	int iPort = 0;
 	while (true)
@@ -97,15 +97,20 @@ bool CClient::Initialise()
 		iPort = atoi(Port);
 		if (iPort != 0)
 		{
-			_usServerPort = (unsigned short)iPort;
+			_usClientPort = (unsigned short)iPort;
 			break;
 		}
-		if (DEFAULT_SERVER_PORT != 0)
+		if (DEFAULT_CLIENT_PORT != 0)
 		{
-			_usServerPort = DEFAULT_SERVER_PORT;
+			_usClientPort = DEFAULT_CLIENT_PORT;
 			break;
 		}
 
+	}
+
+	if (!m_pClientSocket->Initialise(_usClientPort))
+	{
+		return false;
 	}
 
 	//Set the client's online status to true
@@ -133,12 +138,15 @@ bool CClient::Initialise()
 				{
 					std::cout << std::endl << "[" << i << "]" << " SERVER : found at " << ToString(m_vecServerAddr[i]) << std::endl;
 				}
+
 				std::cout << "Choose a server number to connect to :";
 				gets_s(_cServerChosen);
 
 				_uiServerIndex = atoi(_cServerChosen);
+				//_uiServerIndex = 0;
+
 				m_ServerSocketAddress.sin_family = AF_INET;
-				m_ServerSocketAddress.sin_port = m_vecServerAddr[_uiServerIndex].sin_port;
+				//m_ServerSocketAddress.sin_port = m_vecServerAddr[_uiServerIndex].sin_port;
 				m_ServerSocketAddress.sin_addr.S_un.S_addr = m_vecServerAddr[_uiServerIndex].sin_addr.S_un.S_addr;
 				std::string _strServerAddress = ToString(m_vecServerAddr[_uiServerIndex]);
 				std::cout << "Attempting to connect to server at " << _strServerAddress << std::endl;

@@ -8,5 +8,9 @@ private:
 	bool PlayingFX = 0;
 
 public:
+
+	Player();
+	~Player();
+
 	void ProcessInput(float deltaTime);
 };

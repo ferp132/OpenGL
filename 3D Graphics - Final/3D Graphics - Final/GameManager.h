@@ -35,6 +35,9 @@
 #include "Button.h"
 #include "Path.h"
 
+// make sure the winsock lib is included...
+#pragma comment(lib,"ws2_32.lib")
+
 enum Scene {MENU, PLAY, PLAYAI, LOSS};
 
 class GameManager
@@ -55,38 +58,15 @@ private:
 	Renderer	Ren;
 	AudioSystem AS;
 
-	//-----Objects for Main Menu
-	Object MenuOb;
-	//Buttons
+
 	
-	//Networking
 	map<std::string, Button*> ButMap;
 
-	Button Client;
-	Button Server;
-
-	Button Play;
-	Button PlayAI;
-	Button Exit;
-	Button Return;
-
-	//Buttons for AI
-	Button Seek;
-	Button Arrive;
-	Button Wander;
-	Button Follow;
-	Button Queue;
-
-	Button Contain;
-	Button Seperate;
-	Button Avoid;
-
-	Button Done;
-
 	//-----Objects;
+	Object MenuOb;
 	vector<Object>	ObVec;
 	vector<Enemy>	EnVec;
-	Player			player;
+	map<std::string, Player*> PlayerMap;
 
 	//CubeMap
 	CubeMap CMap;
@@ -105,6 +85,9 @@ private:
 	float previousTimeStamp;
 	float deltaTime;
 	float timeElapsed;
+
+	//-----Font
+	const char* ftArial;
 
 	//-----AI
 	int EnMoveType;
@@ -132,7 +115,7 @@ private:
 	//A pointer to hold a server instance
 	CServer* _pServer;
 
-	CNetwork& _rNetwork;
+	CNetwork& _rNetwork = CNetwork::GetInstance();
 
 public:
 	static void Init();
@@ -187,4 +170,7 @@ public:
 	//-----Init Networking
 	void InitNetwork();
 	void UpdateNetWork();
+
+	void InitButtons();
+	void InitPlayer();
 };

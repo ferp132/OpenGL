@@ -7,7 +7,9 @@ GameManager* GameManager::Instance = NULL;
 
 GameManager::GameManager()
 {
-
+	//CNetwork& _rNetwork = CNetwork::GetInstance();
+	_rNetwork.StartUp();
+	//GetInstance()->_eNetworkEntityType = NONE;
 }
 
 GameManager::~GameManager()
@@ -40,12 +42,17 @@ void GameManager::InitNetwork()
 
 	_InputBuffer = new CInputLineBuffer(MAX_MESSAGE_LENGTH);
 
+	if (!_rNetwork.GetInstance().Initialise(_eNetworkEntityType))
+	{
+		std::cout << "Unable to initialise the Network........";
+	}
+
 	//Run receive on a separate thread so that it does not block the main client thread.
 	if (_eNetworkEntityType == CLIENT) //if network entity is a client
 	{
 
 		_pClient = static_cast<CClient*>(_rNetwork.GetInstance().GetNetworkEntity());
-		_ClientReceiveThread = std::thread(&CClient::ReceiveData, _pClient, std::ref(_pcPacketData));
+		GetInstance()->_ClientReceiveThread = std::thread(&CClient::ReceiveData, _pClient, std::ref(_pcPacketData));
 
 	}
 
@@ -54,20 +61,20 @@ void GameManager::InitNetwork()
 	{
 
 		_pServer = static_cast<CServer*>(_rNetwork.GetInstance().GetNetworkEntity());
-		_ServerReceiveThread = std::thread(&CServer::ReceiveData, _pServer, std::ref(_pcPacketData));
+		GetInstance()->_ServerReceiveThread = std::thread(&CServer::ReceiveData, _pServer, std::ref(_pcPacketData));
 
 	}
 }
 
-	void GameManager::UpdateNetWork()
+void GameManager::UpdateNetWork()
 {
-	while (_rNetwork.IsOnline())
+	if (_rNetwork.IsOnline())
 	{
 		if (_eNetworkEntityType == CLIENT) //if network entity is a client
 		{
 			_pClient = static_cast<CClient*>(_rNetwork.GetInstance().GetNetworkEntity());
 
-			if (_pClient->GetExit()) break;
+			//if (_pClient->GetExit()) break;
 
 			//Prepare for reading input from the user
 
@@ -83,33 +90,33 @@ void GameManager::InitNetwork()
 			//------------------------------------------------------------------------
 
 			//Get input from the user
-			if (_InputBuffer->Update())
-			{
-				// we completed a message, lets send it:
-				int _iMessageSize = static_cast<int>(strlen(_InputBuffer->GetString()));
+			//if (_InputBuffer->Update())
+			//{
+			//	// we completed a message, lets send it:
+			//	int _iMessageSize = static_cast<int>(strlen(_InputBuffer->GetString()));
 
-				//check if command
-				if (_InputBuffer->GetString()[0] == '!')
-				{
-					TPacket CommandPacket;
-					CommandPacket.Serialize(COMMAND, const_cast<char*>(_InputBuffer->GetString()));
-					_rNetwork.GetInstance().GetNetworkEntity()->SendData(CommandPacket.PacketData);
-				}
-				else
-				{
-					//send message
-					//Put the message into a packet structure
-					TPacket _packet;
-					_packet.Serialize(DATA, const_cast<char*>(_InputBuffer->GetString()));
-					_rNetwork.GetInstance().GetNetworkEntity()->SendData(_packet.PacketData);
-					//Clear the Input Buffer
-					_InputBuffer->ClearString();
-					//Print To Screen Top
-					_InputBuffer->PrintToScreenTop();
-				}
+			//	//check if command
+			//	if (_InputBuffer->GetString()[0] == '!')
+			//	{
+			//		TPacket CommandPacket;
+			//		CommandPacket.Serialize(COMMAND, const_cast<char*>(_InputBuffer->GetString()));
+			//		_rNetwork.GetInstance().GetNetworkEntity()->SendData(CommandPacket.PacketData);
+			//	}
+			//	else
+			//	{
+			//		//send message
+			//		//Put the message into a packet structure
+			//		TPacket _packet;
+			//		_packet.Serialize(DATA, const_cast<char*>(_InputBuffer->GetString()));
+			//		_rNetwork.GetInstance().GetNetworkEntity()->SendData(_packet.PacketData);
+			//		//Clear the Input Buffer
+			//		_InputBuffer->ClearString();
+			//		//Print To Screen Top
+			//		_InputBuffer->PrintToScreenTop();
+			//	}
 
 
-			}
+			
 			if (_pClient != nullptr)
 			{
 				//If the message queue is empty 
@@ -150,8 +157,43 @@ void GameManager::InitNetwork()
 	} //End of while network is Online
 }
 
+void GameManager::InitButtons()
+{
+	//-----Main Menu
+	GetInstance()->ButMap.insert(std::make_pair("Play", new Button(glm::vec2(100.0f, 500.0f), glm::vec2(2.0f, 2.0f), "Play", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("PlayAI", new Button(glm::vec2(100.0f, 350.0f), glm::vec2(2.0f, 2.0f), "Play AI Scene", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("Exit", new Button(glm::vec2(100.0f, 200.0f), glm::vec2(2.0f, 2.0f), "Exit", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+
+	//-----AI Scene
+	GetInstance()->ButMap.insert(std::make_pair("Seek", new Button(glm::vec2(50.0f, 50.0f), glm::vec2(1.0f, 1.0f), "Seek", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Arrive", new Button(glm::vec2(50.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Arrive", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Wander", new Button(glm::vec2(50.0f, 150.0f), glm::vec2(1.0f, 1.0f), "Wander", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Follow", new Button(glm::vec2(50.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Follow", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Queue", new Button(glm::vec2(50.0f, 250.0f), glm::vec2(1.0f, 1.0f), "Queue", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Contain", new Button(glm::vec2(50.0f, 350.0f), glm::vec2(1.0f, 1.0f), "Contain", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Seperate", new Button(glm::vec2(50.0f, 400.0f), glm::vec2(1.0f, 1.0f), "Seperate", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Avoid", new Button(glm::vec2(50.0f, 450.0f), glm::vec2(1.0f, 1.0f), "Avoid", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Done", new Button(glm::vec2(700.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Done", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+
+	//-----Game Scene
+	GetInstance()->ButMap.insert(std::make_pair("Return", new Button(glm::vec2(200.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Return To Menu", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+
+	//Networking
+	GetInstance()->ButMap.insert(std::make_pair("Client", new Button(glm::vec2(50.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Client", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("Server", new Button(glm::vec2(700.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Server", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+
+}
+
+void GameManager::InitPlayer()
+{
+	GetInstance()->PlayerMap["LocalPlayer"] = new Player;
+}
+
 void GameManager::Init()
 {
+	//Set ftArialValue
+	GetInstance()->ftArial = "Resources/Fonts/arial.ttf";
+
 	//-----Set Current Scene to main menu
 	GetInstance()->CurrSc = MENU;
 
@@ -168,50 +210,25 @@ void GameManager::Init()
 	//-----Init Camera
 	GetInstance()->Cam.Init(800, 800, (&GetInstance()->MenuOb));
 
-	//----- Init Text Labels
+	//-----Init Text Labels
 	GetInstance()->LossText.Init("You Lose!!", "Resources/Fonts/arial.ttf", glm::vec2(50.0f, 400.0f), glm::vec3(0.1f, 1.0f, 0.2f), 3.0f);
 	GetInstance()->ScoreText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(50.0f, 30.0f), glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
 	GetInstance()->LivesText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(550.0f, 30.0f), glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
+	GetInstance()->VelocityText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(200.0f, 750.0f), glm::vec3(0.1f, 1.0f, 0.2f), 1.0f);
+
 	GetInstance()->SetScore(0);
 	GetInstance()->SetLives(3);
-	GetInstance()->VelocityText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(200.0f, 750.0f), glm::vec3(0.1f, 1.0f, 0.2f), 1.0f);
+
 
 	//-----Objects Init
 	//CubeMap
 	GetInstance()->CMap.Init(GetInstance()->Cam);
 
+	//Local Player Init
+	GetInstance()->InitPlayer();
+
 	//Buttons
-	GetInstance()->ButMap.insert(std::make_pair("Play", new Button()));
-
-	//Networking Buttons
-	GetInstance()->Client.Init(glm::vec2(50.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Client", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
-	GetInstance()->Client.SetActive(true);
-	GetInstance()->Server.Init(glm::vec2(700.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Server", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
-	GetInstance()->Server.SetActive(true);
-
-	//Menu Buttons
-
-	GetInstance()->Play.Init(glm::vec2(100.0f, 500.0f), glm::vec2(2.0f, 2.0f), "Play", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
-	GetInstance()->Play.SetActive(true);
-	GetInstance()->PlayAI.Init(glm::vec2(100.0f, 350.0f), glm::vec2(2.0f, 2.0f), "Play AI Scene", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
-	GetInstance()->PlayAI.SetActive(true);
-	GetInstance()->Exit.Init(glm::vec2(100.0f, 200.0f), glm::vec2(2.0f, 2.0f), "Exit", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
-	GetInstance()->Exit.SetActive(true);
-	GetInstance()->Return.Init(glm::vec2(200.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Return To Menu", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
-	GetInstance()->Return.SetActive(true);
-
-	//AI Buttons
-	GetInstance()->Seek.Init(glm::vec2(50.0f, 50.0f), glm::vec2(1.0f, 1.0f), "Seek", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Arrive.Init(glm::vec2(50.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Arrive", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Wander.Init(glm::vec2(50.0f, 150.0f), glm::vec2(1.0f, 1.0f), "Wander", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Follow.Init(glm::vec2(50.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Follow", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Queue.Init(glm::vec2(50.0f, 250.0f), glm::vec2(1.0f, 1.0f), "Queue", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-
-	GetInstance()->Contain.Init(glm::vec2(50.0f, 350.0f), glm::vec2(1.0f, 1.0f), "Contain", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Seperate.Init(glm::vec2(50.0f, 400.0f), glm::vec2(1.0f, 1.0f), "Seperate", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Avoid.Init(glm::vec2(50.0f, 450.0f), glm::vec2(1.0f, 1.0f), "Avoid", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-
-	GetInstance()->Done.Init(glm::vec2(700.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Done", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->InitButtons();
 
 	//Menu Object
 	GetInstance()->MenuOb.Init(0, "Resources/Textures/AwesomeFace.png", "Resources/Shaders/Reflection.shader", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(3.0f, 20.0f, 10.0f));
@@ -222,25 +239,10 @@ void GameManager::Init()
 	GetInstance()->MenuOb.SetBaseUp(glm::vec3(0.0f, 1.0f, 0.0f));
 	GetInstance()->MenuOb.SetRotSpd(0.01f);
 
-	//Player
-	GetInstance()->player.Init(2, "Resources/Textures/AwesomeFace.png", "Resources/Shaders/BlinnPhong.shader", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 7.5f, 1.0f));
-
-	GetInstance()->player.SetBaseFoward(glm::vec3(0.0f, -1.0f, 0.0f));
-	GetInstance()->player.SetBaseLeft(glm::vec3(-1.0f, 0.0f, 0.0f));
-	GetInstance()->player.SetBaseRight(glm::vec3(1.0f, 0.0f, 0.0f));
-	GetInstance()->player.SetBaseUp(glm::vec3(0.0f, 0.0f, 1.0f));
-	GetInstance()->player.SetMaxSpd(20.0f);
-	GetInstance()->player.SetAccSpd(1.0f);
-	GetInstance()->player.SetFriction(0.25f);
-	GetInstance()->player.SetRotSpd(1.0f);
 
 	//-----Init Path
 	GetInstance()->path.AddPoint(glm::vec3(0.0f, 0.0f, 0.0f));
 	GetInstance()->path.AddPoint(glm::vec3(0.0f, -10000.0f, 0.0f));
-
-
-	//-----Init Network
-	GetInstance()->InitNetwork();
 }
 
 void GameManager::Render(void)
@@ -295,6 +297,9 @@ void GameManager::Update()
 	//-----Update Camera
 	GetInstance()->Cam.Update(GetInstance()->timeElapsed);
 
+	//-----Update Network
+	if(GetInstance()->_eNetworkEntityType != NONE) GetInstance()->UpdateNetWork();
+
 	switch (GetInstance()->CurrSc)
 	{
 	case MENU:
@@ -329,13 +334,14 @@ void GameManager::RenMenu()
 	GetInstance()->MenuOb.Render();
 
 	//-----Render Buttons
-	GetInstance()->Play.Render();
-	GetInstance()->PlayAI.Render();
-	GetInstance()->Exit.Render();
+
+	GetInstance()->ButMap["Play"]->Render();
+	GetInstance()->ButMap["PlayAI"]->Render();
+	GetInstance()->ButMap["Exit"]->Render();
 
 	//Networking Buttons
-	GetInstance()->Client.Render();
-	GetInstance()->Server.Render();
+	GetInstance()->ButMap["Client"]->Render();
+	GetInstance()->ButMap["Server"]->Render();
 }
 
 void GameManager::RenPlay()
@@ -350,9 +356,11 @@ void GameManager::RenPlay()
 	{
 		GetInstance()->EnVec.at(i).Render();
 	}
-	//Player
-	GetInstance()->player.Render();
-
+	//Players Render
+	for (std::map<std::string, Player*>::iterator it = GetInstance()->PlayerMap.begin(); it != GetInstance()->PlayerMap.end(); it++)
+	{
+		it->second->Render();
+	}
 	//-----Render Text
 	GetInstance()->ScoreText.Render();
 	GetInstance()->LivesText.Render();
@@ -373,21 +381,22 @@ void GameManager::RenAI()
 	{
 		GetInstance()->EnVec.at(i).Render();
 	}
-	//Player
-	GetInstance()->player.Render();
 
+	//Players Render
+	for (std::map<std::string, Player*>::iterator it = GetInstance()->PlayerMap.begin(); it != GetInstance()->PlayerMap.end(); it++)
+	{
+		it->second->Render();
+	}
 	//-----Menu Buttons Render
-	GetInstance()->Seek.Render();
-	GetInstance()->Arrive.Render();
-	GetInstance()->Wander.Render();
-	GetInstance()->Follow.Render();
-	GetInstance()->Queue.Render();
-
-	GetInstance()->Contain.Render();
-	GetInstance()->Seperate.Render();
-	GetInstance()->Avoid.Render();
-
-	GetInstance()->Done.Render();
+	GetInstance()->ButMap["Seek"]->Render();
+	GetInstance()->ButMap["Arrive"]->Render();
+	GetInstance()->ButMap["Wander"]->Render();
+	GetInstance()->ButMap["Follow"]->Render();
+	GetInstance()->ButMap["Queue"]->Render();
+	GetInstance()->ButMap["Contain"]->Render();
+	GetInstance()->ButMap["Seperate"]->Render();
+	GetInstance()->ButMap["Avoid"]->Render();
+	GetInstance()->ButMap["Done"]->Render();
 }
 
 void GameManager::RenLoss()
@@ -402,49 +411,58 @@ void GameManager::RenLoss()
 	{
 		GetInstance()->EnVec.at(i).Render();
 	}
-	//Player
-	GetInstance()->player.Render();
+	//Players
+	for (std::map<std::string, Player*>::iterator it = GetInstance()->PlayerMap.begin(); it != GetInstance()->PlayerMap.end(); it++)
+	{
+		it->second->Render();
+	}
+
 	GetInstance()->LossText.Render();
-	GetInstance()->Return.Render();
+	GetInstance()->ButMap["Return"]->Render();
 }
 
 void GameManager::UpdMenu()
 {
-	GetInstance()->Play.Update();
-	GetInstance()->PlayAI.Update();
-	GetInstance()->Exit.Update();
-	GetInstance()->Client.Update();
-	GetInstance()->Server.Update();
+	GetInstance()->ButMap["Play"]->Update();
+	GetInstance()->ButMap["PlayAI"]->Update();
+	GetInstance()->ButMap["Exit"]->Update();
 
-	if (GetInstance()->Play.GetClicked())
+	//Networking Buttons
+	GetInstance()->ButMap["Client"]->Update();
+	GetInstance()->ButMap["Server"]->Update();
+
+	//Process Input
+
+	if (GetInstance()->ButMap["Play"]->GetClicked())
 	{
 		CurrSc = PLAY;
 		InstPlay();
-		Cam.SetFollowing(&player);
+		Cam.SetFollowing(GetInstance()->PlayerMap["LocalPlayer"]);
 		Cam.SetRotFollow(true);
 		GetInstance()->SetLives(3);
-		GetInstance()->Play.SetClicked(false);
+		GetInstance()->ButMap["Play"]->SetClicked(false);
 		EnMoveType = 5; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
 	}
-	if (GetInstance()->PlayAI.GetClicked())
+	if (GetInstance()->ButMap["PlayAI"]->GetClicked())
 	{
 		CurrSc = PLAYAI;
 		InstAI();
-		Cam.SetFollowing(&player);
+		Cam.SetFollowing(GetInstance()->PlayerMap["LocalPlayer"]);
 		Cam.SetRotFollow(true);
-		GetInstance()->PlayAI.SetClicked(false);
+		GetInstance()->ButMap["PlayAI"]->SetClicked(false);
 		GetInstance()->SetLives(3);
 		EnMoveType = 0; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
 	}
-	if (Client.GetClicked())
+	if (GetInstance()->ButMap["Client"]->GetClicked() && _eNetworkEntityType == 0)
 	{
-
+		_eNetworkEntityType = CLIENT;
+		GetInstance()->InitNetwork();
 	}
-	if (Server.GetClicked())
+	if (GetInstance()->ButMap["Server"]->GetClicked() && _eNetworkEntityType == 0)
 	{
-
+		_eNetworkEntityType = SERVER;
+		GetInstance()->InitNetwork();
 	}
-
 
 	GetInstance()->MenuOb.RotateOnAxis(glm::vec3(0.0f, 1.0f, 0.0f));
 	GetInstance()->MenuOb.Update(deltaTime);
@@ -453,7 +471,7 @@ void GameManager::UpdMenu()
 void GameManager::UpdPlay()
 {
 	//-----Process Input
-	GetInstance()->player.ProcessInput(deltaTime);
+	GetInstance()->PlayerMap["LocalPlayer"]->ProcessInput(deltaTime);
 
 	//-----Update Objects
 	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
@@ -463,12 +481,12 @@ void GameManager::UpdPlay()
 	//Enemies
 	for (unsigned int i = 0; i < GetInstance()->EnVec.size(); i++)
 	{
-		//GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetPosition(), EnMoveType);
-		GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetCenter(), EnMoveType, path);
+		//GetInstance()->EnVec.at(i).MoveTo(GetInstance()->PlayerMap["LocalPlayer"]->GetPosition(), EnMoveType);
+		GetInstance()->EnVec.at(i).MoveTo(GetInstance()->PlayerMap["LocalPlayer"]->GetCenter(), EnMoveType, path);
 		GetInstance()->EnVec.at(i).Update(GetInstance()->deltaTime);
 	}
 	//Player
-	GetInstance()->player.Update(GetInstance()->deltaTime);
+	GetInstance()->PlayerMap["LocalPlayer"]->Update(GetInstance()->deltaTime);
 
 	//-----Update Text
 	SetVel();
@@ -482,7 +500,7 @@ void GameManager::UpdPlay()
 void GameManager::UpdAI()
 {
 	//-----Process Input
-	GetInstance()->player.ProcessInput(deltaTime);
+	GetInstance()->PlayerMap["LocalPlayer"]->ProcessInput(deltaTime);
 
 	//-----Update Objects
 	for (unsigned int i = 0; i < GetInstance()->ObVec.size(); i++)
@@ -492,123 +510,104 @@ void GameManager::UpdAI()
 	//Enemies
 	for (unsigned int i = 0; i < GetInstance()->EnVec.size(); i++)
 	{
-		//GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetPosition(), EnMoveType);
-		GetInstance()->EnVec.at(i).MoveTo(GetInstance()->player.GetCenter(), EnMoveType, path);
+		//GetInstance()->EnVec.at(i).MoveTo(GetInstance()->PlayerMap["LocalPlayer"]->GetPosition(), EnMoveType);
+		GetInstance()->EnVec.at(i).MoveTo(GetInstance()->PlayerMap["LocalPlayer"]->GetCenter(), EnMoveType, path);
 		GetInstance()->EnVec.at(i).Update(GetInstance()->deltaTime);
 	}
 	//Player
-	GetInstance()->player.Update(GetInstance()->deltaTime);
+	GetInstance()->PlayerMap["LocalPlayer"]->Update(GetInstance()->deltaTime);
 
 
 
 
-	if (GetInstance()->Seek.GetClicked())	EnMoveType = 0;
-	if (GetInstance()->Arrive.GetClicked())	EnMoveType = 1;
-	if (GetInstance()->Wander.GetClicked())	EnMoveType = 2;
-	if (GetInstance()->Follow.GetClicked())	EnMoveType = 4;
-	if (GetInstance()->Queue.GetClicked())	EnMoveType = 5;
+	if (GetInstance()->ButMap["Seek"]->GetClicked())	EnMoveType = 0;
+	if (GetInstance()->ButMap["Arrive"]->GetClicked())	EnMoveType = 1;
+	if (GetInstance()->ButMap["Wander"]->GetClicked())	EnMoveType = 2;
+	if (GetInstance()->ButMap["Follow"]->GetClicked())	EnMoveType = 4;
+	if (GetInstance()->ButMap["Queue"]->GetClicked())	EnMoveType = 5;
 
 	if (GetInstance()->EnMoveType == 0)
 	{
-		GetInstance()->Seek.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
-		GetInstance()->Arrive.SetClicked(false);
-		GetInstance()->Wander.SetClicked(false);
-		GetInstance()->Follow.SetClicked(false);
-		GetInstance()->Queue.SetClicked(false);
+		GetInstance()->ButMap["Seek"]->SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 	}
-	else GetInstance()->Seek.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	else GetInstance()->ButMap["Seek"]->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	if (GetInstance()->EnMoveType == 1)
 	{
-		GetInstance()->Arrive.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
-		GetInstance()->Seek.SetClicked(false);
-		GetInstance()->Wander.SetClicked(false);
-		GetInstance()->Follow.SetClicked(false);
-		GetInstance()->Queue.SetClicked(false);
+		GetInstance()->ButMap["Arrive"]->SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 	}
-	else GetInstance()->Arrive.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	else GetInstance()->ButMap["Arrive"]->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	if (GetInstance()->EnMoveType == 2)
 	{
-		GetInstance()->Wander.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
-		GetInstance()->Seek.SetClicked(false);
-		GetInstance()->Arrive.SetClicked(false);
-		GetInstance()->Follow.SetClicked(false);
-		GetInstance()->Queue.SetClicked(false);
+		GetInstance()->ButMap["Wander"]->SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+
 	}
-	else GetInstance()->Wander.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	else GetInstance()->ButMap["Wander"]->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	if (GetInstance()->EnMoveType == 4)
 	{
-		GetInstance()->Follow.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
-		GetInstance()->Seek.SetClicked(false);
-		GetInstance()->Arrive.SetClicked(false);
-		GetInstance()->Wander.SetClicked(false);
-		GetInstance()->Queue.SetClicked(false);
+		GetInstance()->ButMap["Follow"]->SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 	}
-	else GetInstance()->Follow.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	else GetInstance()->ButMap["Follow"]->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	if (GetInstance()->EnMoveType == 5)
 	{
-		GetInstance()->Queue.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
-		GetInstance()->Seek.SetClicked(false);
-		GetInstance()->Arrive.SetClicked(false);
-		GetInstance()->Wander.SetClicked(false);
-		GetInstance()->Follow.SetClicked(false);
+		GetInstance()->ButMap["Queue"]->SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 	}
-	else GetInstance()->Queue.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	else GetInstance()->ButMap["Queue"]->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
-	if (GetInstance()->Contain.GetClicked())
+	if (GetInstance()->ButMap["Contain"]->GetClicked())
 	{
 		GetInstance()->Con = !GetInstance()->Con;
-		if (GetInstance()->Con)	GetInstance()->Contain.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
-		else					GetInstance()->Contain.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		GetInstance()->Contain.SetClicked(false);
+		if (GetInstance()->Con)	GetInstance()->ButMap["Contain"]->SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		else					GetInstance()->ButMap["Contain"]->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		GetInstance()->ButMap["Contain"]->SetClicked(false);
 	}
-	if (GetInstance()->Seperate.GetClicked())
+	if (GetInstance()->ButMap["Seperate"]->GetClicked())
 	{
 		GetInstance()->Sep = !GetInstance()->Sep;
-		if (GetInstance()->Sep)		GetInstance()->Seperate.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
-		else						GetInstance()->Seperate.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		GetInstance()->Seperate.SetClicked(false);
+		if (GetInstance()->Sep)		GetInstance()->ButMap["Seperate"]->SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		else						GetInstance()->ButMap["Seperate"]->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		GetInstance()->ButMap["Seperate"]->SetClicked(false);
 	}
 
-	if (GetInstance()->Avoid.GetClicked())
+	if (GetInstance()->ButMap["Avoid"]->GetClicked())
 	{
 		GetInstance()->avoid = !GetInstance()->avoid;
-		if (GetInstance()->avoid)	GetInstance()->Avoid.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
-		else						GetInstance()->Avoid.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		GetInstance()->Avoid.SetClicked(false);
+		if (GetInstance()->avoid)	GetInstance()->ButMap["Avoid"]->SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		else						GetInstance()->ButMap["Avoid"]->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		GetInstance()->ButMap["Avoid"]->SetClicked(false);
 	}
 
-	if (GetInstance()->Done.GetClicked())
+	if (GetInstance()->ButMap["Done"]->GetClicked())
 	{
 		CurrSc = MENU;
 		GetInstance()->Cam.SetFollowing(&MenuOb);
 		GetInstance()->Cam.SetRotFollow(false);
-		GetInstance()->Done.SetClicked(false);
+		GetInstance()->ButMap["Done"]->SetClicked(false);
 
 		GetInstance()->ObVec.clear();
 		GetInstance()->EnVec.clear();
-		GetInstance()->player.SetPosition(glm::vec3(0.0f));
+		GetInstance()->PlayerMap["LocalPlayer"]->SetPosition(glm::vec3(0.0f));
 	}
 
 
-	GetInstance()->Seek.ProcessInput();
-	GetInstance()->Arrive.ProcessInput();
-	GetInstance()->Wander.ProcessInput();
-	GetInstance()->Follow.ProcessInput();
-	GetInstance()->Queue.ProcessInput();
+	GetInstance()->ButMap["Seek"]->ProcessInput();
+	GetInstance()->ButMap["Arrive"]->ProcessInput();
+	GetInstance()->ButMap["Wander"]->ProcessInput();
+	GetInstance()->ButMap["Follow"]->ProcessInput();
+	GetInstance()->ButMap["Queue"]->ProcessInput();
 
-	GetInstance()->Contain.ProcessInput();
-	GetInstance()->Seperate.ProcessInput();
-	GetInstance()->Avoid.ProcessInput();
+	GetInstance()->ButMap["Contain"]->ProcessInput();
+	GetInstance()->ButMap["Seperate"]->ProcessInput();
+	GetInstance()->ButMap["Avoid"]->ProcessInput();
 
-	GetInstance()->Done.ProcessInput();
+	GetInstance()->ButMap["Done"]->ProcessInput();
 
 
 }
 
 void GameManager::UpdLoss()
 {
-	GetInstance()->Return.ProcessInput();
-	if (GetInstance()->Return.GetClicked())
+	GetInstance()->ButMap["Return"]->ProcessInput();
+	if (GetInstance()->ButMap["Return"]->GetClicked())
 	{
 		GetInstance()->CurrSc = MENU;
 		GetInstance()->Cam.SetFollowing(&MenuOb);
@@ -616,7 +615,7 @@ void GameManager::UpdLoss()
 
 		GetInstance()->ObVec.clear();
 		GetInstance()->EnVec.clear();
-		GetInstance()->player.SetPosition(glm::vec3(0.0f));
+		GetInstance()->PlayerMap["LocalPlayer"]->SetPosition(glm::vec3(0.0f));
 	}
 }
 
@@ -634,8 +633,8 @@ void GameManager::InstPlay()
 	{
 		GetInstance()->ObVec.at(i).Init(0, "Resources/Textures/AwesomeFace.png",
 			"Resources/Shaders/BlinnPhong.shader",
-			glm::vec3(250 - (rand() % 500)),
-			glm::vec3((rand() % 15)));
+			glm::vec3(250.0f - (rand() % 500)),
+			glm::vec3((float)(rand() % 15)));
 	}
 
 	//Enemies
@@ -675,8 +674,8 @@ void GameManager::InstAI()
 	{
 		GetInstance()->ObVec.at(i).Init(0, "Resources/Textures/AwesomeFace.png",
 			"Resources/Shaders/BlinnPhong.shader",
-			glm::vec3(250 - (rand() % 500)),
-			glm::vec3((rand() % 15)));
+			glm::vec3(250.0f - (rand() % 500)),
+			glm::vec3((float)(rand() % 15)));
 	}
 
 	//Enemies
@@ -715,7 +714,7 @@ void GameManager::SetLives(int newLives)
 
 void GameManager::SetVel()
 {
-	glm::vec3 Vel = GetInstance()->player.GetVelocity();
+	glm::vec3 Vel = GetInstance()->PlayerMap["LocalPlayer"]->GetVelocity();
 	float Velocity = abs(Vel.x + Vel.y + Vel.z);
 	VelocityText.SetText("Velocity: " + to_string(Velocity));
 }

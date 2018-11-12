@@ -126,7 +126,7 @@ void Enemy::Separate()
 {
 	std::vector<Enemy>* EnVec = GameManager::GetInstance()->GetEnVec();
 
-	float DesSep = (float)Scale.x * 1.25;
+	float DesSep = (float)Scale.x * 1.25f;
 	glm::vec3 Sum;
 	int count = 0;
 
