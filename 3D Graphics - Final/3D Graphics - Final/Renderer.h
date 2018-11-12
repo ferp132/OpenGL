@@ -19,10 +19,12 @@ bool GLLogCall(const char* function, const char* file, int line);
 class Renderer
 {
 private:
-
+	
 public:
 	void Clear();
 	void rDraw(const VertexArray &va, const IndexBuffer &ib, const Shader &shader) const;
+
+
 };
 
 #endif

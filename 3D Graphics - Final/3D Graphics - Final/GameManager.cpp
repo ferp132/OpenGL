@@ -59,7 +59,7 @@ void GameManager::InitNetwork()
 	}
 }
 
-void GameManager::UpdateNetWork()
+	void GameManager::UpdateNetWork()
 {
 	while (_rNetwork.IsOnline())
 	{
@@ -70,7 +70,7 @@ void GameManager::UpdateNetWork()
 			if (_pClient->GetExit()) break;
 
 			//Prepare for reading input from the user
-			
+
 
 
 
@@ -181,6 +181,7 @@ void GameManager::Init()
 	GetInstance()->CMap.Init(GetInstance()->Cam);
 
 	//Buttons
+	GetInstance()->ButMap.insert(std::make_pair("Play", new Button()));
 
 	//Networking Buttons
 	GetInstance()->Client.Init(glm::vec2(50.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Client", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
@@ -190,27 +191,27 @@ void GameManager::Init()
 
 	//Menu Buttons
 
-	GetInstance()->Play.Init	(glm::vec2(100.0f, 500.0f), glm::vec2(2.0f, 2.0f), "Play", "Resources/Fonts/arial.ttf",	glm::vec3(0.1f, 1.0f, 0.2f));
+	GetInstance()->Play.Init(glm::vec2(100.0f, 500.0f), glm::vec2(2.0f, 2.0f), "Play", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
 	GetInstance()->Play.SetActive(true);
-	GetInstance()->PlayAI.Init	(glm::vec2(100.0f, 350.0f), glm::vec2(2.0f, 2.0f), "Play AI Scene", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
+	GetInstance()->PlayAI.Init(glm::vec2(100.0f, 350.0f), glm::vec2(2.0f, 2.0f), "Play AI Scene", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
 	GetInstance()->PlayAI.SetActive(true);
-	GetInstance()->Exit.Init	(glm::vec2(100.0f, 200.0f), glm::vec2(2.0f, 2.0f), "Exit", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
+	GetInstance()->Exit.Init(glm::vec2(100.0f, 200.0f), glm::vec2(2.0f, 2.0f), "Exit", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
 	GetInstance()->Exit.SetActive(true);
-	GetInstance()->Return.Init	(glm::vec2(200.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Return To Menu", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
+	GetInstance()->Return.Init(glm::vec2(200.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Return To Menu", "Resources/Fonts/arial.ttf", glm::vec3(0.1f, 1.0f, 0.2f));
 	GetInstance()->Return.SetActive(true);
 
 	//AI Buttons
-	GetInstance()->Seek.	Init(glm::vec2(50.0f, 50.0f), glm::vec2(1.0f, 1.0f), "Seek", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Arrive.	Init(glm::vec2(50.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Arrive", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Wander.	Init(glm::vec2(50.0f, 150.0f), glm::vec2(1.0f, 1.0f), "Wander", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Follow.	Init(glm::vec2(50.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Follow", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Queue.	Init(glm::vec2(50.0f, 250.0f), glm::vec2(1.0f, 1.0f), "Queue", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Seek.Init(glm::vec2(50.0f, 50.0f), glm::vec2(1.0f, 1.0f), "Seek", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Arrive.Init(glm::vec2(50.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Arrive", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Wander.Init(glm::vec2(50.0f, 150.0f), glm::vec2(1.0f, 1.0f), "Wander", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Follow.Init(glm::vec2(50.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Follow", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Queue.Init(glm::vec2(50.0f, 250.0f), glm::vec2(1.0f, 1.0f), "Queue", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
 
-	GetInstance()->Contain.	Init(glm::vec2(50.0f, 350.0f), glm::vec2(1.0f, 1.0f), "Contain", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Contain.Init(glm::vec2(50.0f, 350.0f), glm::vec2(1.0f, 1.0f), "Contain", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
 	GetInstance()->Seperate.Init(glm::vec2(50.0f, 400.0f), glm::vec2(1.0f, 1.0f), "Seperate", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
-	GetInstance()->Avoid.	Init(glm::vec2(50.0f, 450.0f), glm::vec2(1.0f, 1.0f), "Avoid", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Avoid.Init(glm::vec2(50.0f, 450.0f), glm::vec2(1.0f, 1.0f), "Avoid", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
 
-	GetInstance()->Done.	Init(glm::vec2(700.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Done", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
+	GetInstance()->Done.Init(glm::vec2(700.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Done", "Resources/Fonts/arial.ttf", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	//Menu Object
 	GetInstance()->MenuOb.Init(0, "Resources/Textures/AwesomeFace.png", "Resources/Shaders/Reflection.shader", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(3.0f, 20.0f, 10.0f));
@@ -330,7 +331,7 @@ void GameManager::RenMenu()
 	//-----Render Buttons
 	GetInstance()->Play.Render();
 	GetInstance()->PlayAI.Render();
-	GetInstance()->Exit.Render();	
+	GetInstance()->Exit.Render();
 
 	//Networking Buttons
 	GetInstance()->Client.Render();
@@ -376,17 +377,17 @@ void GameManager::RenAI()
 	GetInstance()->player.Render();
 
 	//-----Menu Buttons Render
-	GetInstance()->Seek		.Render();
-	GetInstance()->Arrive	.Render();
-	GetInstance()->Wander	.Render();
-	GetInstance()->Follow	.Render();
-	GetInstance()->Queue	.Render();
+	GetInstance()->Seek.Render();
+	GetInstance()->Arrive.Render();
+	GetInstance()->Wander.Render();
+	GetInstance()->Follow.Render();
+	GetInstance()->Queue.Render();
 
-	GetInstance()->Contain	.Render();
-	GetInstance()->Seperate	.Render();
-	GetInstance()->Avoid	.Render();
+	GetInstance()->Contain.Render();
+	GetInstance()->Seperate.Render();
+	GetInstance()->Avoid.Render();
 
-	GetInstance()->Done		.Render();
+	GetInstance()->Done.Render();
 }
 
 void GameManager::RenLoss()
@@ -435,13 +436,13 @@ void GameManager::UpdMenu()
 		GetInstance()->SetLives(3);
 		EnMoveType = 0; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
 	}
-	if (Client.GetClicked()) 
+	if (Client.GetClicked())
 	{
-		
+
 	}
 	if (Server.GetClicked())
 	{
-		
+
 	}
 
 
@@ -508,7 +509,7 @@ void GameManager::UpdAI()
 	if (GetInstance()->Queue.GetClicked())	EnMoveType = 5;
 
 	if (GetInstance()->EnMoveType == 0)
-	{	
+	{
 		GetInstance()->Seek.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 		GetInstance()->Arrive.SetClicked(false);
 		GetInstance()->Wander.SetClicked(false);
@@ -517,7 +518,7 @@ void GameManager::UpdAI()
 	}
 	else GetInstance()->Seek.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	if (GetInstance()->EnMoveType == 1)
-	{	
+	{
 		GetInstance()->Arrive.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 		GetInstance()->Seek.SetClicked(false);
 		GetInstance()->Wander.SetClicked(false);
@@ -526,7 +527,7 @@ void GameManager::UpdAI()
 	}
 	else GetInstance()->Arrive.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	if (GetInstance()->EnMoveType == 2)
-	{	
+	{
 		GetInstance()->Wander.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 		GetInstance()->Seek.SetClicked(false);
 		GetInstance()->Arrive.SetClicked(false);
@@ -544,7 +545,7 @@ void GameManager::UpdAI()
 	}
 	else GetInstance()->Follow.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	if (GetInstance()->EnMoveType == 5)
-	{	
+	{
 		GetInstance()->Queue.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 		GetInstance()->Seek.SetClicked(false);
 		GetInstance()->Arrive.SetClicked(false);
@@ -563,7 +564,7 @@ void GameManager::UpdAI()
 	if (GetInstance()->Seperate.GetClicked())
 	{
 		GetInstance()->Sep = !GetInstance()->Sep;
-		if(GetInstance()->Sep)		GetInstance()->Seperate.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		if (GetInstance()->Sep)		GetInstance()->Seperate.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 		else						GetInstance()->Seperate.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		GetInstance()->Seperate.SetClicked(false);
 	}
@@ -571,7 +572,7 @@ void GameManager::UpdAI()
 	if (GetInstance()->Avoid.GetClicked())
 	{
 		GetInstance()->avoid = !GetInstance()->avoid;
-		if(GetInstance()->avoid)	GetInstance()->Avoid.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
+		if (GetInstance()->avoid)	GetInstance()->Avoid.SetColor(glm::vec3(0.1f, 1.0f, 0.2f));
 		else						GetInstance()->Avoid.SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		GetInstance()->Avoid.SetClicked(false);
 	}

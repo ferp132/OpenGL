@@ -190,6 +190,7 @@
     <ClInclude Include="server.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="socket.h" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="TextLabel.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="utils.h" />

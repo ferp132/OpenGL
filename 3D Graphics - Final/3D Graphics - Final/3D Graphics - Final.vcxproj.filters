@@ -218,6 +218,9 @@
     <ClInclude Include="InputLineBuffer.h">
       <Filter>Header Files\Networking</Filter>
     </ClInclude>
+    <ClInclude Include="Test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.shader">

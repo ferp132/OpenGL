@@ -35,3 +35,89 @@ void Renderer::rDraw(const VertexArray& va, const IndexBuffer& ib, const Shader&
 	ib.Bind();
 	GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
+
+//
+//void Renderer::RenMenu()
+//{
+//	//-----Render Object
+//	MenuOb.Render();
+//
+//	//-----Render Buttons
+//	Play.Render();
+//	PlayAI.Render();
+//	Exit.Render();
+//
+//	//Networking Buttons
+//	Client.Render();
+//	Server.Render();
+//}
+//
+//void Renderer::RenPlay()
+//{
+//	//-----Render Objects
+//	for (unsigned int i = 0; i < ObVec.size(); i++)
+//	{
+//		ObVec.at(i).Render();
+//	}
+//	//Enemies
+//	for (unsigned int i = 0; i < EnVec.size(); i++)
+//	{
+//		EnVec.at(i).Render();
+//	}
+//	//Player
+//	player.Render();
+//
+//	//-----Render Text
+//	ScoreText.Render();
+//	LivesText.Render();
+//	VelocityText.Render();
+//
+//
+//}
+//
+//void Renderer::RenAI()
+//{
+//	//-----Render Objects
+//	for (unsigned int i = 0; i < ObVec.size(); i++)
+//	{
+//		ObVec.at(i).Render();
+//	}
+//	//Enemies
+//	for (unsigned int i = 0; i < EnVec.size(); i++)
+//	{
+//		EnVec.at(i).Render();
+//	}
+//	//Player
+//	player.Render();
+//
+//	//-----Menu Buttons Render
+//	Seek.Render();
+//	Arrive.Render();
+//	Wander.Render();
+//	Follow.Render();
+//	Queue.Render();
+//
+//	Contain.Render();
+//	Seperate.Render();
+//	Avoid.Render();
+//
+//	Done.Render();
+//}
+//
+//void Renderer::RenLoss()
+//{
+//	//-----Render Objects
+//	for (unsigned int i = 0; i < ObVec.size(); i++)
+//	{
+//		ObVec.at(i).Render();
+//	}
+//	//Enemies
+//	for (unsigned int i = 0; i < EnVec.size(); i++)
+//	{
+//		EnVec.at(i).Render();
+//	}
+//	//Player
+//	player.Render();
+//	LossText.Render();
+//	Return.Render();
+//}

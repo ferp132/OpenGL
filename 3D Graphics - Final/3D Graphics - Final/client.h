@@ -40,6 +40,7 @@ public:
 
 	// Methods
 	
+
 	virtual bool Initialise(); //Implicit in the intialization is the creation and binding of the socket
 	virtual bool SendData(char* _pcDataToSend);
 	virtual void ReceiveData(char* _pcBufferToReceiveData);
@@ -53,6 +54,7 @@ public:
 
 	//Qs7 : Broadcast to Detect Servers
 	bool BroadcastForServers();
+
 
 private:
 	// Question 7 : Broadcast to Detect Servers

@@ -60,6 +60,8 @@ private:
 	//Buttons
 	
 	//Networking
+	map<std::string, Button*> ButMap;
+
 	Button Client;
 	Button Server;
 
@@ -80,8 +82,6 @@ private:
 	Button Avoid;
 
 	Button Done;
-
-	
 
 	//-----Objects;
 	vector<Object>	ObVec;
