@@ -20,6 +20,8 @@
 
 //Local Includes 
 #include "network.h"
+//#include "GameManager.h"
+//#include "TextLabel.h"
 
 //This Include
 #include "socket.h"

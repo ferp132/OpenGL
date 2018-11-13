@@ -25,6 +25,9 @@
 #include "networkentity.h"
 #include "socket.h"
 
+#include "GameManager.h"
+#include "TextLabel.h"
+
 //This includes
 #include "client.h"
 
@@ -113,15 +116,21 @@ bool CClient::Initialise()
 		return false;
 	}
 
+	GameManager::GetInstance()->GetNetText()->insert(std::make_pair("Bound", new TextLabel()));
+	std::string BoundSock = "Socket Bound To:" + m_pClientSocket->GetLocalAddress() + " : " + ToString(_usClientPort);
+	GameManager::GetInstance()->GetNetText()->at("Bound")->Init(BoundSock, "Resources/Fonts/arial.ttf", glm::vec2(25.0f, 775.0f), glm::vec3(0.1f, 1.0f, 0.2f), 0.25f);
+
 	//Set the client's online status to true
 	m_bOnline = true;
 
 	//Use a boolean flag to determine if a valid server has been chosen by the client or not
 	bool _bServerChosen = false;
 
+	std::string _strServerAddress;
+	GameManager::GetInstance()->GetNetText()->insert(std::make_pair("FindServer", new TextLabel()));
+	GameManager::GetInstance()->GetNetText()->at("FindServer")->Init("TEXT NOT SET", "Resources/Fonts/arial.ttf", glm::vec2(150.0f, 400.0f), glm::vec3(0.1f, 1.0f, 0.2f), 0.75f);
 	do {
 #pragma region _GETSERVER_
-
 			//Question 7: Broadcast to detect server
 			m_bDoBroadcast = true;
 			m_pClientSocket->EnableBroadcast();
@@ -129,6 +138,9 @@ bool CClient::Initialise()
 			if (m_vecServerAddr.size() == 0)
 			{
 				std::cout << "No Servers Found " << std::endl;
+				GameManager::GetInstance()->GetNetText()->at("FindServer")->SetText("Finding Servers...");		
+				GameManager::GetInstance()->Update();
+				GameManager::GetInstance()->Render();
 				continue;
 			}
 			else {
@@ -139,17 +151,18 @@ bool CClient::Initialise()
 					std::cout << std::endl << "[" << i << "]" << " SERVER : found at " << ToString(m_vecServerAddr[i]) << std::endl;
 				}
 
-				std::cout << "Choose a server number to connect to :";
+		/*		std::cout << "Choose a server number to connect to :";
 				gets_s(_cServerChosen);
 
-				_uiServerIndex = atoi(_cServerChosen);
-				//_uiServerIndex = 0;
+				_uiServerIndex = atoi(_cServerChosen);*/
+				_uiServerIndex = 0;
 
 				m_ServerSocketAddress.sin_family = AF_INET;
 				//m_ServerSocketAddress.sin_port = m_vecServerAddr[_uiServerIndex].sin_port;
 				m_ServerSocketAddress.sin_addr.S_un.S_addr = m_vecServerAddr[_uiServerIndex].sin_addr.S_un.S_addr;
-				std::string _strServerAddress = ToString(m_vecServerAddr[_uiServerIndex]);
+				_strServerAddress = ToString(m_vecServerAddr[_uiServerIndex]);
 				std::cout << "Attempting to connect to server at " << _strServerAddress << std::endl;
+				GameManager::GetInstance()->GetNetText()->at("FindServer")->SetText("Connecting To Server at: " + ToString(_strServerAddress));
 				_bServerChosen = true;
 			}
 			m_bDoBroadcast = false;
@@ -163,13 +176,18 @@ bool CClient::Initialise()
 	//Send a hanshake message to the server as part of the Client's Initialization process.
 	//Step1: Create a handshake packet
 	
-	do{
-		std::cout << "Please enter a username : ";
-		gets_s(_cUserName);
-	} while (_cUserName[0] == 0);
+	//do{
+	//	GameManager::GetInstance()->Update();
+	//	GameManager::GetInstance()->Render();
+	//	std::cout << "Please enter a username : ";
+	//	gets_s(_cUserName);
+	//
+	//	
+	//} while (_cUserName[0] == 0);
 
+	string UserName = ToString(_usClientPort);
 	TPacket _packet;
-	_packet.Serialize(HANDSHAKE, _cUserName); 
+	_packet.Serialize(HANDSHAKE, (char*)UserName.c_str()); 
 	SendData(_packet.PacketData);
 	return true;
 }
@@ -340,6 +358,7 @@ void CClient::ProcessData(char* _pcDataReceived)
 	{
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
 		std::cout << "SERVER> " << _packetRecvd.MessageContent << std::endl;
+		GameManager::GetInstance()->GetNetText()->at("FindServer")->SetText("Connected to: " + m_ServerSocketAddress.sin_port);
 		break;
 	}
 	case DATA:

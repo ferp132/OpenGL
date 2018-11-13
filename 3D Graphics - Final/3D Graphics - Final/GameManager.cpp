@@ -50,19 +50,15 @@ void GameManager::InitNetwork()
 	//Run receive on a separate thread so that it does not block the main client thread.
 	if (_eNetworkEntityType == CLIENT) //if network entity is a client
 	{
-
 		_pClient = static_cast<CClient*>(_rNetwork.GetInstance().GetNetworkEntity());
 		GetInstance()->_ClientReceiveThread = std::thread(&CClient::ReceiveData, _pClient, std::ref(_pcPacketData));
-
 	}
 
 	//Run receive of server also on a separate thread 
 	else if (_eNetworkEntityType == SERVER) //if network entity is a server
 	{
-
 		_pServer = static_cast<CServer*>(_rNetwork.GetInstance().GetNetworkEntity());
 		GetInstance()->_ServerReceiveThread = std::thread(&CServer::ReceiveData, _pServer, std::ref(_pcPacketData));
-
 	}
 }
 
@@ -77,15 +73,6 @@ void GameManager::UpdateNetWork()
 			//if (_pClient->GetExit()) break;
 
 			//Prepare for reading input from the user
-
-
-
-
-
-
-
-
-
 
 			//------------------------------------------------------------------------
 
@@ -160,33 +147,41 @@ void GameManager::UpdateNetWork()
 void GameManager::InitButtons()
 {
 	//-----Main Menu
-	GetInstance()->ButMap.insert(std::make_pair("Play", new Button(glm::vec2(100.0f, 500.0f), glm::vec2(2.0f, 2.0f), "Play", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
-	GetInstance()->ButMap.insert(std::make_pair("PlayAI", new Button(glm::vec2(100.0f, 350.0f), glm::vec2(2.0f, 2.0f), "Play AI Scene", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
-	GetInstance()->ButMap.insert(std::make_pair("Exit", new Button(glm::vec2(100.0f, 200.0f), glm::vec2(2.0f, 2.0f), "Exit", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("Play",		new Button(glm::vec2(100.0f, 500.0f), glm::vec2(1.0f, 1.0f), "Play",			ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("PlayAI",	new Button(glm::vec2(100.0f, 400.0f), glm::vec2(1.0f, 1.0f), "Play AI Scene",	ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("Multi",	new Button(glm::vec2(100.0f, 300.0f), glm::vec2(1.0f, 1.0f), "Multi-Player",	ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("Exit",		new Button(glm::vec2(100.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Exit",			ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
 
 	//-----AI Scene
-	GetInstance()->ButMap.insert(std::make_pair("Seek", new Button(glm::vec2(50.0f, 50.0f), glm::vec2(1.0f, 1.0f), "Seek", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
-	GetInstance()->ButMap.insert(std::make_pair("Arrive", new Button(glm::vec2(50.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Arrive", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
-	GetInstance()->ButMap.insert(std::make_pair("Wander", new Button(glm::vec2(50.0f, 150.0f), glm::vec2(1.0f, 1.0f), "Wander", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
-	GetInstance()->ButMap.insert(std::make_pair("Follow", new Button(glm::vec2(50.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Follow", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
-	GetInstance()->ButMap.insert(std::make_pair("Queue", new Button(glm::vec2(50.0f, 250.0f), glm::vec2(1.0f, 1.0f), "Queue", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
-	GetInstance()->ButMap.insert(std::make_pair("Contain", new Button(glm::vec2(50.0f, 350.0f), glm::vec2(1.0f, 1.0f), "Contain", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Seek",		new Button(glm::vec2(50.0f, 50.0f), glm::vec2(1.0f, 1.0f), "Seek", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Arrive",	new Button(glm::vec2(50.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Arrive", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Wander",	new Button(glm::vec2(50.0f, 150.0f), glm::vec2(1.0f, 1.0f), "Wander", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Follow",	new Button(glm::vec2(50.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Follow", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Queue",	new Button(glm::vec2(50.0f, 250.0f), glm::vec2(1.0f, 1.0f), "Queue", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Contain",	new Button(glm::vec2(50.0f, 350.0f), glm::vec2(1.0f, 1.0f), "Contain", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
 	GetInstance()->ButMap.insert(std::make_pair("Seperate", new Button(glm::vec2(50.0f, 400.0f), glm::vec2(1.0f, 1.0f), "Seperate", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
-	GetInstance()->ButMap.insert(std::make_pair("Avoid", new Button(glm::vec2(50.0f, 450.0f), glm::vec2(1.0f, 1.0f), "Avoid", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
-	GetInstance()->ButMap.insert(std::make_pair("Done", new Button(glm::vec2(700.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Done", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Avoid",	new Button(glm::vec2(50.0f, 450.0f), glm::vec2(1.0f, 1.0f), "Avoid", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
+	GetInstance()->ButMap.insert(std::make_pair("Done",		new Button(glm::vec2(700.0f, 100.0f), glm::vec2(1.0f, 1.0f), "Done", ftArial, glm::vec3(1.0f, 1.0f, 1.0f))));
 
 	//-----Game Scene
-	GetInstance()->ButMap.insert(std::make_pair("Return", new Button(glm::vec2(200.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Return To Menu", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("Return",	new Button(glm::vec2(200.0f, 200.0f), glm::vec2(1.0f, 1.0f), "Return To Menu", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
 
 	//Networking
-	GetInstance()->ButMap.insert(std::make_pair("Client", new Button(glm::vec2(50.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Client", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
-	GetInstance()->ButMap.insert(std::make_pair("Server", new Button(glm::vec2(700.0f, 50.0f), glm::vec2(0.5f, 0.5f), "Server", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("Client",	new Button(glm::vec2(300.0f, 600.0f), glm::vec2(1.0f, 1.0f), "Client", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
+	GetInstance()->ButMap.insert(std::make_pair("Server",	new Button(glm::vec2(300.0f, 400.0f), glm::vec2(1.0f, 1.0f), "Server", ftArial, glm::vec3(0.1f, 1.0f, 0.2f))));
 
 }
 
 void GameManager::InitPlayer()
 {
 	GetInstance()->PlayerMap["LocalPlayer"] = new Player;
+	GetInstance()->PlayerMap["LocalPlayer"]->Init(2, "Resources/Textures/AwesomeFace.png",
+		"Resources/Shaders/BlinnPhong.shader", glm::vec3(0.0f), glm::vec3(1.0f));
+	GetInstance()->MenuOb.SetBaseFoward(glm::vec3(-1.0f, 0.0f, 0.0f));
+	GetInstance()->MenuOb.SetBaseLeft(glm::vec3(-1.0f, 0.0f, 0.0f));
+	GetInstance()->MenuOb.SetBaseRight(glm::vec3(1.0f, 0.0f, 0.0f));
+	GetInstance()->MenuOb.SetBaseUp(glm::vec3(0.0f, 1.0f, 0.0f));
+	GetInstance()->MenuOb.SetRotSpd(0.01f);
 }
 
 void GameManager::Init()
@@ -211,10 +206,10 @@ void GameManager::Init()
 	GetInstance()->Cam.Init(800, 800, (&GetInstance()->MenuOb));
 
 	//-----Init Text Labels
-	GetInstance()->LossText.Init("You Lose!!", "Resources/Fonts/arial.ttf", glm::vec2(50.0f, 400.0f), glm::vec3(0.1f, 1.0f, 0.2f), 3.0f);
-	GetInstance()->ScoreText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(50.0f, 30.0f), glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
-	GetInstance()->LivesText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(550.0f, 30.0f), glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
-	GetInstance()->VelocityText.Init(" ", "Resources/Fonts/arial.ttf", glm::vec2(200.0f, 750.0f), glm::vec3(0.1f, 1.0f, 0.2f), 1.0f);
+	GetInstance()->LossText.Init("You Lose!!",	GetInstance()->ftArial, glm::vec2(50.0f, 400.0f),	glm::vec3(0.1f, 1.0f, 0.2f), 3.0f);
+	GetInstance()->ScoreText.Init(" ",			GetInstance()->ftArial, glm::vec2(50.0f, 30.0f),	glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
+	GetInstance()->LivesText.Init(" ",			GetInstance()->ftArial, glm::vec2(550.0f, 30.0f),	glm::vec3(0.5f, 0.8f, 1.0), 1.0f);
+	GetInstance()->VelocityText.Init(" ",		GetInstance()->ftArial, glm::vec2(200.0f, 750.0f),	glm::vec3(0.1f, 1.0f, 0.2f), 1.0f);
 
 	GetInstance()->SetScore(0);
 	GetInstance()->SetLives(3);
@@ -231,7 +226,7 @@ void GameManager::Init()
 	GetInstance()->InitButtons();
 
 	//Menu Object
-	GetInstance()->MenuOb.Init(0, "Resources/Textures/AwesomeFace.png", "Resources/Shaders/Reflection.shader", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(3.0f, 20.0f, 10.0f));
+	GetInstance()->MenuOb.Init(0, "Resources/Textures/AwesomeFace.png", "Resources/Shaders/Reflection.shader", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.5f, 10.0f, 5.0f));
 	GetInstance()->MenuOb.SetActive(true);
 	GetInstance()->MenuOb.SetBaseFoward(glm::vec3(-1.0f, 0.0f, 0.0f));
 	GetInstance()->MenuOb.SetBaseLeft(glm::vec3(-1.0f, 0.0f, 0.0f));
@@ -271,6 +266,11 @@ void GameManager::Render(void)
 		GetInstance()->RenAI();
 		break;
 	}
+	case MULTI:
+	{
+		GetInstance()->RenMulti();
+		break;
+	}
 	case LOSS:
 	{
 		GetInstance()->RenLoss();
@@ -300,6 +300,11 @@ void GameManager::Update()
 	//-----Update Network
 	if(GetInstance()->_eNetworkEntityType != NONE) GetInstance()->UpdateNetWork();
 
+	for (std::map<std::string, Button*>::iterator it = GetInstance()->ButMap.begin(); it != GetInstance()->ButMap.end(); it++)
+	{
+		it->second->SetClicked(false);
+	}
+
 	switch (GetInstance()->CurrSc)
 	{
 	case MENU:
@@ -315,6 +320,11 @@ void GameManager::Update()
 	case PLAYAI:
 	{
 		GetInstance()->UpdAI();
+		break;
+	}
+	case MULTI:
+	{
+		GetInstance()->UpMulti();
 		break;
 	}
 	case LOSS:
@@ -337,11 +347,8 @@ void GameManager::RenMenu()
 
 	GetInstance()->ButMap["Play"]->Render();
 	GetInstance()->ButMap["PlayAI"]->Render();
+	GetInstance()->ButMap["Multi"]->Render();
 	GetInstance()->ButMap["Exit"]->Render();
-
-	//Networking Buttons
-	GetInstance()->ButMap["Client"]->Render();
-	GetInstance()->ButMap["Server"]->Render();
 }
 
 void GameManager::RenPlay()
@@ -399,6 +406,27 @@ void GameManager::RenAI()
 	GetInstance()->ButMap["Done"]->Render();
 }
 
+void GameManager::RenMulti()
+{
+	//-----Render Object
+	GetInstance()->MenuOb.Render();
+
+	//Networking Buttons
+	if (GetInstance()->ButMap["Client"]->GetActive())
+	{
+		GetInstance()->ButMap["Client"]->Render();
+	}
+	if (GetInstance()->ButMap["Return"]->GetActive())	GetInstance()->ButMap["Return"]->Render();
+	if (GetInstance()->ButMap["Server"]->GetActive())	GetInstance()->ButMap["Server"]->Render();
+
+	//-----Render TExt
+	for (std::map<std::string, TextLabel*>::iterator it = GetInstance()->NetText.begin(); it != GetInstance()->NetText.end(); it++)
+	{
+		it->second->Render();
+	}
+
+}
+
 void GameManager::RenLoss()
 {
 	//-----Render Objects
@@ -425,11 +453,10 @@ void GameManager::UpdMenu()
 {
 	GetInstance()->ButMap["Play"]->Update();
 	GetInstance()->ButMap["PlayAI"]->Update();
+	GetInstance()->ButMap["Multi"]->Update();
 	GetInstance()->ButMap["Exit"]->Update();
 
-	//Networking Buttons
-	GetInstance()->ButMap["Client"]->Update();
-	GetInstance()->ButMap["Server"]->Update();
+
 
 	//Process Input
 
@@ -440,7 +467,6 @@ void GameManager::UpdMenu()
 		Cam.SetFollowing(GetInstance()->PlayerMap["LocalPlayer"]);
 		Cam.SetRotFollow(true);
 		GetInstance()->SetLives(3);
-		GetInstance()->ButMap["Play"]->SetClicked(false);
 		EnMoveType = 5; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
 	}
 	if (GetInstance()->ButMap["PlayAI"]->GetClicked())
@@ -449,19 +475,15 @@ void GameManager::UpdMenu()
 		InstAI();
 		Cam.SetFollowing(GetInstance()->PlayerMap["LocalPlayer"]);
 		Cam.SetRotFollow(true);
-		GetInstance()->ButMap["PlayAI"]->SetClicked(false);
 		GetInstance()->SetLives(3);
 		EnMoveType = 0; // 0 = Seek , 1 = Arrive, 2 = Wander, 3 = Path Follow, 4 = leader follow, 5 = Queue;
 	}
-	if (GetInstance()->ButMap["Client"]->GetClicked() && _eNetworkEntityType == 0)
+	if (GetInstance()->ButMap["Multi"]->GetClicked())
 	{
-		_eNetworkEntityType = CLIENT;
-		GetInstance()->InitNetwork();
-	}
-	if (GetInstance()->ButMap["Server"]->GetClicked() && _eNetworkEntityType == 0)
-	{
-		_eNetworkEntityType = SERVER;
-		GetInstance()->InitNetwork();
+		CurrSc = MULTI;
+		GetInstance()->ButMap["Client"]->SetActive(true);
+		GetInstance()->ButMap["Return"]->SetActive(true);
+		GetInstance()->ButMap["Server"]->SetActive(true);
 	}
 
 	GetInstance()->MenuOb.RotateOnAxis(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -604,6 +626,48 @@ void GameManager::UpdAI()
 
 }
 
+void GameManager::UpMulti()
+{
+	//Networking Buttons
+	if (GetInstance()->ButMap["Client"]->GetActive())	GetInstance()->ButMap["Client"]->Update();
+	if (GetInstance()->ButMap["Return"]->GetActive())	GetInstance()->ButMap["Return"]->Update();
+	if(GetInstance()->ButMap["Server"]->GetActive())	GetInstance()->ButMap["Server"]->Update();
+
+	if (GetInstance()->ButMap["Client"]->GetClicked() && _eNetworkEntityType == 0)
+	{
+		GetInstance()->ButMap["Server"]->SetActive(false);
+		GetInstance()->ButMap["Client"]->SetActive(false);
+
+		_eNetworkEntityType = CLIENT;
+		GetInstance()->InitNetwork();
+			//GetInstance()->NetText["ServerFound"] = new TextLabel();
+		//	GetInstance()->NetText["ServerFound"]->Init("Server Found", GetInstance()->ftArial, glm::vec2(50.0f, 400.0f), glm::vec3(0.1f, 1.0f, 0.2f), 3.0f);
+
+			//GetInstance()->NetText["UserName"] = new TextLabel();
+		//	GetInstance()->NetText["UserName"]->Init("Enter A Username", GetInstance()->ftArial, glm::vec2(50.0f, 400.0f), glm::vec3(0.1f, 1.0f, 0.2f), 3.0f);
+
+
+	}
+	if (GetInstance()->ButMap["Server"]->GetClicked() && _eNetworkEntityType == 0)
+	{
+		GetInstance()->ButMap["Client"]->SetActive(false);
+		GetInstance()->ButMap["Server"]->SetActive(false);
+
+		_eNetworkEntityType = SERVER;
+		GetInstance()->InitNetwork();
+
+	}
+
+	if (GetInstance()->ButMap["Return"]->GetClicked())
+	{
+		GetInstance()->CurrSc = MENU;
+	}
+
+	GetInstance()->MenuOb.RotateOnAxis(glm::vec3(0.0f, 1.0f, 0.0f));
+	GetInstance()->MenuOb.Update(deltaTime);
+
+}
+
 void GameManager::UpdLoss()
 {
 	GetInstance()->ButMap["Return"]->ProcessInput();
@@ -691,9 +755,9 @@ void GameManager::InstAI()
 			"Resources/Shaders/BlinnPhong.shader",
 			glm::vec3(100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100), 100 - (rand() % 100 + 100)),
 			glm::vec3(5.0f));
-		GetInstance()->EnVec.at(i).SetMaxSpd(50.0f);
-		GetInstance()->EnVec.at(i).SetAccSpd(0.5f);
-		GetInstance()->EnVec.at(i).SetFriction(0.1f);
+		GetInstance()->EnVec.at(i).SetMaxSpd(25.0f);
+		GetInstance()->EnVec.at(i).SetAccSpd(0.25f);
+		GetInstance()->EnVec.at(i).SetFriction(0.05f);
 		GetInstance()->EnVec.at(i).SetWanRad(5.0f);
 		GetInstance()->EnVec.at(i).SetConRad(200.0f);
 		GetInstance()->EnVec.at(i).SetID(i);

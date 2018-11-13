@@ -14,6 +14,15 @@ Player::Player()
 	Rotx = 0.0f;
 	Roty = 0.0f;
 	Rotz = 0.0f;
+
+	BaseFoward = glm::vec3(0.0f, 1.0f, 0.0f);
+	BaseLeft = glm::vec3(-1.0f, 0.0f, 0.0f);
+	BaseRight = glm::vec3(1.0f, 0.0f, 0.0f);
+	BaseUpDir = glm::vec3(0.0f, 0.0f, 1.0f);
+	RotSpd = 0.5f;
+	MaxSpd = 20.0f;
+	AccSpd = 1.0f;
+	Friction = 0.2f;
 }
 
 Player::~Player()

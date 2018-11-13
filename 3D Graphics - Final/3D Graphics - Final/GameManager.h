@@ -38,7 +38,7 @@
 // make sure the winsock lib is included...
 #pragma comment(lib,"ws2_32.lib")
 
-enum Scene {MENU, PLAY, PLAYAI, LOSS};
+enum Scene {MENU, PLAY, PLAYAI, MULTI, LOSS };
 
 class GameManager
 {
@@ -76,6 +76,8 @@ private:
 	TextLabel LivesText;
 	TextLabel VelocityText;
 	TextLabel LossText;
+
+	map<string, TextLabel*> NetText;		//Test for Multiplayer
 
 	//-----Scoring
 	int Lives;
@@ -126,12 +128,14 @@ public:
 	void RenMenu();
 	void RenPlay();
 	void RenAI();
+	void RenMulti();
 	void RenLoss();
 
 	//-----Updating
 	void UpdMenu();
 	void UpdPlay();
 	void UpdAI();
+	void UpMulti();
 	void UpdLoss();
 
 	//-----Instantiating
@@ -148,6 +152,8 @@ public:
 	int GetLives() { return Lives; }
 	std::vector<Enemy>* GetEnVec() { return &EnVec; }
 	std::vector<Object>* GetObVec() { return &ObVec; }
+	map<string, TextLabel*>* GetNetText() { return &NetText; }
+	map< string, Button* > * GetButMap() { return &ButMap; }
 
 	CubeMap* GetSkyBox() { return &CMap; }
 	Camera* GetCam() { return &Cam; }

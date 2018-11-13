@@ -19,6 +19,8 @@
 #include "utils.h"
 #include "network.h"
 #include "socket.h"
+#include "GameManager.h"
+#include "TextLabel.h"
 
 
 //Local Includes
@@ -83,6 +85,10 @@ bool CServer::Initialise()
 	{
 		return false;
 	}
+
+	GameManager::GetInstance()->GetNetText()->insert(std::make_pair("Bound", new TextLabel()));
+	std::string BoundSock = "Socket Bound To: " + m_pServerSocket->GetLocalAddress() + " : " + ToString(_usServerPort);
+	GameManager::GetInstance()->GetNetText()->at("Bound")->Init(BoundSock, "Resources/Fonts/arial.ttf", glm::vec2(25.0f, 775.0f), glm::vec3(0.1f, 1.0f, 0.2f), 0.25f);
 
 	//Qs 2: Create the map to hold details of all connected clients
 	m_pConnectedClients = new std::map < std::string, TClientDetails >() ;
